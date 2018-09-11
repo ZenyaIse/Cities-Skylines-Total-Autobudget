@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Xml.Serialization;
+using System.Collections.Generic;
 
 namespace AutoBudget   
 {
@@ -17,6 +18,9 @@ namespace AutoBudget
         //public AutobudgetPolice AutobudgetPolice;
         //public AutobudgetTaxi AutobudgetTaxi;
 
+        [XmlIgnore]
+        public List<AutobudgetBase> AllAutobudgetObjects = new List<AutobudgetBase>();
+
         public void Save()
         {
             XmlSerializer ser = new XmlSerializer(typeof(AutobudgetObjectsContainer));
@@ -25,13 +29,20 @@ namespace AutoBudget
             writer.Close();
         }
 
-        public void CreateObjectsIfNotCreated()
+        public void InitObjects()
         {
             if (AutobudgetElectricity == null) AutobudgetElectricity = new AutobudgetElectricity();
             if (AutobudgetWater == null) AutobudgetWater = new AutobudgetWater();
             if (AutobudgetGarbage == null) AutobudgetGarbage = new AutobudgetGarbage();
             if (AutobudgetHealthcare == null) AutobudgetHealthcare = new AutobudgetHealthcare();
             if (AutobudgetEducation == null) AutobudgetEducation = new AutobudgetEducation();
+
+            AllAutobudgetObjects.Clear();
+            AllAutobudgetObjects.Add(AutobudgetElectricity);
+            AllAutobudgetObjects.Add(AutobudgetWater);
+            AllAutobudgetObjects.Add(AutobudgetGarbage);
+            AllAutobudgetObjects.Add(AutobudgetHealthcare);
+            AllAutobudgetObjects.Add(AutobudgetEducation);
         }
 
         public static AutobudgetObjectsContainer CreateFromFile()

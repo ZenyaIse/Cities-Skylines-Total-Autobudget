@@ -30,6 +30,26 @@ namespace AutoBudget
 
         public int BudgetMaxValue = 110;
 
+        public override string GetEconomyPanelContainerName()
+        {
+            return "ServicesBudgetContainer";
+        }
+
+        public override string GetBudgetItemName()
+        {
+            return "Garbage";
+        }
+
+        public override ItemClass.Service GetService()
+        {
+            return ItemClass.Service.Garbage;
+        }
+
+        public override ItemClass.SubService GetSubService()
+        {
+            return ItemClass.SubService.None;
+        }
+
         protected override int refreshCount
         {
             get
@@ -41,7 +61,6 @@ namespace AutoBudget
         protected override void setAutobudget()
         {
             setBudgetForVehicles(
-                ItemClass.Service.Garbage,
                 typeof(LandfillSiteAI),
                 1,
                 50,

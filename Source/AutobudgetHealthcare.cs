@@ -33,6 +33,26 @@ namespace AutoBudget
         public int BudgetMinValue = 101;
         public int BudgetMaxValue = 120;
 
+        public override string GetEconomyPanelContainerName()
+        {
+            return "ServicesBudgetContainer";
+        }
+
+        public override string GetBudgetItemName()
+        {
+            return "Healthcare";
+        }
+
+        public override ItemClass.Service GetService()
+        {
+            return ItemClass.Service.HealthCare;
+        }
+
+        public override ItemClass.SubService GetSubService()
+        {
+            return ItemClass.SubService.None;
+        }
+
         protected override int refreshCount
         {
             get
@@ -44,7 +64,6 @@ namespace AutoBudget
         protected override void setAutobudget()
         {
             setBudgetForVehicles(
-                ItemClass.Service.HealthCare,
                 typeof(HospitalAI),
                 1,
                 BudgetMinValue,

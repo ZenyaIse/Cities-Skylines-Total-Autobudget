@@ -5,6 +5,26 @@ namespace AutoBudget
 {
     public class AutobudgetTaxi : AutobudgetVehicles
     {
+        public override string GetEconomyPanelContainerName()
+        {
+            return "SubServicesBudgetContainer";
+        }
+
+        public override string GetBudgetItemName()
+        {
+            return "Taxi";
+        }
+
+        public override ItemClass.Service GetService()
+        {
+            return ItemClass.Service.PublicTransport;
+        }
+
+        public override ItemClass.SubService GetSubService()
+        {
+            return ItemClass.SubService.PublicTransportTaxi;
+        }
+
         protected override int refreshCount
         {
             get

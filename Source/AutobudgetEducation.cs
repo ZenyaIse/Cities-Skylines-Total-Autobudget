@@ -40,6 +40,26 @@ namespace AutoBudget
         public int HighEducationTargetRate = 90; // %
         public int UnivEducationTargetRate = 90; // %
 
+        public override string GetEconomyPanelContainerName()
+        {
+            return "ServicesBudgetContainer";
+        }
+
+        public override string GetBudgetItemName()
+        {
+            return "Education";
+        }
+
+        public override ItemClass.Service GetService()
+        {
+            return ItemClass.Service.Education;
+        }
+
+        public override ItemClass.SubService GetSubService()
+        {
+            return ItemClass.SubService.None;
+        }
+
         protected override int refreshCount
         {
             get
@@ -104,7 +124,7 @@ namespace AutoBudget
 
             newBudget = Math.Min(newBudget, BudgetMaxValue);
 
-            setBudget(ItemClass.Service.Education, ItemClass.SubService.None, newBudget);
+            setBudget(newBudget);
         }
     }
 }

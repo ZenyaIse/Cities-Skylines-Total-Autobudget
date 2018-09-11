@@ -42,11 +42,31 @@ namespace AutoBudget
         public int BudgetMaxValue = 140;
         public bool PauseWhenBudgetTooHigh = true;
 
+        public override string GetEconomyPanelContainerName()
+        {
+            return "ServicesBudgetContainer";
+        }
+
+        public override string GetBudgetItemName()
+        {
+            return "WaterAndSewage";
+        }
+
+        public override ItemClass.Service GetService()
+        {
+            return ItemClass.Service.Water;
+        }
+
+        public override ItemClass.SubService GetSubService()
+        {
+            return ItemClass.SubService.None;
+        }
+
         protected override int refreshCount
         {
             get
             {
-                return 13;
+                return 113;
             }
         }
 
@@ -98,7 +118,7 @@ namespace AutoBudget
                 isPausedRecently = false;
             }
 
-            setBudget(ItemClass.Service.Water, ItemClass.SubService.None, newBudget);
+            setBudget(newBudget);
         }
     }
 }

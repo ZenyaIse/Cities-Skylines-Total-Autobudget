@@ -142,18 +142,18 @@ namespace AutoBudget
             return budget;
         }
 
-        protected void setBudgetForVehicles(ItemClass.Service service, Type AIType, int vehiclesExcessNum, int minBudget, int maxBudget)
+        protected void setBudgetForVehicles(Type AIType, int vehiclesExcessNum, int minBudget, int maxBudget)
         {
             if (!Singleton<BuildingManager>.exists) return;
 
-            int budget = Singleton<EconomyManager>.instance.GetBudget(service, ItemClass.SubService.None, Singleton<SimulationManager>.instance.m_isNightTime);
+            int budget = Singleton<EconomyManager>.instance.GetBudget(GetService(), GetSubService(), Singleton<SimulationManager>.instance.m_isNightTime);
             int productionRate = PlayerBuildingAI.GetProductionRate(100, budget);
 
             int newBudget = minBudget;
             int targetBldCount = 0;
 
             BuildingManager bm = Singleton<BuildingManager>.instance;
-            foreach (ushort n in ServiceBuildingNs(service))
+            foreach (ushort n in ServiceBuildingNs(GetService()))
             {
                 Building bld = bm.m_buildings.m_buffer[(int)n];
                 if ((bld.m_flags & Building.Flags.Active) == 0) continue;
@@ -183,7 +183,7 @@ namespace AutoBudget
 
             if (targetBldCount > 0 && newBudget != budget)
             {
-                setBudget(service, ItemClass.SubService.None, newBudget);
+                setBudget(newBudget);
             }
         }
     }

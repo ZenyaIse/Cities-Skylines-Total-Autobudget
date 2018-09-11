@@ -39,7 +39,7 @@ namespace AutoBudget
                     DataSerializer.Deserialize<AutobudgetElectricity.Data>(stream, DataSerializer.Mode.Memory);
                     DataSerializer.Deserialize<AutobudgetWater.Data>(stream, DataSerializer.Mode.Memory);
                     DataSerializer.Deserialize<AutobudgetGarbage.Data>(stream, DataSerializer.Mode.Memory);
-                    //DataSerializer.Deserialize<AutobudgetHealthcare.Data>(stream, DataSerializer.Mode.Memory);
+                    DataSerializer.Deserialize<AutobudgetHealthcare.Data>(stream, DataSerializer.Mode.Memory);
                     DataSerializer.Deserialize<AutobudgetEducation.Data>(stream, DataSerializer.Mode.Memory);
                 }
             }

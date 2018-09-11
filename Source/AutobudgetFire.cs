@@ -19,6 +19,26 @@ namespace AutoBudget
             return index + 1;
         }
 
+        public override string GetEconomyPanelContainerName()
+        {
+            return "ServicesBudgetContainer";
+        }
+
+        public override string GetBudgetItemName()
+        {
+            return "FireDepartment";
+        }
+
+        public override ItemClass.Service GetService()
+        {
+            return ItemClass.Service.FireDepartment;
+        }
+
+        public override ItemClass.SubService GetSubService()
+        {
+            return ItemClass.SubService.None;
+        }
+
         protected override int refreshCount
         {
             get
@@ -30,7 +50,6 @@ namespace AutoBudget
         protected override void setAutobudget()
         {
             setBudgetForVehicles(
-                ItemClass.Service.FireDepartment,
                 typeof(PoliceStationAI),
                 FireTracksExcessNum,
                 BudgetMinValue,

@@ -1,30 +1,52 @@
 ﻿using ICities;
 using ColossalFramework;
+using ColossalFramework.UI;
+using UnityEngine;
 
-namespace GameSpeedMod
+namespace AutoBudget
 {
     public class LoadingExtension : LoadingExtensionBase
     {
+        private bool slidersEventAlreadySet = false;
+
         public override void OnLevelLoaded(LoadMode mode)
         {
-            EconomyManager em = Singleton<EconomyManager>.instance;
-            GameSpeedOptionsManager gs = Singleton<GameSpeedOptionsManager>.instance;
-
-            if (mode == LoadMode.NewGame)
+            if (mode == LoadMode.NewGame || mode == LoadMode.LoadGame || mode == LoadMode.NewGameFromScenario)
             {
-                int moneyToAdd = 50 * (gs.Options.ConstructionCostMultiplier - 1) * 100000;
-                em.AddResource(EconomyManager.Resource.LoanAmount, moneyToAdd, ItemClass.Service.None, ItemClass.SubService.None, ItemClass.Level.None);
-            }
-
-            if (mode == LoadMode.NewGame || mode == LoadMode.LoadGame)
-            {
-                Loans.SetLoans();
+                //setBudgetSlidersEvent();
             }
         }
 
-        public override void OnLevelUnloading()
+        private void setBudgetSlidersEvent()
         {
-            Loans.ResetLoans();
+            if (slidersEventAlreadySet)
+            {
+                return;
+            }
+            else
+            {
+                slidersEventAlreadySet = true;
+            }
+
+            AutobudgetObjectsContainer c = Singleton<AutobudgetManager>.instance.container;
+            foreach (AutobudgetBase obj in c.AllAutobudgetObjects)
+            {
+                foreach (bool isNight in new[] { false, true })
+                {
+                    UISlider slider = Helper.GetBudgetSlider(obj.GetEconomyPanelContainerName(), obj.GetBudgetItemName(), isNight);
+                    if (slider != null)
+                    {
+                        slider.eventValueChanged += delegate (UIComponent component, float value)
+                        {
+                            if (obj.Enabled)
+                            {
+                                obj.Enabled = false;
+                                Mod.UpdateUI();
+                            }
+                        };
+                    }
+                } // End of night/day loop
+            } // End of obj loop
         }
     }
 }

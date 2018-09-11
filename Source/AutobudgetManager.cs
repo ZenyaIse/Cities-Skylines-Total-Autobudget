@@ -14,19 +14,15 @@ namespace AutoBudget
                 container = new AutobudgetObjectsContainer();
             }
 
-            container.CreateObjectsIfNotCreated();
+            container.InitObjects();
         }
 
         public void SetAutobudgetAll()
         {
-            container.AutobudgetElectricity.SetAutobudget();
-            container.AutobudgetWater.SetAutobudget();
-            container.AutobudgetGarbage.SetAutobudget();
-            container.AutobudgetHealthcare.SetAutobudget();
-            container.AutobudgetEducation.SetAutobudget();
-            //container.AutobudgetFire.SetAutobudget();
-            //container.AutobudgetPolice.SetAutobudget();
-            //container.AutobudgetTaxi.SetAutobudget();
+            foreach (AutobudgetBase obj in container.AllAutobudgetObjects)
+            {
+                obj.SetAutobudget();
+            }
         }
     }
 }

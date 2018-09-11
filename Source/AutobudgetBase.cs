@@ -9,6 +9,9 @@ namespace AutoBudget
         protected const int oneDayFrames = 585;
         protected int counter = 0;
 
+        private int prevBudgetDay = 0;
+        private int prevBudgetNight = 0;
+
         public bool Enabled = true;
 
         public void SetAutobudget()
@@ -17,74 +20,66 @@ namespace AutoBudget
 
             if (!Singleton<DistrictManager>.exists || !Singleton<EconomyManager>.exists || !Singleton<SimulationManager>.exists) return;
 
-            if (counter-- > 0) return;
-            counter = refreshCount;
+            EconomyManager em = Singleton<EconomyManager>.instance;
+            int budgetDay = em.GetBudget(GetService(), GetSubService(), false);
+            int budgetNight = em.GetBudget(GetService(), GetSubService(), true);
 
-            setAutobudget();
+            // If not the beginning
+            if (prevBudgetDay != 0 && prevBudgetNight != 0)
+            {
+                // Probably somebody changed budget manually -> disable autobudget
+                if (prevBudgetDay != budgetDay || budgetNight != prevBudgetNight)
+                {
+                    Enabled = false;
+                    prevBudgetDay = 0;
+                    prevBudgetNight = 0;
+                    Mod.UpdateUI();
+                }
+            }
+
+            prevBudgetDay = budgetDay;
+            prevBudgetNight = budgetNight;
+
+            if (counter-- <= 0)
+            {
+                counter = refreshCount;
+                setAutobudget();
+                prevBudgetDay = 0;
+                prevBudgetNight = 0;
+            }
         }
+
+        public void SetAutobudgetNow()
+        {
+            counter = 0;
+            SetAutobudget();
+        }
+
+        public abstract string GetEconomyPanelContainerName();
+        public abstract string GetBudgetItemName();
+
+        public abstract ItemClass.Service GetService();
+        public abstract ItemClass.SubService GetSubService();
 
         protected abstract int refreshCount { get; }
 
         protected abstract void setAutobudget();
 
-
-        private string getBudgetContainerName(ItemClass.Service service)
-        {
-            switch (service)
-            {
-                case ItemClass.Service.Electricity:
-                    return "Electricity";
-                case ItemClass.Service.Water:
-                    return "WaterAndSewage";
-                case ItemClass.Service.Garbage:
-                    return "Garbage";
-                case ItemClass.Service.HealthCare:
-                    return "Healthcare";
-                case ItemClass.Service.PoliceDepartment:
-                    return "Police";
-                case ItemClass.Service.Education:
-                    return "Education";
-                case ItemClass.Service.FireDepartment:
-                    return "FireDepartment";
-                case ItemClass.Service.Road:
-                    break;
-            }
-
-            return "None";
-        }
-
-        protected void setBudget(ItemClass.Service service, ItemClass.SubService subservice, int newBudget)
+        protected void setBudget(int newBudget)
         {
             SimulationManager sm = Singleton<SimulationManager>.instance;
-
-            EconomyPanel ep = ToolsModifierControl.economyPanel;
-            //UITabstrip uITabstrip = base.Find<UITabstrip>("EconomyTabstrip");
-            //UIButton uIButton3 = uITabstrip.Find<UIButton>("Budget");
-            UIComponent container = ep.component.Find("ServicesBudgetContainer"); // SubServicesBudgetContainer
-            if (container != null)
+            UISlider slider = Helper.GetBudgetSlider(GetEconomyPanelContainerName(), GetBudgetItemName(), sm.m_isNightTime);
+            if (slider != null)
             {
-                UIComponent budgetItem = container.Find(getBudgetContainerName(service));
-                if (budgetItem != null)
+                if (slider.value != newBudget)
                 {
-                    // List of controls:
-                    // SliderBackground (ColossalFramework.UI.UISlicedSprite)
-                    // Icon (ColossalFramework.UI.UISprite)
-                    // DaySlider (ColossalFramework.UI.UISlider)
-                    // NightPercentage (ColossalFramework.UI.UILabel)
-                    // DayPercentage (ColossalFramework.UI.UILabel)
-                    // Total (ColossalFramework.UI.UILabel)
-                    // NightSlider (ColossalFramework.UI.UISlider)
-                    UISlider slider = budgetItem.Find<UISlider>(sm.m_isNightTime ? "NightSlider" : "DaySlider");
-                    if (slider.value != newBudget)
-                    {
-                        slider.value = newBudget;
-                    }
-                    return;
+                    slider.value = newBudget;
+                    // Enabled = true; // Need here because eventValueChanged set Enabled to false
                 }
             }
 
-            // If the above did not worked, set the budget directly
-            Singleton<EconomyManager>.instance.SetBudget(service, subservice, newBudget, sm.m_isNightTime);
+            // Also set the budget directly
+            Singleton<EconomyManager>.instance.SetBudget(GetService(), GetSubService(), newBudget, sm.m_isNightTime);
         }
     }
 }
