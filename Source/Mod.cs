@@ -67,6 +67,8 @@ namespace AutoBudget
 
         public void TotalAutobudgetOptionsUpdateUI()
         {
+            if (UI_Electricity_Enabled == null) return;
+
             AutobudgetObjectsContainer c = Singleton<AutobudgetManager>.instance.container;
 
             freezeUI = true;
