@@ -1,8 +1,9 @@
 using ICities;
 using ColossalFramework;
 using ColossalFramework.UI;
+using ColossalFramework.Plugins;
 using UnityEngine;
-using System;
+using System.Reflection;
 
 namespace AutoBudget
 {
@@ -11,7 +12,6 @@ namespace AutoBudget
         public static string ModNameEng = "Total Autobudget";
         public static string LogMsgPrefix = ">>> " + ModNameEng + ": ";
 
-        private static Mod instance;
         private bool freezeUI = false;
 
         private UICheckBox UI_Electricity_Enabled;
@@ -51,17 +51,25 @@ namespace AutoBudget
 
         public static void UpdateUI()
         {
-            if (instance != null)
+            foreach (PluginManager.PluginInfo current in Singleton<PluginManager>.instance.GetPluginsInfo())
             {
-                instance.updateUI();
+                if (current.isEnabled)
+                {
+                    IUserMod[] instances = current.GetInstances<IUserMod>();
+                    MethodInfo method = instances[0].GetType().GetMethod("TotalAutobudgetOptionsUpdateUI", BindingFlags.Instance | BindingFlags.Public);
+                    if (method != null)
+                    {
+                        method.Invoke(instances[0], new object[] { } );
+                    }
+                }
             }
         }
 
-        private void updateUI()
+        public void TotalAutobudgetOptionsUpdateUI()
         {
             AutobudgetObjectsContainer c = Singleton<AutobudgetManager>.instance.container;
 
-            instance.freezeUI = true;
+            freezeUI = true;
 
             UI_Electricity_Enabled.isChecked = c.AutobudgetElectricity.Enabled;
             UI_Electricity_Buffer.value = c.AutobudgetElectricity.AutobudgetBuffer;
@@ -86,7 +94,7 @@ namespace AutoBudget
             UI_Education_UnivRate.value = c.AutobudgetEducation.UnivEducationTargetRate;
             UI_Education_MaxBudget.value = c.AutobudgetEducation.BudgetMaxValue;
 
-            instance.freezeUI = false;
+            freezeUI = false;
         }
 
         private void addLabelToSlider(object obj)
@@ -117,8 +125,6 @@ namespace AutoBudget
 
         public void OnSettingsUI(UIHelperBase helper)
         {
-            instance = this;
-
             AutobudgetObjectsContainer c = Singleton<AutobudgetManager>.instance.container;
 
             #region Electricity
