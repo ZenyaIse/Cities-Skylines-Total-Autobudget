@@ -41,6 +41,11 @@ namespace AutoBudget
         private UISlider UI_Police_MinBudget;
         private UISlider UI_Police_MaxBudget;
 
+        private UICheckBox UI_Fire_Enabled;
+        private UISlider UI_Fire_MinBudget;
+        private UISlider UI_Fire_MaxBudget;
+        private UISlider UI_Fire_TracksExcessNum;
+
         public string Name
         {
             get { return ModNameEng; }
@@ -103,6 +108,11 @@ namespace AutoBudget
             UI_Police_Enabled.isChecked = c.AutobudgetPolice.Enabled;
             UI_Police_MinBudget.value = c.AutobudgetPolice.BudgetMinValue;
             UI_Police_MaxBudget.value = c.AutobudgetPolice.BudgetMaxValue;
+
+            UI_Fire_Enabled.isChecked = c.AutobudgetFire.Enabled;
+            UI_Fire_MinBudget.value = c.AutobudgetFire.BudgetMinValue;
+            UI_Fire_MaxBudget.value = c.AutobudgetFire.BudgetMaxValue;
+            UI_Fire_TracksExcessNum.value = c.AutobudgetFire.FireTracksExcessNum;
 
             freezeUI = false;
         }
@@ -268,29 +278,25 @@ namespace AutoBudget
             #endregion
 
             #region Fire
-            //UIHelperBase fireGroup = helper.AddGroup("Fire service");
-            //fireGroup.AddCheckbox("Enable fire service autobudget", c.EnableFireAutobudget, delegate (bool isChecked)
-            //{
-            //    c.EnableFireAutobudget = isChecked;
-            //});
-            //fireGroup.AddDropdown(
-            //    "Fire service strategy",
-            //    AutobudgetFire.StrategyNames,
-            //    AutobudgetFire.TracksExcessNumToStrategyIndex(c.FireTracksExcessNum),
-            //    delegate (int sel)
-            //    {
-            //        c.FireTracksExcessNum = AutobudgetFire.StrategyIndexToTracksExcessNum(sel);
-            //    });
-            //addLabelToSlider(fireGroup.AddSlider("Minimum budget", 50, 150, 1, c.FireBudgetMinValue, delegate (float val)
-            //{
-            //    c.FireBudgetMinValue = (int)val;
-            //}), "%");
-            //addLabelToSlider(fireGroup.AddSlider("Maximum budget", 50, 150, 1, c.FireBudgetMaxValue, delegate (float val)
-            //{
-            //    c.FireBudgetMaxValue = (int)val;
-            //}), "%");
+            UIHelperBase fireGroup = helper.AddGroup("Fire service");
+            UI_Fire_Enabled = (UICheckBox)fireGroup.AddCheckbox("Enable fire service autobudget", c.AutobudgetFire.Enabled, delegate (bool isChecked)
+            {
+                if (!freezeUI) c.AutobudgetFire.Enabled = isChecked;
+            });
+            addLabelToSlider(UI_Fire_MinBudget = (UISlider)fireGroup.AddSlider("Minimum budget", 50, 150, 1, c.AutobudgetFire.BudgetMinValue, delegate (float val)
+            {
+                if (!freezeUI) c.AutobudgetFire.BudgetMinValue = (int)val;
+            }), "%");
+            addLabelToSlider(UI_Fire_MaxBudget = (UISlider)fireGroup.AddSlider("Maximum budget", 50, 150, 1, c.AutobudgetFire.BudgetMaxValue, delegate (float val)
+            {
+                if (!freezeUI) c.AutobudgetFire.BudgetMaxValue = (int)val;
+            }), "%");
+            addLabelToSlider(UI_Fire_TracksExcessNum = (UISlider)fireGroup.AddSlider("Minimum fire tracks waiting", 1, 5, 1, c.AutobudgetFire.FireTracksExcessNum, delegate (float val)
+            {
+                if (!freezeUI) c.AutobudgetFire.FireTracksExcessNum = (int)val;
+            }), " tracks");
 
-            //helper.AddSpace(20);
+            helper.AddSpace(20);
             #endregion
 
             #region Taxi

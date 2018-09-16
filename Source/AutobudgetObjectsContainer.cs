@@ -15,7 +15,7 @@ namespace AutoBudget
         public AutobudgetHealthcare AutobudgetHealthcare;
         public AutobudgetEducation AutobudgetEducation;
         public AutobudgetPolice AutobudgetPolice;
-        //public AutobudgetFire AutobudgetFire;
+        public AutobudgetFire AutobudgetFire;
         //public AutobudgetTaxi AutobudgetTaxi;
 
         [XmlIgnore]
@@ -37,6 +37,7 @@ namespace AutoBudget
             if (AutobudgetHealthcare == null) AutobudgetHealthcare = new AutobudgetHealthcare();
             if (AutobudgetEducation == null) AutobudgetEducation = new AutobudgetEducation();
             if (AutobudgetPolice == null) AutobudgetPolice = new AutobudgetPolice();
+            if (AutobudgetFire == null) AutobudgetFire = new AutobudgetFire();
 
             AllAutobudgetObjects.Clear();
             AllAutobudgetObjects.Add(AutobudgetElectricity);
@@ -45,6 +46,7 @@ namespace AutoBudget
             AllAutobudgetObjects.Add(AutobudgetHealthcare);
             AllAutobudgetObjects.Add(AutobudgetEducation);
             AllAutobudgetObjects.Add(AutobudgetPolice);
+            AllAutobudgetObjects.Add(AutobudgetFire);
         }
 
         public static AutobudgetObjectsContainer CreateFromFile()

@@ -1,23 +1,40 @@
 ﻿using ColossalFramework;
+using ColossalFramework.IO;
 using UnityEngine;
 
 namespace AutoBudget
 {
     public class AutobudgetFire : AutobudgetVehicles
     {
+        public class Data : IDataContainer
+        {
+            public void Serialize(DataSerializer s)
+            {
+                AutobudgetFire d = Singleton<AutobudgetManager>.instance.container.AutobudgetFire;
+                s.WriteBool(d.Enabled);
+                s.WriteInt32(d.BudgetMinValue);
+                s.WriteInt32(d.BudgetMaxValue);
+                s.WriteInt32(d.FireTracksExcessNum);
+            }
+
+            public void Deserialize(DataSerializer s)
+            {
+                AutobudgetFire d = Singleton<AutobudgetManager>.instance.container.AutobudgetFire;
+                d.Enabled = s.ReadBool();
+                d.BudgetMinValue = s.ReadInt32();
+                d.BudgetMaxValue = s.ReadInt32();
+                d.FireTracksExcessNum = s.ReadInt32();
+            }
+
+            public void AfterDeserialize(DataSerializer s)
+            {
+                Debug.Log(Mod.LogMsgPrefix + "AutobudgetFire data loaded.");
+            }
+        }
+
         public int FireTracksExcessNum = 2;
         public int BudgetMinValue = 50;
-        public int BudgetMaxValue = 120;
-
-        public static string[] StrategyNames = new string[] { "Less tracks", "Normal", "More tracks" };
-        public static int TracksExcessNumToStrategyIndex(int tracksNum)
-        {
-            return Mathf.Clamp(tracksNum - 1, 0, 2);
-        }
-        public static int StrategyIndexToTracksExcessNum(int index)
-        {
-            return index + 1;
-        }
+        public int BudgetMaxValue = 110;
 
         public override string GetEconomyPanelContainerName()
         {
@@ -43,7 +60,7 @@ namespace AutoBudget
         {
             get
             {
-                return oneDayFrames / 4;
+                return oneDayFrames / 4 + 7;
             }
         }
 
