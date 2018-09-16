@@ -41,6 +41,7 @@ namespace AutoBudget
                     DataSerializer.Deserialize<AutobudgetGarbage.Data>(stream, DataSerializer.Mode.Memory);
                     DataSerializer.Deserialize<AutobudgetHealthcare.Data>(stream, DataSerializer.Mode.Memory);
                     DataSerializer.Deserialize<AutobudgetEducation.Data>(stream, DataSerializer.Mode.Memory);
+                    DataSerializer.Deserialize<AutobudgetPolice.Data>(stream, DataSerializer.Mode.Memory);
                 }
             }
             catch (Exception ex)
@@ -64,6 +65,7 @@ namespace AutoBudget
                     DataSerializer.Serialize(stream, DataSerializer.Mode.Memory, DataVersion, new AutobudgetGarbage.Data());
                     DataSerializer.Serialize(stream, DataSerializer.Mode.Memory, DataVersion, new AutobudgetHealthcare.Data());
                     DataSerializer.Serialize(stream, DataSerializer.Mode.Memory, DataVersion, new AutobudgetEducation.Data());
+                    DataSerializer.Serialize(stream, DataSerializer.Mode.Memory, DataVersion, new AutobudgetPolice.Data());
                     data = stream.ToArray();
                 }
 

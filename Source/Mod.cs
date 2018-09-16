@@ -37,6 +37,10 @@ namespace AutoBudget
         private UISlider UI_Education_UnivRate;
         private UISlider UI_Education_MaxBudget;
 
+        private UICheckBox UI_Police_Enabled;
+        private UISlider UI_Police_MinBudget;
+        private UISlider UI_Police_MaxBudget;
+
         public string Name
         {
             get { return ModNameEng; }
@@ -95,6 +99,10 @@ namespace AutoBudget
             UI_Education_HighRate.value = c.AutobudgetEducation.HighEducationTargetRate;
             UI_Education_UnivRate.value = c.AutobudgetEducation.UnivEducationTargetRate;
             UI_Education_MaxBudget.value = c.AutobudgetEducation.BudgetMaxValue;
+
+            UI_Police_Enabled.isChecked = c.AutobudgetPolice.Enabled;
+            UI_Police_MinBudget.value = c.AutobudgetPolice.BudgetMinValue;
+            UI_Police_MaxBudget.value = c.AutobudgetPolice.BudgetMaxValue;
 
             freezeUI = false;
         }
@@ -241,6 +249,24 @@ namespace AutoBudget
 
             #endregion
 
+            #region Police
+            UIHelperBase policeGroup = helper.AddGroup("Police");
+            UI_Police_Enabled = (UICheckBox)policeGroup.AddCheckbox("Enable police autobudget", c.AutobudgetPolice.Enabled, delegate (bool isChecked)
+            {
+                if (!freezeUI) c.AutobudgetPolice.Enabled = isChecked;
+            });
+            addLabelToSlider(UI_Police_MinBudget = (UISlider)policeGroup.AddSlider("Minimum budget", 50, 150, 1, c.AutobudgetPolice.BudgetMinValue, delegate (float val)
+            {
+                if (!freezeUI) c.AutobudgetPolice.BudgetMinValue = (int)val;
+            }), "%");
+            addLabelToSlider(UI_Police_MaxBudget = (UISlider)policeGroup.AddSlider("Maximum budget", 50, 150, 1, c.AutobudgetPolice.BudgetMaxValue, delegate (float val)
+            {
+                if (!freezeUI) c.AutobudgetPolice.BudgetMaxValue = (int)val;
+            }), "%");
+
+            helper.AddSpace(20);
+            #endregion
+
             #region Fire
             //UIHelperBase fireGroup = helper.AddGroup("Fire service");
             //fireGroup.AddCheckbox("Enable fire service autobudget", c.EnableFireAutobudget, delegate (bool isChecked)
@@ -262,24 +288,6 @@ namespace AutoBudget
             //addLabelToSlider(fireGroup.AddSlider("Maximum budget", 50, 150, 1, c.FireBudgetMaxValue, delegate (float val)
             //{
             //    c.FireBudgetMaxValue = (int)val;
-            //}), "%");
-
-            //helper.AddSpace(20);
-            #endregion
-
-            #region Police
-            //UIHelperBase policeGroup = helper.AddGroup("Police stations");
-            //policeGroup.AddCheckbox("Enable police stations autobudget", c.EnablePoliceAutobudget, delegate (bool isChecked)
-            //{
-            //    c.EnablePoliceAutobudget = isChecked;
-            //});
-            //addLabelToSlider(policeGroup.AddSlider("Minimum budget", 50, 150, 1, c.PoliceBudgetMinValue, delegate (float val)
-            //{
-            //    c.PoliceBudgetMinValue = (int)val;
-            //}), "%");
-            //addLabelToSlider(policeGroup.AddSlider("Maximum budget", 50, 150, 1, c.PoliceBudgetMaxValue, delegate (float val)
-            //{
-            //    c.PoliceBudgetMaxValue = (int)val;
             //}), "%");
 
             //helper.AddSpace(20);
