@@ -9,6 +9,10 @@ namespace AutoBudget
     {
         protected int countVehiclesInUse(ref Building bld)
         {
+            if (bld.Info.m_buildingAI is HospitalAI)
+            {
+                return countVehiclesInUse(ref bld, TransferManager.TransferReason.Sick);
+            }
             if (bld.Info.m_buildingAI is LandfillSiteAI)
             {
                 return countVehiclesInUse(ref bld, TransferManager.TransferReason.Garbage);
@@ -20,6 +24,10 @@ namespace AutoBudget
             if (bld.Info.m_buildingAI is PoliceStationAI)
             {
                 return countVehiclesInUse(ref bld, TransferManager.TransferReason.Crime);
+            }
+            if (bld.Info.m_buildingAI is SnowDumpAI)
+            {
+                return countVehiclesInUse(ref bld, TransferManager.TransferReason.Snow);
             }
 
             return 0;
@@ -66,6 +74,10 @@ namespace AutoBudget
             if (bld.Info.m_buildingAI is PoliceStationAI)
             {
                 return (bld.Info.m_buildingAI as PoliceStationAI).m_policeCarCount;
+            }
+            if (bld.Info.m_buildingAI is SnowDumpAI)
+            {
+                return (bld.Info.m_buildingAI as SnowDumpAI).m_snowTruckCount;
             }
 
             throw new Exception("getNormalVehicleCapacity from " + bld.Info.name + " is not implemented.");

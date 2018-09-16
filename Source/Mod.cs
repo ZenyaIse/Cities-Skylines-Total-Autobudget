@@ -46,6 +46,9 @@ namespace AutoBudget
         private UISlider UI_Fire_MaxBudget;
         private UISlider UI_Fire_TracksExcessNum;
 
+        private UICheckBox UI_Road_Enabled;
+        private UISlider UI_Road_MaxBudget;
+
         private UICheckBox UI_Taxi_Enabled;
         private UISlider UI_Taxi_MaxBudget;
         private UISlider UI_Taxi_DepotVehiclesExcessNum;
@@ -118,6 +121,9 @@ namespace AutoBudget
             UI_Fire_MinBudget.value = c.AutobudgetFire.BudgetMinValue;
             UI_Fire_MaxBudget.value = c.AutobudgetFire.BudgetMaxValue;
             UI_Fire_TracksExcessNum.value = c.AutobudgetFire.FireTracksExcessNum;
+
+            UI_Road_Enabled.isChecked = c.AutobudgetRoad.Enabled;
+            UI_Road_MaxBudget.value = c.AutobudgetRoad.BudgetMaxValue;
 
             UI_Taxi_Enabled.isChecked = c.AutobudgetTaxi.Enabled;
             UI_Taxi_MaxBudget.value = c.AutobudgetTaxi.BudgetMaxValue;
@@ -305,6 +311,20 @@ namespace AutoBudget
             {
                 if (!freezeUI) c.AutobudgetFire.FireTracksExcessNum = (int)val;
             }), " tracks");
+
+            helper.AddSpace(20);
+            #endregion
+
+            #region Road
+            UIHelperBase roadGroup = helper.AddGroup("Road and Snow");
+            UI_Road_Enabled = (UICheckBox)roadGroup.AddCheckbox("Enable road autobudget", c.AutobudgetRoad.Enabled, delegate (bool isChecked)
+            {
+                if (!freezeUI) c.AutobudgetRoad.Enabled = isChecked;
+            });
+            addLabelToSlider(UI_Road_MaxBudget = (UISlider)roadGroup.AddSlider("Maximum budget", 50, 150, 1, c.AutobudgetRoad.BudgetMaxValue, delegate (float val)
+            {
+                if (!freezeUI) c.AutobudgetRoad.BudgetMaxValue = (int)val;
+            }), "%");
 
             helper.AddSpace(20);
             #endregion

@@ -43,6 +43,7 @@ namespace AutoBudget
                     DataSerializer.Deserialize<AutobudgetEducation.Data>(stream, DataSerializer.Mode.Memory);
                     DataSerializer.Deserialize<AutobudgetPolice.Data>(stream, DataSerializer.Mode.Memory);
                     DataSerializer.Deserialize<AutobudgetFire.Data>(stream, DataSerializer.Mode.Memory);
+                    DataSerializer.Deserialize<AutobudgetRoad.Data>(stream, DataSerializer.Mode.Memory);
                     DataSerializer.Deserialize<AutobudgetTaxi.Data>(stream, DataSerializer.Mode.Memory);
                 }
             }
@@ -69,6 +70,7 @@ namespace AutoBudget
                     DataSerializer.Serialize(stream, DataSerializer.Mode.Memory, DataVersion, new AutobudgetEducation.Data());
                     DataSerializer.Serialize(stream, DataSerializer.Mode.Memory, DataVersion, new AutobudgetPolice.Data());
                     DataSerializer.Serialize(stream, DataSerializer.Mode.Memory, DataVersion, new AutobudgetFire.Data());
+                    DataSerializer.Serialize(stream, DataSerializer.Mode.Memory, DataVersion, new AutobudgetRoad.Data());
                     DataSerializer.Serialize(stream, DataSerializer.Mode.Memory, DataVersion, new AutobudgetTaxi.Data());
                     data = stream.ToArray();
                 }
