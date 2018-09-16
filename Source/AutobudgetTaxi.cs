@@ -1,10 +1,41 @@
-﻿using System;
-using ColossalFramework;
+﻿using ColossalFramework;
+using ColossalFramework.IO;
+using UnityEngine;
 
 namespace AutoBudget
 {
     public class AutobudgetTaxi : AutobudgetVehicles
     {
+        public class Data : IDataContainer
+        {
+            public void Serialize(DataSerializer s)
+            {
+                AutobudgetTaxi d = Singleton<AutobudgetManager>.instance.container.AutobudgetTaxi;
+                s.WriteBool(d.Enabled);
+                s.WriteInt32(d.BudgetMaxValue);
+                s.WriteInt32(d.TargetNumberOfVehiclesWaitingAtDepot);
+                s.WriteInt32(d.TargetNumberOfVehiclesWaitingAtStand);
+            }
+
+            public void Deserialize(DataSerializer s)
+            {
+                AutobudgetTaxi d = Singleton<AutobudgetManager>.instance.container.AutobudgetTaxi;
+                d.Enabled = s.ReadBool();
+                d.BudgetMaxValue = s.ReadInt32();
+                d.TargetNumberOfVehiclesWaitingAtDepot = s.ReadInt32();
+                d.TargetNumberOfVehiclesWaitingAtStand = s.ReadInt32();
+            }
+
+            public void AfterDeserialize(DataSerializer s)
+            {
+                Debug.Log(Mod.LogMsgPrefix + "AutobudgetTaxi data loaded.");
+            }
+        }
+
+        public int BudgetMaxValue = 110;
+        public int TargetNumberOfVehiclesWaitingAtDepot = 1;
+        public int TargetNumberOfVehiclesWaitingAtStand = 3;
+
         public override string GetEconomyPanelContainerName()
         {
             return "SubServicesBudgetContainer";
@@ -29,17 +60,14 @@ namespace AutoBudget
         {
             get
             {
-                return oneDayFrames / 2;
+                return oneDayFrames / 2 + 19;
             }
         }
 
         protected override void setAutobudget()
         {
-            int totalCurrentVehicleCount = 0;
-            int totalNormalVehicleCount = 0;
-            int totalTaxiStandCapacity = 0;
-            int vehiclesWaitingAtTaxiStand = 0;
             int taxiDepotCount = 0;
+            int taxiStandCount = 0;
 
             foreach (ushort n in ServiceBuildingNs(ItemClass.Service.PublicTransport))
             {
@@ -48,68 +76,23 @@ namespace AutoBudget
 
                 if (bld.Info.m_buildingAI is TaxiStandAI)
                 {
-                    totalTaxiStandCapacity += (bld.Info.m_buildingAI as TaxiStandAI).m_maxVehicleCount;
-                    vehiclesWaitingAtTaxiStand += (bld.Info.m_buildingAI as TaxiStandAI).GetVehicleCount(n, ref bld);
+                    taxiStandCount++;
                 }
                 else if (bld.Info.m_buildingAI is DepotAI)
                 {
                     taxiDepotCount++;
-                    totalCurrentVehicleCount += (bld.Info.m_buildingAI as DepotAI).GetVehicleCount(n, ref bld);
-                    totalNormalVehicleCount += (bld.Info.m_buildingAI as DepotAI).m_maxVehicleCount;
                 }
             }
 
-            int buffer = Math.Max(taxiDepotCount, totalTaxiStandCapacity * 3 / 5);
-            int desiredVehicleCount = totalCurrentVehicleCount - vehiclesWaitingAtTaxiStand + buffer;
+            if (taxiDepotCount == 0) return;
 
-            int budget = Singleton<EconomyManager>.instance.GetBudget(ItemClass.Service.PublicTransport,
-                    ItemClass.SubService.PublicTransportTaxi, Singleton<SimulationManager>.instance.m_isNightTime);
-            int newBudget = budget;
+            int buffer = TargetNumberOfVehiclesWaitingAtDepot + taxiStandCount * TargetNumberOfVehiclesWaitingAtStand / taxiDepotCount;
 
-            //if (needToEncreaseCapacityCount > 0)
-            //{
-            //    // Add 1 vehicle
-            //    newBudget = getBudgetNeededToGetOneMoreVehicle(normalVehicleCapacity_Min, budget, maxBudget);
-            //}
-            //else if (canDecreaseCapacityCount > 0 && perfectVehiclesCount == 0)
-            //{
-            //    newBudget = getBudgetNeededToGetOneLessVehicle(normalVehicleCapacity_Min, budget, minBudget);
-            //}
-
-            if (newBudget != budget)
-            {
-                Singleton<EconomyManager>.instance.SetBudget(
-                    ItemClass.Service.PublicTransport,
-                    ItemClass.SubService.PublicTransportTaxi,
-                    newBudget,
-                    Singleton<SimulationManager>.instance.m_isNightTime
-                    );
-            }
-
-
-            //if (!Singleton<BuildingManager>.exists) return;
-
-            //BuildingManager bm = Singleton<BuildingManager>.instance;
-
-            //FastList<ushort> serviceBuildings = bm.GetServiceBuildings(ItemClass.Service.PublicTransport);
-            //if (serviceBuildings == null || serviceBuildings.m_buffer == null) return;
-
-            //for (int i = 0; i < serviceBuildings.m_size; i++)
-            //{
-            //    ushort n = serviceBuildings.m_buffer[i];
-            //    if (n == 0) continue;
-
-            //    Building bld = bm.m_buildings.m_buffer[(int)n];
-            //    if ((bld.m_flags & Building.Flags.Active) == 0) continue;
-
-            //    if (bld.Info.m_class.m_subService == ItemClass.SubService.PublicTransportTaxi)
-            //    {
-            //    }
-            //}
-            //float targetProductionRate = (totalCurrentVehicleCount - vehiclesWaitingAtTaxiStand + buffer) / (float)totalNormalVehicleCount;
-
-            //int newBudget = 1 + getBudgetFromProductionRate(targetProductionRate);
-            //newBudget = Math.Min(newBudget, 105);
+            setBudgetForVehicles(
+                typeof(DepotAI),
+                buffer,
+                50,
+                BudgetMaxValue);
         }
     }
 }

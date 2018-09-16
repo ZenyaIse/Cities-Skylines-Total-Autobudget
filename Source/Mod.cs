@@ -46,6 +46,11 @@ namespace AutoBudget
         private UISlider UI_Fire_MaxBudget;
         private UISlider UI_Fire_TracksExcessNum;
 
+        private UICheckBox UI_Taxi_Enabled;
+        private UISlider UI_Taxi_MaxBudget;
+        private UISlider UI_Taxi_DepotVehiclesExcessNum;
+        private UISlider UI_Taxi_StandVehiclesExcessNum;
+
         public string Name
         {
             get { return ModNameEng; }
@@ -113,6 +118,11 @@ namespace AutoBudget
             UI_Fire_MinBudget.value = c.AutobudgetFire.BudgetMinValue;
             UI_Fire_MaxBudget.value = c.AutobudgetFire.BudgetMaxValue;
             UI_Fire_TracksExcessNum.value = c.AutobudgetFire.FireTracksExcessNum;
+
+            UI_Taxi_Enabled.isChecked = c.AutobudgetTaxi.Enabled;
+            UI_Taxi_MaxBudget.value = c.AutobudgetTaxi.BudgetMaxValue;
+            UI_Taxi_DepotVehiclesExcessNum.value = c.AutobudgetTaxi.TargetNumberOfVehiclesWaitingAtDepot;
+            UI_Taxi_StandVehiclesExcessNum.value = c.AutobudgetTaxi.TargetNumberOfVehiclesWaitingAtStand;
 
             freezeUI = false;
         }
@@ -291,7 +301,7 @@ namespace AutoBudget
             {
                 if (!freezeUI) c.AutobudgetFire.BudgetMaxValue = (int)val;
             }), "%");
-            addLabelToSlider(UI_Fire_TracksExcessNum = (UISlider)fireGroup.AddSlider("Minimum fire tracks waiting", 1, 5, 1, c.AutobudgetFire.FireTracksExcessNum, delegate (float val)
+            addLabelToSlider(UI_Fire_TracksExcessNum = (UISlider)fireGroup.AddSlider("Minimum tracks waiting", 1, 5, 1, c.AutobudgetFire.FireTracksExcessNum, delegate (float val)
             {
                 if (!freezeUI) c.AutobudgetFire.FireTracksExcessNum = (int)val;
             }), " tracks");
@@ -300,11 +310,25 @@ namespace AutoBudget
             #endregion
 
             #region Taxi
-            //UIHelperBase taxiGroup = helper.AddGroup("Taxi");
-            //taxiGroup.AddCheckbox("Enable taxi autobudget", c.EnableTaxiAutobudget, delegate (bool isChecked)
-            //{
-            //    c.EnableTaxiAutobudget = isChecked;
-            //});
+            UIHelperBase taxiGroup = helper.AddGroup("Taxi");
+            UI_Taxi_Enabled = (UICheckBox)taxiGroup.AddCheckbox("Enable taxi autobudget", c.AutobudgetTaxi.Enabled, delegate (bool isChecked)
+            {
+                if (!freezeUI) c.AutobudgetTaxi.Enabled = isChecked;
+            });
+            addLabelToSlider(UI_Taxi_MaxBudget = (UISlider)taxiGroup.AddSlider("Maximum budget", 50, 150, 1, c.AutobudgetTaxi.BudgetMaxValue, delegate (float val)
+            {
+                if (!freezeUI) c.AutobudgetTaxi.BudgetMaxValue = (int)val;
+            }), "%");
+            addLabelToSlider(UI_Taxi_DepotVehiclesExcessNum = (UISlider)taxiGroup.AddSlider("Taxis waiting at depots", 1, 5, 1, c.AutobudgetTaxi.TargetNumberOfVehiclesWaitingAtDepot, delegate (float val)
+            {
+                if (!freezeUI) c.AutobudgetTaxi.TargetNumberOfVehiclesWaitingAtDepot = (int)val;
+            }), " taxis");
+            addLabelToSlider(UI_Taxi_StandVehiclesExcessNum = (UISlider)taxiGroup.AddSlider("Taxis waiting at stands", 1, 5, 1, c.AutobudgetTaxi.TargetNumberOfVehiclesWaitingAtStand, delegate (float val)
+            {
+                if (!freezeUI) c.AutobudgetTaxi.TargetNumberOfVehiclesWaitingAtStand = (int)val;
+            }), " taxis");
+
+            helper.AddSpace(20);
             #endregion
 
             // Save button
