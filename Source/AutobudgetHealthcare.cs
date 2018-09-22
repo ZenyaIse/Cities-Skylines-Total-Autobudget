@@ -63,11 +63,7 @@ namespace AutoBudget
 
         protected override void setAutobudget()
         {
-            setBudgetForVehicles(
-                typeof(HospitalAI),
-                1,
-                BudgetMinValue,
-                BudgetMaxValue);
+            setBudgetForVehicles(typeof(HospitalAI), 1, BudgetMinValue, BudgetMaxValue);
         }
     }
 }

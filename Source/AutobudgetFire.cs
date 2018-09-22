@@ -66,11 +66,7 @@ namespace AutoBudget
 
         protected override void setAutobudget()
         {
-            setBudgetForVehicles(
-                typeof(FireStationAI),
-                FireTracksExcessNum,
-                BudgetMinValue,
-                BudgetMaxValue);
+            setBudgetForVehicles(typeof(FireStationAI), FireTracksExcessNum, BudgetMinValue, BudgetMaxValue);
         }
     }
 }
