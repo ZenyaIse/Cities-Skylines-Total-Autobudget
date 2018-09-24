@@ -12,6 +12,7 @@ namespace AutoBudget
             {
                 AutobudgetRoad d = Singleton<AutobudgetManager>.instance.container.AutobudgetRoad;
                 s.WriteBool(d.Enabled);
+                s.WriteInt32(d.BudgetMinValue);
                 s.WriteInt32(d.BudgetMaxValue);
             }
 
@@ -19,6 +20,7 @@ namespace AutoBudget
             {
                 AutobudgetRoad d = Singleton<AutobudgetManager>.instance.container.AutobudgetRoad;
                 d.Enabled = s.ReadBool();
+                d.BudgetMinValue = s.ReadInt32();
                 d.BudgetMaxValue = s.ReadInt32();
             }
 
@@ -28,7 +30,8 @@ namespace AutoBudget
             }
         }
 
-        public int BudgetMaxValue = 110;
+        public int BudgetMinValue = 70;
+        public int BudgetMaxValue = 115;
 
         public override string GetEconomyPanelContainerName()
         {
@@ -60,7 +63,7 @@ namespace AutoBudget
 
         protected override void setAutobudget()
         {
-            setBudgetForVehicles(typeof(SnowDumpAI), 1, 50, BudgetMaxValue);
+            setBudgetForVehicles(typeof(SnowDumpAI), 1, BudgetMinValue, BudgetMaxValue);
         }
     }
 }
