@@ -34,7 +34,7 @@ namespace AutoBudget
 
         public int FireTracksExcessNum = 2;
         public int BudgetMinValue = 50;
-        public int BudgetMaxValue = 110;
+        public int BudgetMaxValue = 115;
 
         public override string GetEconomyPanelContainerName()
         {
