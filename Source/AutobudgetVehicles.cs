@@ -126,24 +126,25 @@ namespace AutoBudget
             }
         }
 
-        protected int getMinimumBudgetToGetVehicles(int normalVehicleCapacity, int requiredVehiclesCount, int currentBudget)
+        protected int getMinimumBudgetToGetVehicles(int normalVehicleCapacity, int requiredVehiclesCount, int maxBudget)
         {
             int productionRate;
+            int productionRateMax = PlayerBuildingAI.GetProductionRate(100, maxBudget);
             do
             {
                 requiredVehiclesCount--;
                 productionRate = requiredVehiclesCount * 100 / normalVehicleCapacity;
                 if (productionRate < 25) return 50;
-            } while (productionRate >= 125);
+            } while (productionRate >= productionRateMax);
 
             int budget;
             if (productionRate < 100)
             {
-                budget = (int)Math.Sqrt(productionRate * 100);
+                budget = (int)Mathf.Sqrt(productionRate * 100);
             }
             else if (productionRate > 100)
             {
-                budget = (int)(150 - 50 * Math.Sqrt(9 - 4 * (1 + productionRate / 100)));
+                budget = (int)(150f - 50f * Mathf.Sqrt(9f - 4f * (1f + productionRate / 100f)));
             }
             else
             {
@@ -184,7 +185,7 @@ namespace AutoBudget
                     else
                     {
                         int targetVehiclesCount = vehiclesInUse + vehiclesExcessNum;
-                        int bldTargetBudget = getMinimumBudgetToGetVehicles(normalVehicleCapacity, targetVehiclesCount, budget);
+                        int bldTargetBudget = getMinimumBudgetToGetVehicles(normalVehicleCapacity, targetVehiclesCount, maxBudget);
                         newBudget = Math.Max(newBudget, bldTargetBudget);
                     }
 
