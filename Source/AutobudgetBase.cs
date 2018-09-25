@@ -67,6 +67,8 @@ namespace AutoBudget
 
         protected void setBudget(int newBudget)
         {
+            if (newBudget == -1) return;
+
             SimulationManager sm = Singleton<SimulationManager>.instance;
             UISlider slider = Helper.GetBudgetSlider(GetEconomyPanelContainerName(), GetBudgetItemName(), sm.m_isNightTime);
             if (slider != null)

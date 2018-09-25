@@ -63,7 +63,10 @@ namespace AutoBudget
 
         protected override void setAutobudget()
         {
-            setBudgetForVehicles(typeof(SnowDumpAI), 1, BudgetMinValue, BudgetMaxValue);
+            int snowBudget = getBudgetForVehicles(typeof(SnowDumpAI), 1, BudgetMinValue, BudgetMaxValue);
+            int roadBudget = getBudgetForVehicles(typeof(MaintenanceDepotAI), 1, BudgetMinValue, BudgetMaxValue);
+
+            setBudget(Mathf.Max(snowBudget, roadBudget));
         }
     }
 }

@@ -63,7 +63,10 @@ namespace AutoBudget
 
         protected override void setAutobudget()
         {
-            setBudgetForVehicles(typeof(HospitalAI), 1, BudgetMinValue, BudgetMaxValue);
+            int healthcareBudget = getBudgetForVehicles(typeof(HospitalAI), 1, BudgetMinValue, BudgetMaxValue);
+            int deathcareBudget = getBudgetForVehicles(typeof(CemeteryAI), 1, BudgetMinValue, BudgetMaxValue);
+
+            setBudget(Mathf.Max(healthcareBudget, deathcareBudget));
         }
     }
 }

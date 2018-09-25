@@ -63,7 +63,7 @@ namespace AutoBudget
 
         protected override void setAutobudget()
         {
-            setBudgetForVehicles(typeof(PoliceStationAI), 1, BudgetMinValue, BudgetMaxValue);
+            setBudget(getBudgetForVehicles(typeof(PoliceStationAI), 1, BudgetMinValue, BudgetMaxValue));
         }
     }
 }

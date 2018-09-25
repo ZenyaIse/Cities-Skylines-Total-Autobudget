@@ -88,7 +88,7 @@ namespace AutoBudget
 
             int buffer = TargetNumberOfVehiclesWaitingAtDepot + taxiStandCount * TargetNumberOfVehiclesWaitingAtStand / taxiDepotCount;
 
-            setBudgetForVehicles(typeof(DepotAI), buffer, 50, BudgetMaxValue);
+            setBudget(getBudgetForVehicles(typeof(DepotAI), buffer, 50, BudgetMaxValue));
         }
     }
 }

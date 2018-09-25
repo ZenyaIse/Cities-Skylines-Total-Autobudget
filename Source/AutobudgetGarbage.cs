@@ -60,7 +60,7 @@ namespace AutoBudget
 
         protected override void setAutobudget()
         {
-            setBudgetForVehicles(typeof(LandfillSiteAI), 1, 50, BudgetMaxValue);
+            setBudget(getBudgetForVehicles(typeof(LandfillSiteAI), 1, 50, BudgetMaxValue));
         }
     }
 }

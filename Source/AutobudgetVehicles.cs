@@ -13,6 +13,10 @@ namespace AutoBudget
             {
                 return countVehiclesInUse(ref bld, TransferManager.TransferReason.Sick);
             }
+            if (bld.Info.m_buildingAI is CemeteryAI)
+            {
+                return countVehiclesInUse(ref bld, TransferManager.TransferReason.Dead);
+            }
             if (bld.Info.m_buildingAI is LandfillSiteAI)
             {
                 return countVehiclesInUse(ref bld, TransferManager.TransferReason.Garbage);
@@ -28,6 +32,10 @@ namespace AutoBudget
             if (bld.Info.m_buildingAI is SnowDumpAI)
             {
                 return countVehiclesInUse(ref bld, TransferManager.TransferReason.Snow);
+            }
+            if (bld.Info.m_buildingAI is MaintenanceDepotAI)
+            {
+                return countVehiclesInUse(ref bld, TransferManager.TransferReason.RoadMaintenance);
             }
 
             return 0;
@@ -63,6 +71,10 @@ namespace AutoBudget
             {
                 return (bld.Info.m_buildingAI as HospitalAI).m_ambulanceCount;
             }
+            if (bld.Info.m_buildingAI is CemeteryAI)
+            {
+                return (bld.Info.m_buildingAI as CemeteryAI).m_hearseCount;
+            }
             if (bld.Info.m_buildingAI is LandfillSiteAI)
             {
                 return (bld.Info.m_buildingAI as LandfillSiteAI).m_garbageTruckCount;
@@ -78,6 +90,10 @@ namespace AutoBudget
             if (bld.Info.m_buildingAI is SnowDumpAI)
             {
                 return (bld.Info.m_buildingAI as SnowDumpAI).m_snowTruckCount;
+            }
+            if (bld.Info.m_buildingAI is MaintenanceDepotAI)
+            {
+                return (bld.Info.m_buildingAI as MaintenanceDepotAI).m_maintenanceTruckCount;
             }
 
             throw new Exception("getNormalVehicleCapacity from " + bld.Info.name + " is not implemented.");
@@ -155,9 +171,9 @@ namespace AutoBudget
             return budget;
         }
 
-        protected void setBudgetForVehicles(Type AIType, int vehiclesExcessNum, int minBudget, int maxBudget)
+        protected int getBudgetForVehicles(Type AIType, int vehiclesExcessNum, int minBudget, int maxBudget)
         {
-            if (!Singleton<BuildingManager>.exists) return;
+            if (!Singleton<BuildingManager>.exists) return 100;
 
             int budget = Singleton<EconomyManager>.instance.GetBudget(GetService(), GetSubService(), Singleton<SimulationManager>.instance.m_isNightTime);
             int productionRate = PlayerBuildingAI.GetProductionRate(100, budget);
@@ -196,7 +212,11 @@ namespace AutoBudget
 
             if (targetBldCount > 0 && newBudget != budget)
             {
-                setBudget(newBudget);
+                return newBudget;
+            }
+            else
+            {
+                return -1;
             }
         }
     }
