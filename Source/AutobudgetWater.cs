@@ -16,6 +16,7 @@ namespace AutoBudget
                 s.WriteInt32(d.AutobudgetBuffer);
                 s.WriteInt32(d.BudgetMaxValue);
                 s.WriteBool(d.PauseWhenBudgetTooHigh);
+                s.WriteInt32(d.TargetWaterStorageRatio);
             }
 
             public void Deserialize(DataSerializer s)
@@ -25,6 +26,7 @@ namespace AutoBudget
                 d.AutobudgetBuffer = s.ReadInt32();
                 d.BudgetMaxValue = s.ReadInt32();
                 d.PauseWhenBudgetTooHigh = s.ReadBool();
+                d.TargetWaterStorageRatio = s.ReadInt32();
             }
 
             public void AfterDeserialize(DataSerializer s)
@@ -41,6 +43,7 @@ namespace AutoBudget
         public int AutobudgetBuffer = 3; // Percent of capacity
         public int BudgetMaxValue = 140;
         public bool PauseWhenBudgetTooHigh = true;
+        public int TargetWaterStorageRatio = 95; // Percent of the water capacity
 
         public override string GetEconomyPanelContainerName()
         {
@@ -93,6 +96,10 @@ namespace AutoBudget
             sewageCapacity_prev = sewageCapacity;
             sewageAccumulation_prev = sewageAccumulation;
 
+            int waterStorageCapacity = dm.m_districts.m_buffer[0].GetWaterStorageCapacity();
+            int waterStorageAmount = dm.m_districts.m_buffer[0].GetWaterStorageAmount();
+            int waterStorageRatio = waterStorageCapacity == 0 ? 0 : waterStorageAmount * 100 / waterStorageCapacity;
+
             AutobudgetObjectsContainer o = Singleton<AutobudgetManager>.instance.container;
             EconomyManager em = Singleton<EconomyManager>.instance;
             SimulationManager sm = Singleton<SimulationManager>.instance;
@@ -100,7 +107,7 @@ namespace AutoBudget
             int budget = em.GetBudget(ItemClass.Service.Water, ItemClass.SubService.None, sm.m_isNightTime);
 
             float buffer = getBufferCoefficient(AutobudgetBuffer);
-            int newWaterBudget = calculateNewBudget(waterCapacity, waterConsumption, budget, buffer);
+            int newWaterBudget = calculateNewBudget(waterCapacity, waterConsumption, budget, waterStorageRatio < TargetWaterStorageRatio ? buffer : 1f);
             int newSewageBudget = calculateNewBudget(sewageCapacity, sewageAccumulation, budget, buffer);
             int newBudget = Math.Max(newWaterBudget, newSewageBudget);
 

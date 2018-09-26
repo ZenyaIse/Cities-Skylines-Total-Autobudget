@@ -23,6 +23,7 @@ namespace AutoBudget
         private UISlider UI_Water_Buffer;
         private UISlider UI_Water_MaxBudget;
         private UICheckBox UI_Water_AutoPause;
+        private UISlider UI_Water_StorageAmount;
 
         private UICheckBox UI_Garbage_Enabled;
         private UISlider UI_Garbage_MaxBudget;
@@ -100,6 +101,7 @@ namespace AutoBudget
             UI_Water_Buffer.value = c.AutobudgetWater.AutobudgetBuffer;
             UI_Water_MaxBudget.value = c.AutobudgetWater.BudgetMaxValue;
             UI_Water_AutoPause.isChecked = c.AutobudgetWater.PauseWhenBudgetTooHigh;
+            UI_Water_StorageAmount.value = c.AutobudgetWater.TargetWaterStorageRatio;
 
             UI_Garbage_Enabled.isChecked = c.AutobudgetGarbage.Enabled;
             UI_Garbage_MaxBudget.value = c.AutobudgetGarbage.BudgetMaxValue;
@@ -205,6 +207,10 @@ namespace AutoBudget
             {
                 if (!freezeUI) c.AutobudgetWater.PauseWhenBudgetTooHigh = isChecked;
             });
+            addLabelToSlider(UI_Water_StorageAmount = (UISlider)waterGroup.AddSlider("Target water storage", 0, 100, 1, c.AutobudgetWater.TargetWaterStorageRatio, delegate (float val)
+            {
+                if (!freezeUI) c.AutobudgetWater.TargetWaterStorageRatio = (int)val;
+            }), "%");
 
             helper.AddSpace(20);
             #endregion
