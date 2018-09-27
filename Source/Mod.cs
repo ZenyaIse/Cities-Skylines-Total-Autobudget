@@ -27,6 +27,7 @@ namespace AutoBudget
 
         private UICheckBox UI_Garbage_Enabled;
         private UISlider UI_Garbage_MaxBudget;
+        private UISlider UI_Garbage_MaxAmount;
 
         private UICheckBox UI_Healthcare_Enabled;
         private UISlider UI_Healthcare_MinBudget;
@@ -105,6 +106,7 @@ namespace AutoBudget
 
             UI_Garbage_Enabled.isChecked = c.AutobudgetGarbage.Enabled;
             UI_Garbage_MaxBudget.value = c.AutobudgetGarbage.BudgetMaxValue;
+            UI_Garbage_MaxAmount.value = c.AutobudgetGarbage.MaximumGarbageAmount;
 
             UI_Healthcare_Enabled.isChecked = c.AutobudgetHealthcare.Enabled;
             UI_Healthcare_MinBudget.value = c.AutobudgetHealthcare.BudgetMinValue;
@@ -224,6 +226,10 @@ namespace AutoBudget
             addLabelToSlider(UI_Garbage_MaxBudget = (UISlider)garbageGroup.AddSlider("Maximum budget", 50, 150, 1, c.AutobudgetGarbage.BudgetMaxValue, delegate (float val)
             {
                 if (!freezeUI) c.AutobudgetGarbage.BudgetMaxValue = (int)val;
+            }), "%");
+            addLabelToSlider(UI_Garbage_MaxAmount = (UISlider)garbageGroup.AddSlider("Max garbage amount", 0, 100, 1, c.AutobudgetGarbage.MaximumGarbageAmount, delegate (float val)
+            {
+                if (!freezeUI) c.AutobudgetGarbage.MaximumGarbageAmount = (int)val;
             }), "%");
 
             helper.AddSpace(20);

@@ -13,6 +13,7 @@ namespace AutoBudget
                 AutobudgetGarbage d = Singleton<AutobudgetManager>.instance.container.AutobudgetGarbage;
                 s.WriteBool(d.Enabled);
                 s.WriteInt32(d.BudgetMaxValue);
+                s.WriteInt32(d.MaximumGarbageAmount);
             }
 
             public void Deserialize(DataSerializer s)
@@ -20,6 +21,7 @@ namespace AutoBudget
                 AutobudgetGarbage d = Singleton<AutobudgetManager>.instance.container.AutobudgetGarbage;
                 d.Enabled = s.ReadBool();
                 d.BudgetMaxValue = s.ReadInt32();
+                d.MaximumGarbageAmount = s.ReadInt32();
             }
 
             public void AfterDeserialize(DataSerializer s)
@@ -29,6 +31,7 @@ namespace AutoBudget
         }
 
         public int BudgetMaxValue = 115;
+        public int MaximumGarbageAmount = 80; // Percents of capacity (for inceneration plant and recycling center)
 
         public override string GetEconomyPanelContainerName()
         {
@@ -60,6 +63,26 @@ namespace AutoBudget
 
         protected override void setAutobudget()
         {
+            BuildingManager bm = Singleton<BuildingManager>.instance;
+            foreach (ushort n in ServiceBuildingNs(ItemClass.Service.Garbage))
+            {
+                Building bld = bm.m_buildings.m_buffer[(int)n];
+                if ((bld.m_flags & Building.Flags.Active) == 0) continue;
+
+                if (bld.Info.m_buildingAI.GetType() == typeof(LandfillSiteAI))
+                {
+                    LandfillSiteAI ai = (LandfillSiteAI)bld.Info.m_buildingAI;
+                    if (ai.m_electricityProduction > 0 || ai.m_materialProduction > 0) // If inceneration plant or recycling center
+                    {
+                        if (ai.m_garbageCapacity > 0 && ai.GetGarbageAmount(n, ref bld) * 100 / ai.m_garbageCapacity > MaximumGarbageAmount)
+                        {
+                            setBudget(BudgetMaxValue);
+                            return;
+                        }
+                    }
+                }
+            }
+
             setBudget(getBudgetForVehicles(typeof(LandfillSiteAI), 1, 50, BudgetMaxValue));
         }
     }
