@@ -210,7 +210,7 @@ namespace AutoBudget
             }
             //Debug.Log(string.Format("New budget: {0}", newBudget));
 
-            if (targetBldCount > 0 && newBudget != budget)
+            if (targetBldCount > 0)
             {
                 return newBudget;
             }
