@@ -65,6 +65,7 @@
     <Compile Include="AutobudgetWater.cs" />
     <Compile Include="AutobudgetManager.cs" />
     <Compile Include="AutobudgetObjectsContainer.cs" />
+    <Compile Include="BudgetControlsManager.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="LoadingExtension.cs" />
     <Compile Include="Mod.cs" />

@@ -53,6 +53,7 @@ namespace AutoBudget
             }
 
             Mod.UpdateUI();
+            BudgetControlsManager.UpdateUI();
         }
 
         public void OnSaveData()

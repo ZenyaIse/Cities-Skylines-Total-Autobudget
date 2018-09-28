@@ -34,6 +34,7 @@ namespace AutoBudget
                     prevBudgetDay = 0;
                     prevBudgetNight = 0;
                     Mod.UpdateUI();
+                    BudgetControlsManager.UpdateUI();
                 }
             }
 
