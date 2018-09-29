@@ -38,10 +38,13 @@ namespace AutoBudget
                 AutobudgetObjectsContainer c = Singleton<AutobudgetManager>.instance.container;
 
                 float x1 = 44;
-                float x2 = 558;
+                float x2 = 560;
+                float dxBtn = 10;
                 float y = -8;
                 float dy = 46;
+                float dyBtn = 20;
 
+                // Electricity
                 addCheckBox(budgetPanel, "Electricity", x1, y, c.AutobudgetElectricity.Enabled, delegate (bool isChecked)
                 {
                     if (!freezeUI)
@@ -50,7 +53,14 @@ namespace AutoBudget
                         Mod.UpdateUI();
                     }
                 });
+                //UIPanel electricityOptionsPanel = addOptionsPanel(budgetPanel, "Electricity", x1 + 2 * dxBtn, y - 2 * dyBtn);
+                addButton(budgetPanel, "Electricity", x1 - dxBtn, y - dyBtn, delegate ()
+                {
+                    UIView.library.ShowModal("OptionsPanel");
+                    //electricityOptionsPanel.isVisible = !electricityOptionsPanel.isVisible;
+                });
 
+                // Road
                 addCheckBox(budgetPanel, "Road", x2, y, c.AutobudgetRoad.Enabled, delegate (bool isChecked)
                 {
                     if (!freezeUI)
@@ -59,9 +69,14 @@ namespace AutoBudget
                         Mod.UpdateUI();
                     }
                 });
+                addButton(budgetPanel, "Road", x2 - dxBtn, y - dyBtn, delegate ()
+                {
+                    UIView.library.ShowModal("OptionsPanel");
+                });
 
                 y -= dy;
 
+                // Water
                 addCheckBox(budgetPanel, "Water", x1, y, c.AutobudgetWater.Enabled, delegate (bool isChecked)
                 {
                     if (!freezeUI)
@@ -70,9 +85,14 @@ namespace AutoBudget
                         Mod.UpdateUI();
                     }
                 });
+                addButton(budgetPanel, "Water", x1 - dxBtn, y - dyBtn, delegate ()
+                {
+                    UIView.library.ShowModal("OptionsPanel");
+                });
 
                 y -= dy;
 
+                // Garbage
                 addCheckBox(budgetPanel, "Garbage", x1, y, c.AutobudgetGarbage.Enabled, delegate (bool isChecked)
                 {
                     if (!freezeUI)
@@ -81,9 +101,14 @@ namespace AutoBudget
                         Mod.UpdateUI();
                     }
                 });
+                addButton(budgetPanel, "Garbage", x1 - dxBtn, y - dyBtn, delegate ()
+                {
+                    UIView.library.ShowModal("OptionsPanel");
+                });
 
                 y -= dy;
 
+                // Healthcare and deathcare
                 addCheckBox(budgetPanel, "Healthcare", x1, y, c.AutobudgetHealthcare.Enabled, delegate (bool isChecked)
                 {
                     if (!freezeUI)
@@ -92,9 +117,14 @@ namespace AutoBudget
                         Mod.UpdateUI();
                     }
                 });
+                addButton(budgetPanel, "Healthcare", x1 - dxBtn, y - dyBtn, delegate ()
+                {
+                    UIView.library.ShowModal("OptionsPanel");
+                });
 
                 y -= dy;
 
+                // Education
                 addCheckBox(budgetPanel, "Education", x1, y, c.AutobudgetEducation.Enabled, delegate (bool isChecked)
                 {
                     if (!freezeUI)
@@ -103,9 +133,14 @@ namespace AutoBudget
                         Mod.UpdateUI();
                     }
                 });
+                addButton(budgetPanel, "Education", x1 - dxBtn, y - dyBtn, delegate ()
+                {
+                    UIView.library.ShowModal("OptionsPanel");
+                });
 
                 y -= dy;
 
+                // Police
                 addCheckBox(budgetPanel, "Police", x1, y, c.AutobudgetPolice.Enabled, delegate (bool isChecked)
                 {
                     if (!freezeUI)
@@ -114,9 +149,14 @@ namespace AutoBudget
                         Mod.UpdateUI();
                     }
                 });
+                addButton(budgetPanel, "Police", x1 - dxBtn, y - dyBtn, delegate ()
+                {
+                    UIView.library.ShowModal("OptionsPanel");
+                });
 
                 y -= dy;
 
+                // Fire service
                 addCheckBox(budgetPanel, "Fire", x1, y, c.AutobudgetFire.Enabled, delegate (bool isChecked)
                 {
                     if (!freezeUI)
@@ -125,9 +165,14 @@ namespace AutoBudget
                         Mod.UpdateUI();
                     }
                 });
+                addButton(budgetPanel, "Fire", x1 - dxBtn, y - dyBtn, delegate ()
+                {
+                    UIView.library.ShowModal("OptionsPanel");
+                });
 
                 y -= dy * 3;
 
+                // Taxi
                 addCheckBox(budgetPanel, "Taxi", x2, y, c.AutobudgetTaxi.Enabled, delegate (bool isChecked)
                 {
                     if (!freezeUI)
@@ -136,10 +181,17 @@ namespace AutoBudget
                         Mod.UpdateUI();
                     }
                 });
+                addButton(budgetPanel, "Taxi", x2 - dxBtn, y - dyBtn, delegate ()
+                {
+                    UIView.library.ShowModal("OptionsPanel");
+                });
 
                 budgetPanel.eventVisibilityChanged += delegate (UIComponent component, bool value)
                 {
-                    UpdateUI();
+                    if (value)
+                    {
+                        UpdateUI();
+                    }
                 };
             }
         }
@@ -165,6 +217,39 @@ namespace AutoBudget
             {
                 eventCallback(checkBox.isChecked);
             };
+        }
+
+        private static void addButton(UIPanel panel, string controlName, float x, float y, OnButtonClicked eventCallback)
+        {
+            UIButton btn = panel.AddUIComponent<UIButton>();
+            btn.name = "btn" + controlName;
+            btn.position = new Vector3(x, y);
+            btn.size = new Vector2(30, 16);
+            btn.text = "...";
+            btn.textColor = Color.white;
+            btn.normalBgSprite = "ButtonMenu";
+            btn.hoveredBgSprite = "ButtonMenuHovered";
+            btn.eventClick += delegate (UIComponent component, UIMouseEventParameter eventParam)
+            {
+                eventCallback();
+            };
+        }
+
+        private static UIPanel addOptionsPanel(UIPanel panel, string controlName, float x, float y)
+        {
+            UIPanel optionsPanel = panel.AddUIComponent<UIPanel>();
+            optionsPanel.name = "optionsPanel" + controlName;
+            optionsPanel.position = new Vector3(x, y);
+            optionsPanel.size = new Vector2(200, 200);
+            optionsPanel.backgroundSprite = "ButtonMenu";
+            optionsPanel.canFocus = true;
+            optionsPanel.isVisible = false;
+            optionsPanel.eventLeaveFocus += delegate (UIComponent component, UIFocusEventParameter eventParam)
+            {
+                optionsPanel.isVisible = false;
+            };
+
+            return optionsPanel;
         }
 
         public static void UpdateUI()
