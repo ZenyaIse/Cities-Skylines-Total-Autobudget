@@ -124,16 +124,16 @@ namespace AutoBudget
 
                 y -= dy;
 
-                // Education
-                addCheckBox(budgetPanel, "Education", x1, y, c.AutobudgetEducation.Enabled, delegate (bool isChecked)
+                // Fire service
+                addCheckBox(budgetPanel, "Fire", x1, y, c.AutobudgetFire.Enabled, delegate (bool isChecked)
                 {
                     if (!freezeUI)
                     {
-                        c.AutobudgetEducation.Enabled = isChecked;
+                        c.AutobudgetFire.Enabled = isChecked;
                         Mod.UpdateUI();
                     }
                 });
-                addButton(budgetPanel, "Education", x1 - dxBtn, y - dyBtn, delegate ()
+                addButton(budgetPanel, "Fire", x1 - dxBtn, y - dyBtn, delegate ()
                 {
                     UIView.library.ShowModal("OptionsPanel");
                 });
@@ -156,16 +156,16 @@ namespace AutoBudget
 
                 y -= dy;
 
-                // Fire service
-                addCheckBox(budgetPanel, "Fire", x1, y, c.AutobudgetFire.Enabled, delegate (bool isChecked)
+                // Education
+                addCheckBox(budgetPanel, "Education", x1, y, c.AutobudgetEducation.Enabled, delegate (bool isChecked)
                 {
                     if (!freezeUI)
                     {
-                        c.AutobudgetFire.Enabled = isChecked;
+                        c.AutobudgetEducation.Enabled = isChecked;
                         Mod.UpdateUI();
                     }
                 });
-                addButton(budgetPanel, "Fire", x1 - dxBtn, y - dyBtn, delegate ()
+                addButton(budgetPanel, "Education", x1 - dxBtn, y - dyBtn, delegate ()
                 {
                     UIView.library.ShowModal("OptionsPanel");
                 });
