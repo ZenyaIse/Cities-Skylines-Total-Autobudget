@@ -175,7 +175,7 @@ namespace AutoBudget
 
             #region Electricity
             UIHelperBase electricityGroup = helper.AddGroup("Electricity");
-            UI_Electricity_Enabled = (UICheckBox)electricityGroup.AddCheckbox("Enable electricity usage autobudget", c.AutobudgetElectricity.Enabled, delegate (bool isChecked)
+            UI_Electricity_Enabled = (UICheckBox)electricityGroup.AddCheckbox("Enable", c.AutobudgetElectricity.Enabled, delegate (bool isChecked)
             {
                 if (!freezeUI) c.AutobudgetElectricity.Enabled = isChecked;
             });
@@ -187,7 +187,7 @@ namespace AutoBudget
             {
                 if (!freezeUI) c.AutobudgetElectricity.BudgetMaxValue = (int)val;
             }), "%");
-            UI_Electricity_AutoPause = (UICheckBox)electricityGroup.AddCheckbox("Autopause when the budget is too high", c.AutobudgetElectricity.PauseWhenBudgetTooHigh, delegate (bool isChecked)
+            UI_Electricity_AutoPause = (UICheckBox)electricityGroup.AddCheckbox("Autopause when budget is too high", c.AutobudgetElectricity.PauseWhenBudgetTooHigh, delegate (bool isChecked)
             {
                 if (!freezeUI) c.AutobudgetElectricity.PauseWhenBudgetTooHigh = isChecked;
             });
@@ -229,9 +229,9 @@ namespace AutoBudget
             helper.AddSpace(20);
             #endregion
 
-            #region Garbage
-            UIHelperBase garbageGroup = helper.AddGroup("Garbage");
-            UI_Garbage_Enabled = (UICheckBox)garbageGroup.AddCheckbox("Enable garbage autobudget", c.AutobudgetGarbage.Enabled, delegate (bool isChecked)
+            #region Garbage disposal
+            UIHelperBase garbageGroup = helper.AddGroup("Garbage disposal");
+            UI_Garbage_Enabled = (UICheckBox)garbageGroup.AddCheckbox("Enable", c.AutobudgetGarbage.Enabled, delegate (bool isChecked)
             {
                 if (!freezeUI) c.AutobudgetGarbage.Enabled = isChecked;
             });
@@ -249,7 +249,7 @@ namespace AutoBudget
 
             #region Healthcare
             UIHelperBase healthcareGroup = helper.AddGroup("Healthcare and Deathcare");
-            UI_Healthcare_Enabled = (UICheckBox)healthcareGroup.AddCheckbox("Enable healthcare autobudget", c.AutobudgetHealthcare.Enabled, delegate (bool isChecked)
+            UI_Healthcare_Enabled = (UICheckBox)healthcareGroup.AddCheckbox("Enable", c.AutobudgetHealthcare.Enabled, delegate (bool isChecked)
             {
                 if (!freezeUI) c.AutobudgetHealthcare.Enabled = isChecked;
             });
@@ -268,7 +268,7 @@ namespace AutoBudget
             #region Education
 
             UIHelperBase educationGroup = helper.AddGroup("Education");
-            UI_Education_Enabled = (UICheckBox)educationGroup.AddCheckbox("Enable education autobudget", c.AutobudgetEducation.Enabled, delegate (bool isChecked)
+            UI_Education_Enabled = (UICheckBox)educationGroup.AddCheckbox("Enable", c.AutobudgetEducation.Enabled, delegate (bool isChecked)
             {
                 if (!freezeUI) c.AutobudgetEducation.Enabled = isChecked;
             });
@@ -303,7 +303,7 @@ namespace AutoBudget
 
             #region Police
             UIHelperBase policeGroup = helper.AddGroup("Police");
-            UI_Police_Enabled = (UICheckBox)policeGroup.AddCheckbox("Enable police autobudget", c.AutobudgetPolice.Enabled, delegate (bool isChecked)
+            UI_Police_Enabled = (UICheckBox)policeGroup.AddCheckbox("Enable", c.AutobudgetPolice.Enabled, delegate (bool isChecked)
             {
                 if (!freezeUI) c.AutobudgetPolice.Enabled = isChecked;
             });
@@ -321,7 +321,7 @@ namespace AutoBudget
 
             #region Fire
             UIHelperBase fireGroup = helper.AddGroup("Fire service");
-            UI_Fire_Enabled = (UICheckBox)fireGroup.AddCheckbox("Enable fire service autobudget", c.AutobudgetFire.Enabled, delegate (bool isChecked)
+            UI_Fire_Enabled = (UICheckBox)fireGroup.AddCheckbox("Enable", c.AutobudgetFire.Enabled, delegate (bool isChecked)
             {
                 if (!freezeUI) c.AutobudgetFire.Enabled = isChecked;
             });
@@ -342,8 +342,8 @@ namespace AutoBudget
             #endregion
 
             #region Road
-            UIHelperBase roadGroup = helper.AddGroup("Road and Snow");
-            UI_Road_Enabled = (UICheckBox)roadGroup.AddCheckbox("Enable road autobudget", c.AutobudgetRoad.Enabled, delegate (bool isChecked)
+            UIHelperBase roadGroup = helper.AddGroup("Road maintenance and snow dumps");
+            UI_Road_Enabled = (UICheckBox)roadGroup.AddCheckbox("Enable", c.AutobudgetRoad.Enabled, delegate (bool isChecked)
             {
                 if (!freezeUI) c.AutobudgetRoad.Enabled = isChecked;
             });
@@ -361,7 +361,7 @@ namespace AutoBudget
 
             #region Taxi
             UIHelperBase taxiGroup = helper.AddGroup("Taxi");
-            UI_Taxi_Enabled = (UICheckBox)taxiGroup.AddCheckbox("Enable taxi autobudget", c.AutobudgetTaxi.Enabled, delegate (bool isChecked)
+            UI_Taxi_Enabled = (UICheckBox)taxiGroup.AddCheckbox("Enable", c.AutobudgetTaxi.Enabled, delegate (bool isChecked)
             {
                 if (!freezeUI) c.AutobudgetTaxi.Enabled = isChecked;
             });
