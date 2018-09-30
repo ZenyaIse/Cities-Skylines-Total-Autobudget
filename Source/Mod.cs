@@ -24,6 +24,8 @@ namespace AutoBudget
         private UISlider UI_Water_MaxBudget;
         private UICheckBox UI_Water_AutoPause;
         private UISlider UI_Water_StorageAmount;
+        private UICheckBox UI_Water_UseHeating;
+        private UISlider UI_Water_MaxHeatingBudget;
 
         private UICheckBox UI_Garbage_Enabled;
         private UISlider UI_Garbage_MaxBudget;
@@ -103,6 +105,8 @@ namespace AutoBudget
             UI_Water_MaxBudget.value = c.AutobudgetWater.BudgetMaxValue;
             UI_Water_AutoPause.isChecked = c.AutobudgetWater.PauseWhenBudgetTooHigh;
             UI_Water_StorageAmount.value = c.AutobudgetWater.TargetWaterStorageRatio;
+            UI_Water_UseHeating.isChecked = c.AutobudgetWater.UseHeatingAutobudget;
+            UI_Water_MaxHeatingBudget.value = c.AutobudgetWater.HeatingBudgetMaxValue;
 
             UI_Garbage_Enabled.isChecked = c.AutobudgetGarbage.Enabled;
             UI_Garbage_MaxBudget.value = c.AutobudgetGarbage.BudgetMaxValue;
@@ -191,9 +195,9 @@ namespace AutoBudget
             helper.AddSpace(20);
             #endregion
 
-            #region Water and sewage
-            UIHelperBase waterGroup = helper.AddGroup("Water and sewage");
-            UI_Water_Enabled = (UICheckBox)waterGroup.AddCheckbox("Enable water and sewage autobudget", c.AutobudgetWater.Enabled, delegate (bool isChecked)
+            #region Water, sewage, and heating
+            UIHelperBase waterGroup = helper.AddGroup("Water, sewage, and heating");
+            UI_Water_Enabled = (UICheckBox)waterGroup.AddCheckbox("Enable", c.AutobudgetWater.Enabled, delegate (bool isChecked)
             {
                 if (!freezeUI) c.AutobudgetWater.Enabled = isChecked;
             });
@@ -212,6 +216,14 @@ namespace AutoBudget
             addLabelToSlider(UI_Water_StorageAmount = (UISlider)waterGroup.AddSlider("Target water storage", 0, 100, 1, c.AutobudgetWater.TargetWaterStorageRatio, delegate (float val)
             {
                 if (!freezeUI) c.AutobudgetWater.TargetWaterStorageRatio = (int)val;
+            }), "%");
+            UI_Water_UseHeating = (UICheckBox)waterGroup.AddCheckbox("Increase budget if not enough heating", c.AutobudgetWater.UseHeatingAutobudget, delegate (bool isChecked)
+            {
+                if (!freezeUI) c.AutobudgetWater.UseHeatingAutobudget = isChecked;
+            });
+            addLabelToSlider(UI_Water_MaxHeatingBudget = (UISlider)waterGroup.AddSlider("Max heating budget", 50, 150, 1, c.AutobudgetWater.HeatingBudgetMaxValue, delegate (float val)
+            {
+                if (!freezeUI) c.AutobudgetWater.HeatingBudgetMaxValue = (int)val;
             }), "%");
 
             helper.AddSpace(20);

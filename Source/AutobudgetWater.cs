@@ -17,6 +17,8 @@ namespace AutoBudget
                 s.WriteInt32(d.BudgetMaxValue);
                 s.WriteBool(d.PauseWhenBudgetTooHigh);
                 s.WriteInt32(d.TargetWaterStorageRatio);
+                s.WriteBool(d.UseHeatingAutobudget);
+                s.WriteInt32(d.HeatingBudgetMaxValue);
             }
 
             public void Deserialize(DataSerializer s)
@@ -27,6 +29,8 @@ namespace AutoBudget
                 d.BudgetMaxValue = s.ReadInt32();
                 d.PauseWhenBudgetTooHigh = s.ReadBool();
                 d.TargetWaterStorageRatio = s.ReadInt32();
+                //d.UseHeatingAutobudget = s.ReadBool();
+                //d.HeatingBudgetMaxValue = s.ReadInt32();
             }
 
             public void AfterDeserialize(DataSerializer s)
@@ -35,15 +39,16 @@ namespace AutoBudget
             }
         }
 
-        private int waterCapacity_prev = 0;
-        private int waterConsumption_prev = 0;
-        private int sewageCapacity_prev = 0;
-        private int sewageAccumulation_prev = 0;
+        private int currentHeatingBudget = 0;
+        private int heatingCounter = 0;
+        private int heatingRefreshCount = 2;
 
         public int AutobudgetBuffer = 3; // Percent of capacity
         public int BudgetMaxValue = 140;
         public bool PauseWhenBudgetTooHigh = true;
         public int TargetWaterStorageRatio = 95; // Percent of the water capacity
+        public bool UseHeatingAutobudget = true;
+        public int HeatingBudgetMaxValue = 110;
 
         public override string GetEconomyPanelContainerName()
         {
@@ -69,7 +74,7 @@ namespace AutoBudget
         {
             get
             {
-                return 113;
+                return oneDayFrames / 4 + 3;
             }
         }
 
@@ -86,15 +91,6 @@ namespace AutoBudget
 
             // No water and no sewage
             if (waterCapacity <= 0 && sewageCapacity <= 0) return;
-
-            // No changes from the previous state
-            if (waterCapacity == waterCapacity_prev && waterConsumption == waterConsumption_prev
-                && sewageCapacity == sewageCapacity_prev && sewageAccumulation == sewageAccumulation_prev) return;
-
-            waterCapacity_prev = waterCapacity;
-            waterConsumption_prev = waterConsumption;
-            sewageCapacity_prev = sewageCapacity;
-            sewageAccumulation_prev = sewageAccumulation;
 
             int waterStorageCapacity = dm.m_districts.m_buffer[0].GetWaterStorageCapacity();
             int waterStorageAmount = dm.m_districts.m_buffer[0].GetWaterStorageAmount();
@@ -123,6 +119,49 @@ namespace AutoBudget
             if (newBudget < BudgetMaxValue)
             {
                 isPausedRecently = false;
+            }
+
+            // Heating autobudget
+            if (UseHeatingAutobudget && newBudget < HeatingBudgetMaxValue)
+            {
+                if (heatingCounter-- <= 0)
+                {
+                    heatingCounter = heatingRefreshCount;
+
+                    if (currentHeatingBudget < newBudget)
+                    {
+                        currentHeatingBudget = newBudget;
+                    }
+
+                    bool isHeatingProblem = false;
+                    BuildingManager bm = Singleton<BuildingManager>.instance;
+                    for (int n = 0; n <= (255 + 1) * 192 - 1; n++)
+                    {
+                        Building.Flags flags = bm.m_buildings.m_buffer[n].m_flags;
+                        if ((flags & Building.Flags.Created) != Building.Flags.None)
+                        {
+                            if (bm.m_buildings.m_buffer[n].m_heatingProblemTimer > 0)
+                            {
+                                isHeatingProblem = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (isHeatingProblem)
+                    {
+                        currentHeatingBudget += 1;
+                    }
+                    else
+                    {
+                        currentHeatingBudget -= 1;
+                    }
+                }
+
+                if (currentHeatingBudget > newBudget)
+                {
+                    newBudget = currentHeatingBudget;
+                }
             }
 
             setBudget(newBudget);
