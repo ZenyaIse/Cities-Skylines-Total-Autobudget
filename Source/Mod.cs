@@ -209,7 +209,7 @@ namespace AutoBudget
             {
                 if (!freezeUI) c.AutobudgetWater.BudgetMaxValue = (int)val;
             }), "%");
-            UI_Water_AutoPause = (UICheckBox)waterGroup.AddCheckbox("Autopause when the budget is too high", c.AutobudgetWater.PauseWhenBudgetTooHigh, delegate (bool isChecked)
+            UI_Water_AutoPause = (UICheckBox)waterGroup.AddCheckbox("Autopause when budget is too high", c.AutobudgetWater.PauseWhenBudgetTooHigh, delegate (bool isChecked)
             {
                 if (!freezeUI) c.AutobudgetWater.PauseWhenBudgetTooHigh = isChecked;
             });

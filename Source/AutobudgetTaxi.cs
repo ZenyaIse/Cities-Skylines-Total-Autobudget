@@ -80,7 +80,10 @@ namespace AutoBudget
                 }
                 else if (bld.Info.m_buildingAI is DepotAI)
                 {
-                    taxiDepotCount++;
+                    if ((bld.Info.m_buildingAI as DepotAI).m_transportInfo.m_transportType == TransportInfo.TransportType.Taxi)
+                    {
+                        taxiDepotCount++;
+                    }
                 }
             }
 

@@ -29,8 +29,8 @@ namespace AutoBudget
                 d.BudgetMaxValue = s.ReadInt32();
                 d.PauseWhenBudgetTooHigh = s.ReadBool();
                 d.TargetWaterStorageRatio = s.ReadInt32();
-                //d.UseHeatingAutobudget = s.ReadBool();
-                //d.HeatingBudgetMaxValue = s.ReadInt32();
+                d.UseHeatingAutobudget = s.ReadBool();
+                d.HeatingBudgetMaxValue = s.ReadInt32();
             }
 
             public void AfterDeserialize(DataSerializer s)
@@ -41,7 +41,7 @@ namespace AutoBudget
 
         private int currentHeatingBudget = 0;
         private int heatingCounter = 0;
-        private int heatingRefreshCount = 2;
+        private int heatingRefreshCount = 1;
 
         public int AutobudgetBuffer = 3; // Percent of capacity
         public int BudgetMaxValue = 140;
