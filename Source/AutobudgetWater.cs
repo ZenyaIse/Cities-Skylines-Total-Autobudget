@@ -158,6 +158,11 @@ namespace AutoBudget
                     }
                 }
 
+                if (currentHeatingBudget > HeatingBudgetMaxValue)
+                {
+                    currentHeatingBudget = HeatingBudgetMaxValue;
+                }
+
                 if (currentHeatingBudget > newBudget)
                 {
                     newBudget = currentHeatingBudget;
