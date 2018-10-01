@@ -30,8 +30,8 @@ namespace AutoBudget
             }
         }
 
-        public int BudgetMinValue = 100;
-        public int BudgetMaxValue = 120;
+        public int BudgetMinValue = 95;
+        public int BudgetMaxValue = 125;
 
         public override string GetEconomyPanelContainerName()
         {

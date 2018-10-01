@@ -35,7 +35,7 @@ namespace AutoBudget
             }
         }
 
-        public int BudgetMaxValue = 110;
+        public int BudgetMaxValue = 120;
         public int ElementaryEducationTargetRate = 90; // %
         public int HighEducationTargetRate = 90; // %
         public int UnivEducationTargetRate = 90; // %

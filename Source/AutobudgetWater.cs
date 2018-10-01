@@ -48,7 +48,7 @@ namespace AutoBudget
         public bool PauseWhenBudgetTooHigh = true;
         public int TargetWaterStorageRatio = 95; // Percent of the water capacity
         public bool UseHeatingAutobudget = true;
-        public int HeatingBudgetMaxValue = 110;
+        public int HeatingBudgetMaxValue = 120;
 
         public override string GetEconomyPanelContainerName()
         {

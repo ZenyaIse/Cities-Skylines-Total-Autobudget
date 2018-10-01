@@ -30,7 +30,7 @@ namespace AutoBudget
             }
         }
 
-        public int BudgetMaxValue = 115;
+        public int BudgetMaxValue = 120;
         public int MaximumGarbageAmount = 80; // Percents of capacity (for inceneration plant and recycling center)
 
         public override string GetEconomyPanelContainerName()

@@ -32,7 +32,7 @@ namespace AutoBudget
             }
         }
 
-        public int BudgetMaxValue = 110;
+        public int BudgetMaxValue = 115;
         public int TargetNumberOfVehiclesWaitingAtDepot = 1;
         public int TargetNumberOfVehiclesWaitingAtStand = 3;
 
