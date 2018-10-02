@@ -7,19 +7,16 @@ namespace AutoBudget
 {
     public static class BudgetControlsManager
     {
-        private static bool budgetControlsAlreadyAdded = false;
         private static bool freezeUI = false;
 
         public static void AddBudgetControls()
         {
-            if (budgetControlsAlreadyAdded)
+            if (isBudgetControlsAlreadyAdded())
             {
                 return;
             }
             else
             {
-                budgetControlsAlreadyAdded = true;
-
                 EconomyPanel ep = ToolsModifierControl.economyPanel;
                 UITabContainer economyContainer = ep.component.Find<UITabContainer>("EconomyContainer");
 
@@ -255,21 +252,30 @@ namespace AutoBudget
         public static void UpdateUI()
         {
             EconomyPanel ep = ToolsModifierControl.economyPanel;
-            UITabContainer economyContainer = ep.component.Find<UITabContainer>("EconomyContainer");
-            UIPanel budgetPanel = economyContainer.Find<UIPanel>("Budget");
-            AutobudgetObjectsContainer c = Singleton<AutobudgetManager>.instance.container;
+            if (ep != null && ep.component != null)
+            {
+                UITabContainer economyContainer = ep.component.Find<UITabContainer>("EconomyContainer");
+                if (economyContainer != null)
+                {
+                    UIPanel budgetPanel = economyContainer.Find<UIPanel>("Budget");
+                    if (budgetPanel != null)
+                    {
+                        AutobudgetObjectsContainer c = Singleton<AutobudgetManager>.instance.container;
 
-            freezeUI = true;
-            updateCheckBox(budgetPanel, "Electricity", c.AutobudgetElectricity.Enabled);
-            updateCheckBox(budgetPanel, "Water", c.AutobudgetWater.Enabled);
-            updateCheckBox(budgetPanel, "Garbage", c.AutobudgetGarbage.Enabled);
-            updateCheckBox(budgetPanel, "Healthcare", c.AutobudgetHealthcare.Enabled);
-            updateCheckBox(budgetPanel, "Education", c.AutobudgetEducation.Enabled);
-            updateCheckBox(budgetPanel, "Police", c.AutobudgetPolice.Enabled);
-            updateCheckBox(budgetPanel, "Fire", c.AutobudgetFire.Enabled);
-            updateCheckBox(budgetPanel, "Road", c.AutobudgetRoad.Enabled);
-            updateCheckBox(budgetPanel, "Taxi", c.AutobudgetTaxi.Enabled);
-            freezeUI = false;
+                        freezeUI = true;
+                        updateCheckBox(budgetPanel, "Electricity", c.AutobudgetElectricity.Enabled);
+                        updateCheckBox(budgetPanel, "Water", c.AutobudgetWater.Enabled);
+                        updateCheckBox(budgetPanel, "Garbage", c.AutobudgetGarbage.Enabled);
+                        updateCheckBox(budgetPanel, "Healthcare", c.AutobudgetHealthcare.Enabled);
+                        updateCheckBox(budgetPanel, "Education", c.AutobudgetEducation.Enabled);
+                        updateCheckBox(budgetPanel, "Police", c.AutobudgetPolice.Enabled);
+                        updateCheckBox(budgetPanel, "Fire", c.AutobudgetFire.Enabled);
+                        updateCheckBox(budgetPanel, "Road", c.AutobudgetRoad.Enabled);
+                        updateCheckBox(budgetPanel, "Taxi", c.AutobudgetTaxi.Enabled);
+                        freezeUI = false;
+                    }
+                }
+            }
         }
 
         private static void updateCheckBox(UIPanel budgetPanel, string controlName, bool isChecked)
@@ -279,6 +285,28 @@ namespace AutoBudget
             {
                 checkBox.isChecked = isChecked;
             }
+        }
+
+        private static bool isBudgetControlsAlreadyAdded()
+        {
+            EconomyPanel ep = ToolsModifierControl.economyPanel;
+            if (ep != null && ep.component != null)
+            {
+                UITabContainer economyContainer = ep.component.Find<UITabContainer>("EconomyContainer");
+                if (economyContainer != null)
+                {
+                    UIPanel budgetPanel = economyContainer.Find<UIPanel>("Budget");
+                    if (budgetPanel != null)
+                    {
+                        if (budgetPanel.Find<UICheckBox>("checkBoxElectricity") != null)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }
