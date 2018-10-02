@@ -19,6 +19,7 @@ namespace AutoBudget
                 s.WriteInt32(d.TargetWaterStorageRatio);
                 s.WriteBool(d.UseHeatingAutobudget);
                 s.WriteInt32(d.HeatingBudgetMaxValue);
+                s.WriteInt32(d.currentHeatingBudget);
             }
 
             public void Deserialize(DataSerializer s)
@@ -31,6 +32,7 @@ namespace AutoBudget
                 d.TargetWaterStorageRatio = s.ReadInt32();
                 d.UseHeatingAutobudget = s.ReadBool();
                 d.HeatingBudgetMaxValue = s.ReadInt32();
+                d.currentHeatingBudget = s.ReadInt32();
             }
 
             public void AfterDeserialize(DataSerializer s)
@@ -133,7 +135,8 @@ namespace AutoBudget
                         currentHeatingBudget = newBudget;
                     }
 
-                    bool isHeatingProblem = false;
+                    int heatingProblemCount = 0;
+                    int allBldCount = 0;
                     BuildingManager bm = Singleton<BuildingManager>.instance;
                     for (int n = 0; n <= (255 + 1) * 192 - 1; n++)
                     {
@@ -142,19 +145,22 @@ namespace AutoBudget
                         {
                             if (bm.m_buildings.m_buffer[n].m_heatingProblemTimer > 0)
                             {
-                                isHeatingProblem = true;
-                                break;
+                                heatingProblemCount++;
                             }
+                            allBldCount++;
                         }
                     }
 
-                    if (isHeatingProblem)
+                    if (allBldCount > 0)
                     {
-                        currentHeatingBudget += 1;
-                    }
-                    else
-                    {
-                        currentHeatingBudget -= 1;
+                        if (heatingProblemCount > 0)
+                        {
+                            currentHeatingBudget += 1 + heatingProblemCount * 20 / allBldCount;
+                        }
+                        else
+                        {
+                            currentHeatingBudget -= 1;
+                        }
                     }
                 }
 
