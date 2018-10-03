@@ -8,7 +8,7 @@ namespace AutoBudget
         {
             if (mode == LoadMode.NewGame || mode == LoadMode.LoadGame || mode == LoadMode.NewGameFromScenario)
             {
-                BudgetControlsManager.AddBudgetControls();
+                BudgetControlsManager.Init();
             }
         }
     }

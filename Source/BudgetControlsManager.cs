@@ -8,14 +8,35 @@ namespace AutoBudget
     public static class BudgetControlsManager
     {
         private static bool freezeUI = false;
+        private static bool isInitialized = false;
 
-        public static void AddBudgetControls()
+        public static void Init()
         {
-            if (isBudgetControlsAlreadyAdded())
+            if (isInitialized) return;
+
+            UITabContainer economyContainer = ToolsModifierControl.economyPanel.component.Find<UITabContainer>("EconomyContainer");
+            if (economyContainer != null)
             {
-                return;
+                UIPanel budgetPanel = economyContainer.Find<UIPanel>("Budget");
+
+                if (budgetPanel != null)
+                {
+                    budgetPanel.eventVisibilityChanged += delegate (UIComponent component, bool value)
+                    {
+                        if (value)
+                        {
+                            UpdateUI();
+                        }
+                    };
+
+                    isInitialized = true;
+                }
             }
-            else
+        }
+
+        private static void createBudgetControlsIfNotCreated()
+        {
+            if (isBudgetControlsNotCreated())
             {
                 EconomyPanel ep = ToolsModifierControl.economyPanel;
                 UITabContainer economyContainer = ep.component.Find<UITabContainer>("EconomyContainer");
@@ -182,14 +203,6 @@ namespace AutoBudget
                 {
                     UIView.library.ShowModal("OptionsPanel");
                 });
-
-                budgetPanel.eventVisibilityChanged += delegate (UIComponent component, bool value)
-                {
-                    if (value)
-                    {
-                        UpdateUI();
-                    }
-                };
             }
         }
 
@@ -251,6 +264,8 @@ namespace AutoBudget
 
         public static void UpdateUI()
         {
+            createBudgetControlsIfNotCreated();
+
             EconomyPanel ep = ToolsModifierControl.economyPanel;
             if (ep != null && ep.component != null)
             {
@@ -287,7 +302,7 @@ namespace AutoBudget
             }
         }
 
-        private static bool isBudgetControlsAlreadyAdded()
+        private static bool isBudgetControlsNotCreated()
         {
             EconomyPanel ep = ToolsModifierControl.economyPanel;
             if (ep != null && ep.component != null)
@@ -298,7 +313,7 @@ namespace AutoBudget
                     UIPanel budgetPanel = economyContainer.Find<UIPanel>("Budget");
                     if (budgetPanel != null)
                     {
-                        if (budgetPanel.Find<UICheckBox>("checkBoxElectricity") != null)
+                        if (budgetPanel.Find<UICheckBox>("checkBoxElectricity") == null)
                         {
                             return true;
                         }
