@@ -40,6 +40,11 @@ namespace AutoBudget
         public int BudgetMaxValue = 140;
         public bool PauseWhenBudgetTooHigh = true;
 
+        public AutobudgetElectricity()
+        {
+            refreshCount = 89;
+        }
+
         public override string GetEconomyPanelContainerName()
         {
             return "ServicesBudgetContainer";
@@ -60,14 +65,6 @@ namespace AutoBudget
             return ItemClass.SubService.None;
         }
 
-        protected override int refreshCount
-        {
-            get
-            {
-                return 71;
-            }
-        }
-
         protected override void setAutobudget()
         {
             DistrictManager dm = Singleton<DistrictManager>.instance;
@@ -85,12 +82,15 @@ namespace AutoBudget
             capacity_prev = capacity;
             consumption_prev = consumption;
 
+            int electricityFromGarbage = getGarbageElectricityProduction();
+            //Debug.Log(string.Format("capacity = {0}, consumption = {1}, getGarbageElectricityProduction = {2}", capacity, consumption, getGarbageElectricityProduction()));
+
             AutobudgetObjectsContainer o = Singleton<AutobudgetManager>.instance.container;
             EconomyManager em = Singleton<EconomyManager>.instance;
             SimulationManager sm = Singleton<SimulationManager>.instance;
 
             int budget = em.GetBudget(ItemClass.Service.Electricity, ItemClass.SubService.None, sm.m_isNightTime);
-            int newBudget = calculateNewBudget(capacity, consumption, budget, getBufferCoefficient(AutobudgetBuffer));
+            int newBudget = calculateNewBudget(capacity - electricityFromGarbage, consumption - electricityFromGarbage, budget, getBufferCoefficient(AutobudgetBuffer));
 
             newBudget = Math.Min(newBudget, BudgetMaxValue);
 
@@ -106,8 +106,27 @@ namespace AutoBudget
                 isPausedRecently = false;
             }
 
-            //Debug.Log("Electricity: " + budget.ToString() + " -> " + newBudget.ToString());
             setBudget(newBudget);
+        }
+
+        private int getGarbageElectricityProduction()
+        {
+            int result = 0;
+
+            BuildingManager bm = Singleton<BuildingManager>.instance;
+
+            foreach (ushort n in ServiceBuildingNs(ItemClass.Service.Garbage))
+            {
+                Building bld = bm.m_buildings.m_buffer[(int)n];
+                if ((bld.m_flags & Building.Flags.Active) == 0) continue;
+
+                if (bld.Info.m_buildingAI.GetType() == typeof(LandfillSiteAI))
+                {
+                    result += ((LandfillSiteAI)bld.Info.m_buildingAI).GetElectricityRate(n, ref bld);
+                }
+            }
+
+            return result * 16;
         }
     }
 }

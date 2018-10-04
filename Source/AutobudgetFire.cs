@@ -36,6 +36,11 @@ namespace AutoBudget
         public int BudgetMinValue = 50;
         public int BudgetMaxValue = 120;
 
+        public AutobudgetFire()
+        {
+            refreshCount = 149;
+        }
+
         public override string GetEconomyPanelContainerName()
         {
             return "ServicesBudgetContainer";
@@ -54,14 +59,6 @@ namespace AutoBudget
         public override ItemClass.SubService GetSubService()
         {
             return ItemClass.SubService.None;
-        }
-
-        protected override int refreshCount
-        {
-            get
-            {
-                return oneDayFrames / 4 + 7;
-            }
         }
 
         protected override void setAutobudget()

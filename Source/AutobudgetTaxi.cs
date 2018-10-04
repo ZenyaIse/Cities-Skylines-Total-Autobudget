@@ -36,6 +36,11 @@ namespace AutoBudget
         public int TargetNumberOfVehiclesWaitingAtDepot = 1;
         public int TargetNumberOfVehiclesWaitingAtStand = 3;
 
+        public AutobudgetTaxi()
+        {
+            refreshCount = 313;
+        }
+
         public override string GetEconomyPanelContainerName()
         {
             return "SubServicesBudgetContainer";
@@ -54,14 +59,6 @@ namespace AutoBudget
         public override ItemClass.SubService GetSubService()
         {
             return ItemClass.SubService.PublicTransportTaxi;
-        }
-
-        protected override int refreshCount
-        {
-            get
-            {
-                return oneDayFrames / 2 + 19;
-            }
         }
 
         protected override void setAutobudget()

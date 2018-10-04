@@ -52,6 +52,11 @@ namespace AutoBudget
         public bool UseHeatingAutobudget = true;
         public int HeatingBudgetMaxValue = 120;
 
+        public AutobudgetWater()
+        {
+            refreshCount = 151;
+        }
+
         public override string GetEconomyPanelContainerName()
         {
             return "ServicesBudgetContainer";
@@ -70,14 +75,6 @@ namespace AutoBudget
         public override ItemClass.SubService GetSubService()
         {
             return ItemClass.SubService.None;
-        }
-
-        protected override int refreshCount
-        {
-            get
-            {
-                return oneDayFrames / 4 + 3;
-            }
         }
 
         protected override void setAutobudget()

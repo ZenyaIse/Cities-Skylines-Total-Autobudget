@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using ColossalFramework;
 using ColossalFramework.UI;
 
@@ -7,6 +7,7 @@ namespace AutoBudget
     public abstract class AutobudgetBase
     {
         protected const int oneDayFrames = 585;
+        protected int refreshCount = oneDayFrames / 2;
         protected int counter = 0;
 
         private int prevBudgetDay = 0;
@@ -62,8 +63,6 @@ namespace AutoBudget
         public abstract ItemClass.Service GetService();
         public abstract ItemClass.SubService GetSubService();
 
-        protected abstract int refreshCount { get; }
-
         protected abstract void setAutobudget();
 
         protected void setBudget(int newBudget)
@@ -83,6 +82,26 @@ namespace AutoBudget
 
             // Also set the budget directly
             Singleton<EconomyManager>.instance.SetBudget(GetService(), GetSubService(), newBudget, sm.m_isNightTime);
+        }
+
+        public static IEnumerable<ushort> ServiceBuildingNs(ItemClass.Service service)
+        {
+            if (Singleton<BuildingManager>.exists)
+            {
+                BuildingManager bm = Singleton<BuildingManager>.instance;
+
+                FastList<ushort> serviceBuildings = bm.GetServiceBuildings(service);
+                if (serviceBuildings != null && serviceBuildings.m_buffer != null)
+                {
+                    for (int i = 0; i < serviceBuildings.m_size; i++)
+                    {
+                        ushort n = serviceBuildings.m_buffer[i];
+                        if (n == 0) continue;
+
+                        yield return n;
+                    }
+                }
+            }
         }
     }
 }

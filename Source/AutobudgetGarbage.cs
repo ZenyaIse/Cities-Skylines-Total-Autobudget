@@ -33,6 +33,11 @@ namespace AutoBudget
         public int BudgetMaxValue = 120;
         public int MaximumGarbageAmount = 80; // Percents of capacity (for inceneration plant and recycling center)
 
+        public AutobudgetGarbage()
+        {
+            refreshCount = 307;
+        }
+
         public override string GetEconomyPanelContainerName()
         {
             return "ServicesBudgetContainer";
@@ -51,14 +56,6 @@ namespace AutoBudget
         public override ItemClass.SubService GetSubService()
         {
             return ItemClass.SubService.None;
-        }
-
-        protected override int refreshCount
-        {
-            get
-            {
-                return oneDayFrames / 2 + 31;
-            }
         }
 
         protected override void setAutobudget()

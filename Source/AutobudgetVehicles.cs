@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using ColossalFramework;
 using UnityEngine;
 
@@ -105,49 +104,6 @@ namespace AutoBudget
             }
 
             throw new Exception("getNormalVehicleCapacity from " + bld.Info.name + " is not implemented.");
-        }
-
-        public static IEnumerable<ushort> ServiceBuildingNs(ItemClass.Service service)
-        {
-            if (Singleton<BuildingManager>.exists)
-            {
-                BuildingManager bm = Singleton<BuildingManager>.instance;
-
-                FastList<ushort> serviceBuildings = bm.GetServiceBuildings(service);
-                if (serviceBuildings != null && serviceBuildings.m_buffer != null)
-                {
-                    for (int i = 0; i < serviceBuildings.m_size; i++)
-                    {
-                        ushort n = serviceBuildings.m_buffer[i];
-                        if (n == 0) continue;
-
-                        yield return n;
-                    }
-                }
-            }
-        }
-
-        public static IEnumerable<Building> ServiceBuildings(ItemClass.Service service)
-        {
-            if (Singleton<BuildingManager>.exists)
-            {
-                BuildingManager bm = Singleton<BuildingManager>.instance;
-
-                FastList<ushort> serviceBuildings = bm.GetServiceBuildings(service);
-                if (serviceBuildings != null && serviceBuildings.m_buffer != null)
-                {
-                    for (int i = 0; i < serviceBuildings.m_size; i++)
-                    {
-                        ushort n = serviceBuildings.m_buffer[i];
-                        if (n == 0) continue;
-
-                        Building bld = bm.m_buildings.m_buffer[(int)n];
-                        if ((bld.m_flags & Building.Flags.Active) == 0) continue;
-
-                        yield return bld;
-                    }
-                }
-            }
         }
 
         protected int getMinimumBudgetToGetVehicles(int normalVehicleCapacity, int requiredVehiclesCount, int maxBudget)
