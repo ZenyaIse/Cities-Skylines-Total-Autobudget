@@ -8,13 +8,7 @@ namespace AutoBudget
 
         private AutobudgetManager()
         {
-            container = AutobudgetObjectsContainer.CreateFromFile();
-            if (container == null)
-            {
-                container = new AutobudgetObjectsContainer();
-            }
-
-            container.InitObjects();
+            ReadValuesFromFile();
         }
 
         public void SetAutobudgetAll()
@@ -23,6 +17,23 @@ namespace AutoBudget
             {
                 obj.SetAutobudget();
             }
+        }
+
+        public void ResetToDefaultValues()
+        {
+            container = new AutobudgetObjectsContainer();
+            container.InitObjects();
+        }
+
+        public void ReadValuesFromFile()
+        {
+            container = AutobudgetObjectsContainer.CreateFromFile();
+            if (container == null)
+            {
+                container = new AutobudgetObjectsContainer();
+            }
+
+            container.InitObjects();
         }
     }
 }

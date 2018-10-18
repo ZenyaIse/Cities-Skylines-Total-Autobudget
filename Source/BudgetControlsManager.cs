@@ -75,7 +75,8 @@ namespace AutoBudget
                 addButton(budgetPanel, "Electricity", x1 - dxBtn, y - dyBtn, delegate ()
                 {
                     UIView.library.ShowModal("OptionsPanel");
-                    //electricityOptionsPanel.isVisible = !electricityOptionsPanel.isVisible;
+                    //UICustomControl optionsMainPanel = (UICustomControl)UIView.Find("OptionsMainPanel");
+                    
                 });
 
                 // Road
@@ -89,7 +90,7 @@ namespace AutoBudget
                 });
                 addButton(budgetPanel, "Road", x2 - dxBtn, y - dyBtn, delegate ()
                 {
-                    UIView.library.ShowModal("OptionsPanel");
+                    showOptions("Electricity");
                 });
 
                 y -= dy;
@@ -105,7 +106,7 @@ namespace AutoBudget
                 });
                 addButton(budgetPanel, "Water", x1 - dxBtn, y - dyBtn, delegate ()
                 {
-                    UIView.library.ShowModal("OptionsPanel");
+                    showOptions("Water");
                 });
 
                 y -= dy;
@@ -121,7 +122,7 @@ namespace AutoBudget
                 });
                 addButton(budgetPanel, "Garbage", x1 - dxBtn, y - dyBtn, delegate ()
                 {
-                    UIView.library.ShowModal("OptionsPanel");
+                    showOptions("Garbage");
                 });
 
                 y -= dy;
@@ -137,7 +138,7 @@ namespace AutoBudget
                 });
                 addButton(budgetPanel, "Healthcare", x1 - dxBtn, y - dyBtn, delegate ()
                 {
-                    UIView.library.ShowModal("OptionsPanel");
+                    showOptions("Healthcare");
                 });
 
                 y -= dy;
@@ -153,7 +154,7 @@ namespace AutoBudget
                 });
                 addButton(budgetPanel, "Fire", x1 - dxBtn, y - dyBtn, delegate ()
                 {
-                    UIView.library.ShowModal("OptionsPanel");
+                    showOptions("Fire");
                 });
 
                 y -= dy;
@@ -169,7 +170,7 @@ namespace AutoBudget
                 });
                 addButton(budgetPanel, "Police", x1 - dxBtn, y - dyBtn, delegate ()
                 {
-                    UIView.library.ShowModal("OptionsPanel");
+                    showOptions("Police");
                 });
 
                 y -= dy;
@@ -185,7 +186,7 @@ namespace AutoBudget
                 });
                 addButton(budgetPanel, "Education", x1 - dxBtn, y - dyBtn, delegate ()
                 {
-                    UIView.library.ShowModal("OptionsPanel");
+                    showOptions("Education");
                 });
 
                 y -= dy * 3;
@@ -201,9 +202,17 @@ namespace AutoBudget
                 });
                 addButton(budgetPanel, "Taxi", x2 - dxBtn, y - dyBtn, delegate ()
                 {
-                    UIView.library.ShowModal("OptionsPanel");
+                    showOptions("Taxi");
                 });
             }
+        }
+
+        private static void showOptions(string budgetName)
+        {
+            UIView.library.ShowModal("OptionsPanel");
+            OptionsMainPanel optionsMainPanel = UIView.library.Get<OptionsMainPanel>("OptionsPanel");
+            optionsMainPanel.SelectMod(Mod.ModNameEng);
+            //Mod.ScrollTo(budgetName);
         }
 
         private static void addCheckBox(UIPanel panel, string controlName, float x, float y, bool isChecked, OnCheckChanged eventCallback)
