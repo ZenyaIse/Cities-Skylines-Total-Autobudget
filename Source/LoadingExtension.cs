@@ -1,4 +1,5 @@
 ﻿using ICities;
+using ColossalFramework;
 
 namespace AutoBudget
 {
@@ -10,6 +11,12 @@ namespace AutoBudget
             {
                 BudgetControlsManager.Init();
             }
+        }
+
+        public override void OnLevelUnloading()
+        {
+            Singleton<AutobudgetManager>.instance.ReadValuesFromFile();
+            Mod.UpdateUI();
         }
     }
 }
