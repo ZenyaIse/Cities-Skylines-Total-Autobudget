@@ -40,6 +40,10 @@ namespace AutoBudget
             {
                 return countVehiclesInUse(ref bld, TransferManager.TransferReason.Taxi);
             }
+            if (bld.Info.m_buildingAI is DisasterResponseBuildingAI)
+            {
+                return countVehiclesInUse(ref bld, TransferManager.TransferReason.Collapsed);
+            }
 
             return 0;
         }
@@ -101,6 +105,10 @@ namespace AutoBudget
             if (bld.Info.m_buildingAI is DepotAI)
             {
                 return (bld.Info.m_buildingAI as DepotAI).m_maxVehicleCount;
+            }
+            if (bld.Info.m_buildingAI is DisasterResponseBuildingAI)
+            {
+                return (bld.Info.m_buildingAI as DisasterResponseBuildingAI).m_vehicleCount;
             }
 
             throw new Exception("getNormalVehicleCapacity from " + bld.Info.name + " is not implemented.");
