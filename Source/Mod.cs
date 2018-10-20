@@ -11,6 +11,7 @@ namespace AutoBudget
     {
         public static string ModNameEng = "Total Autobudget";
         public static string LogMsgPrefix = ">>> " + ModNameEng + ": ";
+        public static string Version = "2018/10/20";
 
         private bool freezeUI = false;
 
@@ -66,7 +67,7 @@ namespace AutoBudget
 
         public string Description
         {
-            get { return "Autobudget for almost everything with extended options (ver. 2018/8/23)"; }
+            get { return "Autobudget for almost everything with extended options (ver. " + Version + ")"; }
         }
 
         #region Options UI
