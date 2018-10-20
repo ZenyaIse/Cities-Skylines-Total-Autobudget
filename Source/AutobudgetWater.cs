@@ -16,7 +16,10 @@ namespace AutoBudget
                 s.WriteInt32(d.AutobudgetBuffer);
                 s.WriteInt32(d.BudgetMaxValue);
                 s.WriteBool(d.PauseWhenBudgetTooHigh);
+
                 s.WriteInt32(d.TargetWaterStorageRatio);
+                s.WriteBool(d.isTanksEmptying);
+
                 s.WriteBool(d.UseHeatingAutobudget);
                 s.WriteInt32(d.HeatingBudgetMaxValue);
                 s.WriteInt32(d.currentHeatingBudget);
@@ -25,14 +28,34 @@ namespace AutoBudget
             public void Deserialize(DataSerializer s)
             {
                 AutobudgetWater d = Singleton<AutobudgetManager>.instance.container.AutobudgetWater;
-                d.Enabled = s.ReadBool();
-                d.AutobudgetBuffer = s.ReadInt32();
-                d.BudgetMaxValue = s.ReadInt32();
-                d.PauseWhenBudgetTooHigh = s.ReadBool();
-                d.TargetWaterStorageRatio = s.ReadInt32();
-                d.UseHeatingAutobudget = s.ReadBool();
-                d.HeatingBudgetMaxValue = s.ReadInt32();
-                d.currentHeatingBudget = s.ReadInt32();
+                if (s.version == 0)
+                {
+                    d.Enabled = s.ReadBool();
+                    d.AutobudgetBuffer = s.ReadInt32();
+                    d.BudgetMaxValue = s.ReadInt32();
+                    d.PauseWhenBudgetTooHigh = s.ReadBool();
+                    d.TargetWaterStorageRatio = s.ReadInt32();
+                    d.UseHeatingAutobudget = s.ReadBool();
+                    d.HeatingBudgetMaxValue = s.ReadInt32();
+                    d.currentHeatingBudget = s.ReadInt32();
+
+                    if (d.TargetWaterStorageRatio == 95)
+                        d.TargetWaterStorageRatio = 50; // Change the default value
+                }
+                else
+                {
+                    d.Enabled = s.ReadBool();
+                    d.AutobudgetBuffer = s.ReadInt32();
+                    d.BudgetMaxValue = s.ReadInt32();
+                    d.PauseWhenBudgetTooHigh = s.ReadBool();
+
+                    d.TargetWaterStorageRatio = s.ReadInt32();
+                    d.isTanksEmptying = s.ReadBool();
+
+                    d.UseHeatingAutobudget = s.ReadBool();
+                    d.HeatingBudgetMaxValue = s.ReadInt32();
+                    d.currentHeatingBudget = s.ReadInt32();
+                }
             }
 
             public void AfterDeserialize(DataSerializer s)
@@ -44,11 +67,12 @@ namespace AutoBudget
         private int currentHeatingBudget = 0;
         private int heatingCounter = 0;
         private int heatingRefreshCount = 1;
+        private bool isTanksEmptying = false;
 
         public int AutobudgetBuffer = 3; // Percent of capacity
         public int BudgetMaxValue = 140;
         public bool PauseWhenBudgetTooHigh = true;
-        public int TargetWaterStorageRatio = 95; // Percent of the water capacity
+        public int TargetWaterStorageRatio = 50; // Percent of the water capacity
         public bool UseHeatingAutobudget = true;
         public int HeatingBudgetMaxValue = 120;
 
@@ -95,6 +119,21 @@ namespace AutoBudget
             int waterStorageAmount = dm.m_districts.m_buffer[0].GetWaterStorageAmount();
             int waterStorageRatio = waterStorageCapacity == 0 ? 0 : waterStorageAmount * 100 / waterStorageCapacity;
 
+            if (isTanksEmptying)
+            {
+                if (waterStorageRatio <= TargetWaterStorageRatio)
+                {
+                    isTanksEmptying = false;
+                }
+            }
+            else
+            {
+                if (waterStorageRatio >= 99)
+                {
+                    isTanksEmptying = true;
+                }
+            }
+
             AutobudgetObjectsContainer o = Singleton<AutobudgetManager>.instance.container;
             EconomyManager em = Singleton<EconomyManager>.instance;
             SimulationManager sm = Singleton<SimulationManager>.instance;
@@ -102,7 +141,7 @@ namespace AutoBudget
             int budget = em.GetBudget(ItemClass.Service.Water, ItemClass.SubService.None, sm.m_isNightTime);
 
             float buffer = getBufferCoefficient(AutobudgetBuffer);
-            int newWaterBudget = calculateNewBudget(waterCapacity, waterConsumption, budget, waterStorageRatio < TargetWaterStorageRatio ? buffer : 1f);
+            int newWaterBudget = isTanksEmptying ? 50 : calculateNewBudget(waterCapacity, waterConsumption, budget, waterStorageRatio > TargetWaterStorageRatio ? 1f : buffer);
             int newSewageBudget = calculateNewBudget(sewageCapacity, sewageAccumulation, budget, buffer);
             int newBudget = Math.Max(newWaterBudget, newSewageBudget);
 
