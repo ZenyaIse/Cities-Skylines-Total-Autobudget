@@ -11,8 +11,8 @@ Autobudget target services:
 - Healthcare and Deathcare
 - Education
 - Police
-- Fire service
-- Road maintenance and snow dumps
+- Fire service and Disaster response
+- Road maintenance and Snow dumps
 - Taxi
 
 How to enable or disable autobudget?
@@ -26,155 +26,125 @@ All settings are stored in your game save file, so you can use different setting
 
 ### Electricity
 
-**Buffer**
-
+**Buffer**\
 Set how much electricity production should exceed electricity consumption (in percentage). 3% or more is usually enough to avoid blackouts. 1%-2% is good to decrease electricity expenses but this may cause short-time blackouts in some parts of your city.
 
-**Maximum budget**
-
+**Maximum budget**\
 Set the maximum value of electricity budget. 130-140% is good only for very small towns, 120-125% is recommended if you have two or more power stations.
 
-**Autopause when budget is too high**
-
+**Autopause when budget is too high**\
 When the electricity autobudget raises up to the maximum value, the game will automatically pause and switch to the electricity info view mode. You can unpause game and continue playing ignoring lack of electricity - the game will not autopause any more until the autobudget drops and raises again.
 
-*Note*
-
+*Note*\
 Electricity autobudget will not work properly if you have two or more separate areas in your city. Connect the separated areas with power lines or disable electricity autobudget in this case.
 
 
 ### Water, Sewage, and Heating
 
-**Buffer**
-
+**Buffer**\
 Set how much production should exceed consumption (in percentage). 3% or more is usually enough to avoid outages. 1%-2% is good to decrease expenses but may cause short-time outages in some parts of your city.
 Water buffer (not sewage buffer) will automatically set to 0% (internally, not seen in the options) if there is enough water in your water tanks (see the next option).
 
-**Target water storage**
-
+**Target water storage**\
 Autobudget will try not to allow water tanks be filled less than this value.
+When all your water storage tank reservoirs are filled up at 100%, autobudget switches to "emptying" strategy, ignoring water shortage until the tank reservoirs fullness drop to the "Target water storage" value. After that autobudget switches to the normal strategy again.
 
-**Maximum budget**
-
+**Maximum budget**\
 Set the maximum value of water and sewage budget. 130-140% is good only for very small towns, 120-125% is recommended if you have two or more pump stations.
 
-**Autopause when budget is too high**
-
+**Autopause when budget is too high**\
 When the water / sewage budget raises up to the maximum value, the game will automatically pause and switch to the water and sewage info view mode. You can unpause game and continue playing ignoring lack of water or sewage capacity - the game will not autopause any more until the budget drops and raises again.
 
-**Increase budget if not enough heating**
-
+**Increase budget if not enough heating**\
 If some of your buildings have heating problems, the budget increases until the heating problems disappear or the budget reaches the maximum value (see the next option).
 
-**Max heating budget**
-
+**Max heating budget**\
 Budget rising due to heating problems will never exceed this value.
 
-*Note*
+*Note*\
 Water / sewage / heating autobudget will not work properly if you have two or more separate areas in your city. Connect the separated areas with pipes or disable water and sewage autobudget in this case.
 
 
 ### Garbage
 
-**Maximum budget**
-
+**Maximum budget**\
 Set the maximum value of garbage budget. 115-120% is recommended.
 
-**Max garbage amount (% of capacity)**
-
+**Max garbage amount (% of capacity)**\
 If you have productive garbage facilities (recycling center or incineration plant) and at least one of them is piled with garbage more than this value, the garbage budget will be raised to the maximum to speed up the garbage processing rate. 70-90% is recommended.
 
-*Note*
+*Note*\
 The mod will try to set the budget so that at least one garbage track is waiting in each of the garbage facilities.
 
 
 ### Healthcare and Deathcare
 
-**Minimum budget**
-
+**Minimum budget**\
 Set the minimum value of healthcare and deathcare budget.
 
-**Maximum budget**
-
+**Maximum budget**\
 Set the maximum value of healthcare and deathcare budget.
 
-*Note 1*
-
+*Note 1*\
 Setting the minimum budget too low may cause the low land value issue.
 
-*Note 2*
-
+*Note 2*\
 Mod is trying to set the budget value so that there is at least one ambulance waiting in each of the hospitals and at least one hearse waiting in each of the deathcare facilities.
 
 
 ### Education
 
-**Elementary / High school / University education**
-
+**Elementary / High school / University education**\
 Set the target education rate for each type of education. For example, if you set 70%, the mod will try to set the budget to educate 70% of people and leave 30% uneducated. Because budget cannot be set for each type of education individually, the maximum value of budget is chosen. That means, for example, if you set 70%, you will actually have 70% or more (but not less) of your people educated.
 
-**Maximum budget**
-
+**Maximum budget**\
 Set the maximum value of education budget.
 
 
 ### Police
 
-**Minimum budget**
-
+**Minimum budget**\
 Set the minimum value of police budget.
 
-**Maximum budget**
-
+**Maximum budget**\
 Set the maximum value of police budget.
 
-*Note*
-
+*Note*\
 Mod is trying to set the budget value so that there is at least one patrol car waiting in each of the police stations.
 
 
-### Fire service
+### Fire service and Disaster response
 
-**Minimum budget**
-
+**Minimum budget**\
 Set the minimum value of fire service budget.
 
-**Maximum budget**
-
+**Maximum budget**\
 Set the maximum value of fire service budget.
 
-**Minimum tracks waiting**
-
-Set the minimum number of tracks waiting in each of the fire stations.
-
-*Note*
-
-Disaster support is planned in future versions.
+**Minimum tracks waiting**\
+Set the minimum number of tracks waiting in each of the fire stations or disaster response buildings.
 
 
 ### Road maintenance and snow dumps
 
-**Minimum budget**
-
+**Minimum budget**\
 Set the minimum value of road maintenance and snow dump budget.
 
-**Maximum budget**
-
+**Maximum budget**\
 Set the maximum value of road maintenance and snow dump budget.
 
-*Note*
-
+*Note*\
 Setting the minimum budget too low may cause lack of citizens inflow into the city.
 
 
 ### Taxi
 
-**Maximum budget**
-
+**Maximum budget**\
 Set the maximum value of taxi budget.
 
-**Taxis waiting in depots**
-
-**Taxis waiting at stands**
-
+**Taxis waiting in depots**\
+**Taxis waiting at stands**\
 Set the target number of taxis waiting in depots and at taxi stands. These are averaged target numbers. The actual numbers is very dependant on the depots and taxi stands placement.
+
+Steam workshop page:\
+https://steamcommunity.com/sharedfiles/filedetails/?id=1541897355
