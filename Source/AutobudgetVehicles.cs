@@ -116,6 +116,12 @@ namespace AutoBudget
 
         protected int getMinimumBudgetToGetVehicles(int normalVehicleCapacity, int requiredVehiclesCount, int maxBudget)
         {
+            // Should not be, but just in case...
+            if (normalVehicleCapacity <= 0)
+            {
+                return 100;
+            }
+
             int productionRate;
             int productionRateMax = PlayerBuildingAI.GetProductionRate(100, maxBudget);
             do
