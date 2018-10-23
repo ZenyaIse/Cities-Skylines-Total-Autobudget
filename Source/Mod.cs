@@ -259,7 +259,7 @@ namespace AutoBudget
             {
                 if (!freezeUI) am.container.AutobudgetWater.TargetWaterStorageRatio = (int)val;
             }), "%");
-            UI_Water_StorageAmount.tooltip = "Autobudget will try not to allow water tanks be filled less than this value";
+            UI_Water_StorageAmount.tooltip = "When water storage tanks are filled more than this value, water consumption will not influence the budget";
 
             UI_Water_UseHeating = (UICheckBox)waterGroup.AddCheckbox("Increase budget if not enough heating", am.container.AutobudgetWater.UseHeatingAutobudget, delegate (bool isChecked)
             {
