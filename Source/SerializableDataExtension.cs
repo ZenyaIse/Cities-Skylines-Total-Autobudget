@@ -9,7 +9,7 @@ namespace AutoBudget
     public class SerializableDataExtension : ISerializableDataExtension
     {
         public const string DataID = "ComprehensiveAutoBudgetMod";
-        public const uint DataVersion = 2;
+        public const uint DataVersion = 3;
         private ISerializableData serializedData;
 
         public void OnCreated(ISerializableData serializedData)

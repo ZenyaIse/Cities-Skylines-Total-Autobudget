@@ -15,18 +15,28 @@ namespace AutoBudget
                 s.WriteBool(d.Enabled);
                 s.WriteInt32(d.ElementaryEducationTargetRate);
                 s.WriteInt32(d.HighEducationTargetRate);
-                s.WriteInt32(d.UnivEducationTargetRate);
                 s.WriteInt32(d.BudgetMaxValue);
             }
 
             public void Deserialize(DataSerializer s)
             {
                 AutobudgetEducation d = Singleton<AutobudgetManager>.instance.container.AutobudgetEducation;
-                d.Enabled = s.ReadBool();
-                d.ElementaryEducationTargetRate = s.ReadInt32();
-                d.HighEducationTargetRate = s.ReadInt32();
-                d.UnivEducationTargetRate = s.ReadInt32();
-                d.BudgetMaxValue = s.ReadInt32();
+                if (s.version <= 2)
+                {
+                    d.Enabled = s.ReadBool();
+                    d.ElementaryEducationTargetRate = s.ReadInt32();
+                    d.HighEducationTargetRate = s.ReadInt32();
+                    int tmp = s.ReadInt32();
+                    d.BudgetMaxValue = s.ReadInt32();
+                }
+                else
+                {
+                    d.Enabled = s.ReadBool();
+                    d.ElementaryEducationTargetRate = s.ReadInt32();
+                    d.HighEducationTargetRate = s.ReadInt32();
+                    int tmp = s.ReadInt32();
+                    d.BudgetMaxValue = s.ReadInt32();
+                }
             }
 
             public void AfterDeserialize(DataSerializer s)
@@ -38,7 +48,6 @@ namespace AutoBudget
         public int BudgetMaxValue = 120;
         public int ElementaryEducationTargetRate = 90; // %
         public int HighEducationTargetRate = 90; // %
-        public int UnivEducationTargetRate = 90; // %
 
         public AutobudgetEducation()
         {
@@ -71,14 +80,12 @@ namespace AutoBudget
 
             int capacity1 = d.GetEducation1Capacity();
             int capacity2 = d.GetEducation2Capacity();
-            int capacity3 = d.GetEducation3Capacity();
 
             // No education facilities
-            if (capacity1 == 0 && capacity2 == 0 && capacity3 == 0) return;
+            if (capacity1 == 0 && capacity2 == 0) return;
 
             int need1 = d.GetEducation1Need();
             int need2 = d.GetEducation2Need();
-            int need3 = d.GetEducation3Need();
 
             //Debug.Log(string.Format("Capacity: {0}, need: {1}", capacity1, need1));
 
@@ -91,7 +98,6 @@ namespace AutoBudget
             // Convert to the normal capacity
             capacity1 = (int)(capacity1 / currentProductionRate + 0.5f);
             capacity2 = (int)(capacity2 / currentProductionRate + 0.5f);
-            capacity3 = (int)(capacity3 / currentProductionRate + 0.5f);
 
             //Debug.Log(string.Format("currentBudget: {0}, currentProductionRate: {1}, normal capacity", currentBudget, currentProductionRate, capacity1));
 
@@ -107,13 +113,7 @@ namespace AutoBudget
                 targetProductionRate2 = need2 * (HighEducationTargetRate * 0.01f) / capacity2;
             }
 
-            float targetProductionRate3 = 0.25f;
-            if (capacity3 > 0 && need3 > 0)
-            {
-                targetProductionRate3 = need3 * (UnivEducationTargetRate * 0.01f) / capacity3;
-            }
-
-            float targetProductionRate = Math.Max(Math.Max(targetProductionRate1, targetProductionRate2), targetProductionRate3);
+            float targetProductionRate = Math.Max(targetProductionRate1, targetProductionRate2);
 
             int newBudget = getBudgetFromProductionRate(targetProductionRate);
 

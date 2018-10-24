@@ -39,7 +39,6 @@ namespace AutoBudget
         private UICheckBox UI_Education_Enabled;
         private UISlider UI_Education_ElementaryRate;
         private UISlider UI_Education_HighRate;
-        private UISlider UI_Education_UnivRate;
         private UISlider UI_Education_MaxBudget;
 
         private UICheckBox UI_Police_Enabled;
@@ -120,7 +119,6 @@ namespace AutoBudget
             UI_Education_Enabled.isChecked = c.AutobudgetEducation.Enabled;
             UI_Education_ElementaryRate.value = c.AutobudgetEducation.ElementaryEducationTargetRate;
             UI_Education_HighRate.value = c.AutobudgetEducation.HighEducationTargetRate;
-            UI_Education_UnivRate.value = c.AutobudgetEducation.UnivEducationTargetRate;
             UI_Education_MaxBudget.value = c.AutobudgetEducation.BudgetMaxValue;
 
             UI_Police_Enabled.isChecked = c.AutobudgetPolice.Enabled;
@@ -352,13 +350,6 @@ namespace AutoBudget
             });
             addLabelToSlider(UI_Education_HighRate, "%");
             UI_Education_HighRate.tooltip = "Target high school education rate";
-
-            UI_Education_UnivRate = (UISlider)educationGroup.AddSlider("University education", 10, 100, 5, am.container.AutobudgetEducation.UnivEducationTargetRate, delegate (float val)
-            {
-                if (!freezeUI) am.container.AutobudgetEducation.UnivEducationTargetRate = (int)val;
-            });
-            addLabelToSlider(UI_Education_UnivRate, "%");
-            UI_Education_UnivRate.tooltip = "Target university education rate";
 
             UI_Education_MaxBudget = (UISlider)educationGroup.AddSlider("Maximum budget", 50, 150, 1, am.container.AutobudgetEducation.BudgetMaxValue, delegate (float val)
             {
