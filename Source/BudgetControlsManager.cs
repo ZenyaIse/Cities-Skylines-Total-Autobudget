@@ -9,6 +9,7 @@ namespace AutoBudget
     {
         private static bool freezeUI = false;
         private static bool isInitialized = false;
+        private static bool isBudgetControlsCreated = false;
 
         public static void Init()
         {
@@ -25,6 +26,7 @@ namespace AutoBudget
                     {
                         if (value)
                         {
+                            createBudgetControlsIfNotCreated();
                             UpdateUI();
                         }
                     };
@@ -36,6 +38,58 @@ namespace AutoBudget
 
         private static void createBudgetControlsIfNotCreated()
         {
+            if (isBudgetControlsCreated) return;
+
+            if (ToolsModifierControl.economyPanel != null)
+            {
+                UITabContainer economyContainer = ToolsModifierControl.economyPanel.component.Find<UITabContainer>("EconomyContainer");
+                if (economyContainer != null)
+                {
+                    UIPanel budgetPanel = economyContainer.Find<UIPanel>("Budget");
+                    if (budgetPanel != null)
+                    {
+                        AutobudgetObjectsContainer c = Singleton<AutobudgetManager>.instance.container;
+
+                        foreach (AutobudgetBase obj in c.AllAutobudgetObjects)
+                        {
+                            addControlsItem(budgetPanel, obj.GetEconomyPanelContainerName(), obj.GetBudgetItemName(), obj.Enabled, delegate (bool isChecked)
+                            {
+                                if (!freezeUI)
+                                {
+                                    obj.Enabled = isChecked;
+                                    Mod.UpdateUI();
+                                }
+                            });
+                        }
+
+                        isBudgetControlsCreated = true;
+                    }
+                }
+            }
+        }
+
+        private static void addControlsItem(UIPanel panel, string containerName, string budgetItemName, bool isChecked, OnCheckChanged eventCallback)
+        {
+            UIPanel container = panel.Find<UIPanel>(containerName);
+            if (container != null)
+            {
+                UIPanel budgetItem = container.Find<UIPanel>(budgetItemName);
+                if (budgetItem != null)
+                {
+                    float x = 50;
+                    float y = -4;
+
+                    addCheckBox(budgetItem, budgetItemName, x, y, isChecked, eventCallback);
+                    addButton(budgetItem, budgetItemName, x - 10, y - 20, delegate ()
+                    {
+                        showOptions(budgetItemName);
+                    });
+                }
+            }
+        }
+
+        private static void _createBudgetControlsIfNotCreated()
+        {
             if (isBudgetControlsNotCreated())
             {
                 EconomyPanel ep = ToolsModifierControl.economyPanel;
@@ -45,39 +99,36 @@ namespace AutoBudget
                 //Budget(ColossalFramework.UI.UIPanel)
                 //Loans(ColossalFramework.UI.UIPanel)
 
+                UIPanel budgetPanel = economyContainer.Find<UIPanel>("Budget");
+                //SubServicesBudgetContainer (ColossalFramework.UI.UIPanel) (590.0, 37.0, 0.0), (590.0, -37.0, 0.0), (994.0, 131.0, 0.0)
+                //ServicesBudgetContainer(ColossalFramework.UI.UIPanel)(74.0, -9.0, 0.0), (74.0, 9.0, 0.0), (478.0, 177.0, 0.0)
+
+                //Electricity (ColossalFramework.UI.UIPanel) (0.0, 0.0, 0.0), (0.0, 0.0, 0.0), (478.0, 1076.0, 0.0)
+                //WaterAndSewage(ColossalFramework.UI.UIPanel)(0.0, -46.0, 0.0), (0.0, 46.0, 0.0), (478.0, 1122.0, 0.0)
+                //Garbage(ColossalFramework.UI.UIPanel)(0.0, -92.0, 0.0), (0.0, 92.0, 0.0), (478.0, 1168.0, 0.0)
+                //Healthcare(ColossalFramework.UI.UIPanel)(0.0, -138.0, 0.0), (0.0, 138.0, 0.0), (478.0, 1214.0, 0.0)
+                //FireDepartment(ColossalFramework.UI.UIPanel)(0.0, -184.0, 0.0), (0.0, 184.0, 0.0), (478.0, 1260.0, 0.0)
+                //Police(ColossalFramework.UI.UIPanel)(0.0, -230.0, 0.0), (0.0, 230.0, 0.0), (478.0, 1306.0, 0.0)
+                //Education(ColossalFramework.UI.UIPanel)(0.0, -276.0, 0.0), (0.0, 276.0, 0.0), (478.0, 1352.0, 0.0)
+                //Beautification(ColossalFramework.UI.UIPanel)(0.0, -322.0, 0.0), (0.0, 322.0, 0.0), (478.0, 1398.0, 0.0)
+                //Monuments(ColossalFramework.UI.UIPanel)(0.0, -368.0, 0.0), (0.0, 368.0, 0.0), (478.0, 1444.0, 0.0)
+                //PlayerIndustry(ColossalFramework.UI.UIPanel)(0.0, -414.0, 0.0), (0.0, 414.0, 0.0), (478.0, 1490.0, 0.0)
+
                 //System.Text.StringBuilder sb = new System.Text.StringBuilder("AutoBudget:\n");
-                //foreach (UIComponent c in economyContainer.components)
+                //foreach (UIComponent component in budgetPanel.Find("ServicesBudgetContainer").components)
                 //{
-                //    sb.AppendLine(c.ToString());
+                //    sb.AppendLine(component.ToString() + " " + component.position.ToString() + ", " + component.relativePosition.ToString() + ", " + component.absolutePosition.ToString());
                 //}
                 //Debug.Log(sb.ToString());
 
-                UIPanel budgetPanel = economyContainer.Find<UIPanel>("Budget");
                 AutobudgetObjectsContainer c = Singleton<AutobudgetManager>.instance.container;
 
                 float x1 = 44;
                 float x2 = 560;
                 float dxBtn = 10;
-                float y = -8;
+                float y = 34;
                 float dy = 46;
                 float dyBtn = 20;
-
-                // Electricity
-                addCheckBox(budgetPanel, "Electricity", x1, y, c.AutobudgetElectricity.Enabled, delegate (bool isChecked)
-                {
-                    if (!freezeUI)
-                    {
-                        c.AutobudgetElectricity.Enabled = isChecked;
-                        Mod.UpdateUI();
-                    }
-                });
-                //UIPanel electricityOptionsPanel = addOptionsPanel(budgetPanel, "Electricity", x1 + 2 * dxBtn, y - 2 * dyBtn);
-                addButton(budgetPanel, "Electricity", x1 - dxBtn, y - dyBtn, delegate ()
-                {
-                    UIView.library.ShowModal("OptionsPanel");
-                    //UICustomControl optionsMainPanel = (UICustomControl)UIView.Find("OptionsMainPanel");
-                    
-                });
 
                 // Road
                 addCheckBox(budgetPanel, "Road", x2, y, c.AutobudgetRoad.Enabled, delegate (bool isChecked)
@@ -90,7 +141,24 @@ namespace AutoBudget
                 });
                 addButton(budgetPanel, "Road", x2 - dxBtn, y - dyBtn, delegate ()
                 {
+                    showOptions("Road");
+                });
+
+                y -= dy;
+
+                // Electricity
+                addCheckBox(budgetPanel, "Electricity", x1, y, c.AutobudgetElectricity.Enabled, delegate (bool isChecked)
+                {
+                    if (!freezeUI)
+                    {
+                        c.AutobudgetElectricity.Enabled = isChecked;
+                        Mod.UpdateUI();
+                    }
+                });
+                addButton(budgetPanel, "Electricity", x1 - dxBtn, y - dyBtn, delegate ()
+                {
                     showOptions("Electricity");
+
                 });
 
                 y -= dy;
@@ -189,7 +257,7 @@ namespace AutoBudget
                     showOptions("Education");
                 });
 
-                y -= dy * 3;
+                y -= dy * 2;
 
                 // Taxi
                 addCheckBox(budgetPanel, "Taxi", x2, y, c.AutobudgetTaxi.Enabled, delegate (bool isChecked)
@@ -273,8 +341,6 @@ namespace AutoBudget
 
         public static void UpdateUI()
         {
-            createBudgetControlsIfNotCreated();
-
             EconomyPanel ep = ToolsModifierControl.economyPanel;
             if (ep != null && ep.component != null)
             {
@@ -287,15 +353,10 @@ namespace AutoBudget
                         AutobudgetObjectsContainer c = Singleton<AutobudgetManager>.instance.container;
 
                         freezeUI = true;
-                        updateCheckBox(budgetPanel, "Electricity", c.AutobudgetElectricity.Enabled);
-                        updateCheckBox(budgetPanel, "Water", c.AutobudgetWater.Enabled);
-                        updateCheckBox(budgetPanel, "Garbage", c.AutobudgetGarbage.Enabled);
-                        updateCheckBox(budgetPanel, "Healthcare", c.AutobudgetHealthcare.Enabled);
-                        updateCheckBox(budgetPanel, "Education", c.AutobudgetEducation.Enabled);
-                        updateCheckBox(budgetPanel, "Police", c.AutobudgetPolice.Enabled);
-                        updateCheckBox(budgetPanel, "Fire", c.AutobudgetFire.Enabled);
-                        updateCheckBox(budgetPanel, "Road", c.AutobudgetRoad.Enabled);
-                        updateCheckBox(budgetPanel, "Taxi", c.AutobudgetTaxi.Enabled);
+                        foreach (AutobudgetBase obj in c.AllAutobudgetObjects)
+                        {
+                            updateCheckBox(budgetPanel, obj.GetBudgetItemName(), obj.Enabled);
+                        }
                         freezeUI = false;
                     }
                 }

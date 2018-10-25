@@ -48,7 +48,7 @@ namespace AutoBudget
         private UICheckBox UI_Fire_Enabled;
         private UISlider UI_Fire_MinBudget;
         private UISlider UI_Fire_MaxBudget;
-        private UISlider UI_Fire_TracksExcessNum;
+        private UISlider UI_Fire_TrucksExcessNum;
 
         private UICheckBox UI_Road_Enabled;
         private UISlider UI_Road_MinBudget;
@@ -128,7 +128,7 @@ namespace AutoBudget
             UI_Fire_Enabled.isChecked = c.AutobudgetFire.Enabled;
             UI_Fire_MinBudget.value = c.AutobudgetFire.BudgetMinValue;
             UI_Fire_MaxBudget.value = c.AutobudgetFire.BudgetMaxValue;
-            UI_Fire_TracksExcessNum.value = c.AutobudgetFire.FireTracksExcessNum;
+            UI_Fire_TrucksExcessNum.value = c.AutobudgetFire.FireTrucksExcessNum;
 
             UI_Road_Enabled.isChecked = c.AutobudgetRoad.Enabled;
             UI_Road_MinBudget.value = c.AutobudgetRoad.BudgetMinValue;
@@ -200,7 +200,9 @@ namespace AutoBudget
 
             UI_Electricity_Enabled = (UICheckBox)electricityGroup.AddCheckbox("Enable", am.container.AutobudgetElectricity.Enabled, delegate (bool isChecked)
             {
-                if (!freezeUI) am.container.AutobudgetElectricity.Enabled = isChecked;
+                if (freezeUI) return;
+                am.container.AutobudgetElectricity.Enabled = isChecked;
+                BudgetControlsManager.UpdateUI();
             });
 
             addLabelToSlider(UI_Electricity_Buffer = (UISlider)electricityGroup.AddSlider("Buffer", 0, 5, 1, am.container.AutobudgetElectricity.AutobudgetBuffer, delegate (float val)
@@ -232,7 +234,9 @@ namespace AutoBudget
 
             UI_Water_Enabled = (UICheckBox)waterGroup.AddCheckbox("Enable", am.container.AutobudgetWater.Enabled, delegate (bool isChecked)
             {
-                if (!freezeUI) am.container.AutobudgetWater.Enabled = isChecked;
+                if (freezeUI) return;
+                am.container.AutobudgetWater.Enabled = isChecked;
+                BudgetControlsManager.UpdateUI();
             });
 
             addLabelToSlider(UI_Water_Buffer = (UISlider)waterGroup.AddSlider("Buffer", 0, 5, 1, am.container.AutobudgetWater.AutobudgetBuffer, delegate (float val)
@@ -282,7 +286,9 @@ namespace AutoBudget
 
             UI_Garbage_Enabled = (UICheckBox)garbageGroup.AddCheckbox("Enable", am.container.AutobudgetGarbage.Enabled, delegate (bool isChecked)
             {
-                if (!freezeUI) am.container.AutobudgetGarbage.Enabled = isChecked;
+                if (freezeUI) return;
+                am.container.AutobudgetGarbage.Enabled = isChecked;
+                BudgetControlsManager.UpdateUI();
             });
 
             addLabelToSlider(UI_Garbage_MaxBudget = (UISlider)garbageGroup.AddSlider("Maximum budget", 50, 150, 1, am.container.AutobudgetGarbage.BudgetMaxValue, delegate (float val)
@@ -308,7 +314,9 @@ namespace AutoBudget
 
             UI_Healthcare_Enabled = (UICheckBox)healthcareGroup.AddCheckbox("Enable", am.container.AutobudgetHealthcare.Enabled, delegate (bool isChecked)
             {
-                if (!freezeUI) am.container.AutobudgetHealthcare.Enabled = isChecked;
+                if (freezeUI) return;
+                am.container.AutobudgetHealthcare.Enabled = isChecked;
+                BudgetControlsManager.UpdateUI();
             });
 
             addLabelToSlider(UI_Healthcare_MinBudget = (UISlider)healthcareGroup.AddSlider("Minimum budget", 50, 150, 1, am.container.AutobudgetHealthcare.BudgetMinValue, delegate (float val)
@@ -334,7 +342,9 @@ namespace AutoBudget
 
             UI_Education_Enabled = (UICheckBox)educationGroup.AddCheckbox("Enable", am.container.AutobudgetEducation.Enabled, delegate (bool isChecked)
             {
-                if (!freezeUI) am.container.AutobudgetEducation.Enabled = isChecked;
+                if (freezeUI) return;
+                am.container.AutobudgetEducation.Enabled = isChecked;
+                BudgetControlsManager.UpdateUI();
             });
 
             UI_Education_ElementaryRate = (UISlider)educationGroup.AddSlider("Elementary education", 10, 100, 5, am.container.AutobudgetEducation.ElementaryEducationTargetRate, delegate (float val)
@@ -369,7 +379,9 @@ namespace AutoBudget
 
             UI_Police_Enabled = (UICheckBox)policeGroup.AddCheckbox("Enable", am.container.AutobudgetPolice.Enabled, delegate (bool isChecked)
             {
-                if (!freezeUI) am.container.AutobudgetPolice.Enabled = isChecked;
+                if (freezeUI) return;
+                am.container.AutobudgetPolice.Enabled = isChecked;
+                BudgetControlsManager.UpdateUI();
             });
 
             addLabelToSlider(UI_Police_MinBudget = (UISlider)policeGroup.AddSlider("Minimum budget", 50, 150, 1, am.container.AutobudgetPolice.BudgetMinValue, delegate (float val)
@@ -395,7 +407,9 @@ namespace AutoBudget
 
             UI_Fire_Enabled = (UICheckBox)fireGroup.AddCheckbox("Enable", am.container.AutobudgetFire.Enabled, delegate (bool isChecked)
             {
-                if (!freezeUI) am.container.AutobudgetFire.Enabled = isChecked;
+                if (freezeUI) return;
+                am.container.AutobudgetFire.Enabled = isChecked;
+                BudgetControlsManager.UpdateUI();
             });
 
             addLabelToSlider(UI_Fire_MinBudget = (UISlider)fireGroup.AddSlider("Minimum budget", 50, 150, 1, am.container.AutobudgetFire.BudgetMinValue, delegate (float val)
@@ -410,24 +424,26 @@ namespace AutoBudget
             }), "%");
             UI_Fire_MaxBudget.tooltip = "Budget will not be raised higher then this value";
 
-            addLabelToSlider(UI_Fire_TracksExcessNum = (UISlider)fireGroup.AddSlider("Minimum tracks waiting", 1, 5, 1, am.container.AutobudgetFire.FireTracksExcessNum, delegate (float val)
+            addLabelToSlider(UI_Fire_TrucksExcessNum = (UISlider)fireGroup.AddSlider("Minimum trucks waiting", 1, 5, 1, am.container.AutobudgetFire.FireTrucksExcessNum, delegate (float val)
             {
-                if (!freezeUI) am.container.AutobudgetFire.FireTracksExcessNum = (int)val;
-            }), " tracks");
-            UI_Fire_TracksExcessNum.tooltip = "Minimum number of tracks waiting in each of the fire stations";
+                if (!freezeUI) am.container.AutobudgetFire.FireTrucksExcessNum = (int)val;
+            }), " trucks");
+            UI_Fire_TrucksExcessNum.tooltip = "Minimum number of trucks waiting in each of the fire stations";
 
             helper.AddSpace(20);
 
             #endregion
 
 
-            #region Road
+            #region Roads
 
             UIHelperBase roadGroup = helper.AddGroup("Road maintenance and snow dumps");
 
             UI_Road_Enabled = (UICheckBox)roadGroup.AddCheckbox("Enable", am.container.AutobudgetRoad.Enabled, delegate (bool isChecked)
             {
-                if (!freezeUI) am.container.AutobudgetRoad.Enabled = isChecked;
+                if (freezeUI) return;
+                am.container.AutobudgetRoad.Enabled = isChecked;
+                BudgetControlsManager.UpdateUI();
             });
 
             addLabelToSlider(UI_Road_MinBudget = (UISlider)roadGroup.AddSlider("Minimum budget", 50, 150, 1, am.container.AutobudgetRoad.BudgetMinValue, delegate (float val)
@@ -453,7 +469,9 @@ namespace AutoBudget
 
             UI_Taxi_Enabled = (UICheckBox)taxiGroup.AddCheckbox("Enable", am.container.AutobudgetTaxi.Enabled, delegate (bool isChecked)
             {
-                if (!freezeUI) am.container.AutobudgetTaxi.Enabled = isChecked;
+                if (freezeUI) return;
+                am.container.AutobudgetTaxi.Enabled = isChecked;
+                BudgetControlsManager.UpdateUI();
             });
 
             addLabelToSlider(UI_Taxi_MaxBudget = (UISlider)taxiGroup.AddSlider("Maximum budget", 50, 150, 1, am.container.AutobudgetTaxi.BudgetMaxValue, delegate (float val)

@@ -14,7 +14,7 @@ namespace AutoBudget
                 s.WriteBool(d.Enabled);
                 s.WriteInt32(d.BudgetMinValue);
                 s.WriteInt32(d.BudgetMaxValue);
-                s.WriteInt32(d.FireTracksExcessNum);
+                s.WriteInt32(d.FireTrucksExcessNum);
             }
 
             public void Deserialize(DataSerializer s)
@@ -23,7 +23,7 @@ namespace AutoBudget
                 d.Enabled = s.ReadBool();
                 d.BudgetMinValue = s.ReadInt32();
                 d.BudgetMaxValue = s.ReadInt32();
-                d.FireTracksExcessNum = s.ReadInt32();
+                d.FireTrucksExcessNum = s.ReadInt32();
             }
 
             public void AfterDeserialize(DataSerializer s)
@@ -32,7 +32,7 @@ namespace AutoBudget
             }
         }
 
-        public int FireTracksExcessNum = 2;
+        public int FireTrucksExcessNum = 2;
         public int BudgetMinValue = 50;
         public int BudgetMaxValue = 120;
 
@@ -63,7 +63,7 @@ namespace AutoBudget
 
         protected override void setAutobudget()
         {
-            int fireBudget = getBudgetForVehicles(typeof(FireStationAI), FireTracksExcessNum, BudgetMinValue, BudgetMaxValue);
+            int fireBudget = getBudgetForVehicles(typeof(FireStationAI), FireTrucksExcessNum, BudgetMinValue, BudgetMaxValue);
             int disasterBudget = getBudgetForVehicles(typeof(DisasterResponseBuildingAI), 1, BudgetMinValue, BudgetMaxValue);
 
             setBudget(Mathf.Max(fireBudget, disasterBudget));

@@ -34,7 +34,6 @@ namespace AutoBudget
                     d.Enabled = s.ReadBool();
                     d.ElementaryEducationTargetRate = s.ReadInt32();
                     d.HighEducationTargetRate = s.ReadInt32();
-                    int tmp = s.ReadInt32();
                     d.BudgetMaxValue = s.ReadInt32();
                 }
             }
