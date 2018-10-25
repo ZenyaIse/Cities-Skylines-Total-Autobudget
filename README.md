@@ -43,11 +43,9 @@ Electricity autobudget will not work properly if you have two or more separate a
 
 **Buffer**\
 Set how much production should exceed consumption (in percentage). 3% or more is usually enough to avoid outages. 1%-2% is good to decrease expenses but may cause short-time outages in some parts of your city.
-Water buffer (not sewage buffer) will automatically set to 0% (internally, not seen in the options) if there is enough water in your water tanks (see the next option).
 
 **Target water storage**\
-Autobudget will try not to allow water tanks be filled less than this value.
-When all your water storage tank reservoirs are filled up at 100%, autobudget switches to "emptying" strategy, ignoring water shortage until the tank reservoirs fullness drop to the "Target water storage" value. After that autobudget switches to the normal strategy again.
+When water storage tanks are filled more than this value, water consumption will not be taken into account in calculation of the budget.
 
 **Maximum budget**\
 Set the maximum value of water and sewage budget. 130-140% is good only for very small towns, 120-125% is recommended if you have two or more pump stations.
@@ -94,7 +92,7 @@ Mod is trying to set the budget value so that there is at least one ambulance wa
 
 ### Education
 
-**Elementary / High school / University education**\
+**Elementary / High school**\
 Set the target education rate for each type of education. For example, if you set 70%, the mod will try to set the budget to educate 70% of people and leave 30% uneducated. Because budget cannot be set for each type of education individually, the maximum value of budget is chosen. That means, for example, if you set 70%, you will actually have 70% or more (but not less) of your people educated.
 
 **Maximum budget**\
