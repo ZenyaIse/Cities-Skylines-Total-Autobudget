@@ -70,13 +70,13 @@ namespace AutoBudget
             if (newBudget == -1) return;
 
             SimulationManager sm = Singleton<SimulationManager>.instance;
+
             UISlider slider = Helper.GetBudgetSlider(GetEconomyPanelContainerName(), GetBudgetItemName(), sm.m_isNightTime);
             if (slider != null)
             {
                 if (slider.value != newBudget)
                 {
                     slider.value = newBudget;
-                    // Enabled = true; // Need here because eventValueChanged set Enabled to false
                 }
             }
 

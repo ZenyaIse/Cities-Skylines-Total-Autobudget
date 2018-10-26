@@ -90,7 +90,7 @@ namespace AutoBudget
 
         public AutobudgetWater()
         {
-            refreshCount = 151;
+            refreshCount = 211;
         }
 
         public override string GetEconomyPanelContainerName()
