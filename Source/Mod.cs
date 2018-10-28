@@ -202,7 +202,7 @@ namespace AutoBudget
             {
                 if (freezeUI) return;
                 am.container.AutobudgetElectricity.Enabled = isChecked;
-                BudgetControlsManager.UpdateUI();
+                BudgetControlsManager.UpdateControls();
             });
 
             addLabelToSlider(UI_Electricity_Buffer = (UISlider)electricityGroup.AddSlider("Buffer", 0, 5, 1, am.container.AutobudgetElectricity.AutobudgetBuffer, delegate (float val)
@@ -236,7 +236,7 @@ namespace AutoBudget
             {
                 if (freezeUI) return;
                 am.container.AutobudgetWater.Enabled = isChecked;
-                BudgetControlsManager.UpdateUI();
+                BudgetControlsManager.UpdateControls();
             });
 
             addLabelToSlider(UI_Water_Buffer = (UISlider)waterGroup.AddSlider("Buffer", 0, 5, 1, am.container.AutobudgetWater.AutobudgetBuffer, delegate (float val)
@@ -288,7 +288,7 @@ namespace AutoBudget
             {
                 if (freezeUI) return;
                 am.container.AutobudgetGarbage.Enabled = isChecked;
-                BudgetControlsManager.UpdateUI();
+                BudgetControlsManager.UpdateControls();
             });
 
             addLabelToSlider(UI_Garbage_MaxBudget = (UISlider)garbageGroup.AddSlider("Maximum budget", 50, 150, 1, am.container.AutobudgetGarbage.BudgetMaxValue, delegate (float val)
@@ -316,7 +316,7 @@ namespace AutoBudget
             {
                 if (freezeUI) return;
                 am.container.AutobudgetHealthcare.Enabled = isChecked;
-                BudgetControlsManager.UpdateUI();
+                BudgetControlsManager.UpdateControls();
             });
 
             addLabelToSlider(UI_Healthcare_MinBudget = (UISlider)healthcareGroup.AddSlider("Minimum budget", 50, 150, 1, am.container.AutobudgetHealthcare.BudgetMinValue, delegate (float val)
@@ -344,7 +344,7 @@ namespace AutoBudget
             {
                 if (freezeUI) return;
                 am.container.AutobudgetEducation.Enabled = isChecked;
-                BudgetControlsManager.UpdateUI();
+                BudgetControlsManager.UpdateControls();
             });
 
             UI_Education_ElementaryRate = (UISlider)educationGroup.AddSlider("Elementary education", 10, 100, 5, am.container.AutobudgetEducation.ElementaryEducationTargetRate, delegate (float val)
@@ -381,7 +381,7 @@ namespace AutoBudget
             {
                 if (freezeUI) return;
                 am.container.AutobudgetPolice.Enabled = isChecked;
-                BudgetControlsManager.UpdateUI();
+                BudgetControlsManager.UpdateControls();
             });
 
             addLabelToSlider(UI_Police_MinBudget = (UISlider)policeGroup.AddSlider("Minimum budget", 50, 150, 1, am.container.AutobudgetPolice.BudgetMinValue, delegate (float val)
@@ -409,7 +409,7 @@ namespace AutoBudget
             {
                 if (freezeUI) return;
                 am.container.AutobudgetFire.Enabled = isChecked;
-                BudgetControlsManager.UpdateUI();
+                BudgetControlsManager.UpdateControls();
             });
 
             addLabelToSlider(UI_Fire_MinBudget = (UISlider)fireGroup.AddSlider("Minimum budget", 50, 150, 1, am.container.AutobudgetFire.BudgetMinValue, delegate (float val)
@@ -443,7 +443,7 @@ namespace AutoBudget
             {
                 if (freezeUI) return;
                 am.container.AutobudgetRoad.Enabled = isChecked;
-                BudgetControlsManager.UpdateUI();
+                BudgetControlsManager.UpdateControls();
             });
 
             addLabelToSlider(UI_Road_MinBudget = (UISlider)roadGroup.AddSlider("Minimum budget", 50, 150, 1, am.container.AutobudgetRoad.BudgetMinValue, delegate (float val)
@@ -471,7 +471,7 @@ namespace AutoBudget
             {
                 if (freezeUI) return;
                 am.container.AutobudgetTaxi.Enabled = isChecked;
-                BudgetControlsManager.UpdateUI();
+                BudgetControlsManager.UpdateControls();
             });
 
             addLabelToSlider(UI_Taxi_MaxBudget = (UISlider)taxiGroup.AddSlider("Maximum budget", 50, 150, 1, am.container.AutobudgetTaxi.BudgetMaxValue, delegate (float val)

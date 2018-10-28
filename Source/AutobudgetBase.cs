@@ -35,7 +35,7 @@ namespace AutoBudget
                     prevBudgetDay = 0;
                     prevBudgetNight = 0;
                     Mod.UpdateUI();
-                    BudgetControlsManager.UpdateUI();
+                    BudgetControlsManager.UpdateControls();
                 }
             }
 
@@ -71,16 +71,20 @@ namespace AutoBudget
 
             SimulationManager sm = Singleton<SimulationManager>.instance;
 
-            UISlider slider = Helper.GetBudgetSlider(GetEconomyPanelContainerName(), GetBudgetItemName(), sm.m_isNightTime);
-            if (slider != null)
+            // Set the budget sliders
+            if (BudgetControlsManager.IsBudgetPanelVisible())
             {
-                if (slider.value != newBudget)
+                UISlider slider = BudgetControlsManager.GetBudgetSlider(GetEconomyPanelContainerName(), GetBudgetItemName(), sm.m_isNightTime);
+                if (slider != null)
                 {
-                    slider.value = newBudget;
+                    if (slider.value != newBudget)
+                    {
+                        slider.value = newBudget;
+                    }
                 }
             }
 
-            // Also set the budget directly
+            // Set the budget directly
             Singleton<EconomyManager>.instance.SetBudget(GetService(), GetSubService(), newBudget, sm.m_isNightTime);
         }
 
