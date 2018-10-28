@@ -29,6 +29,7 @@ namespace AutoBudget
 
             public void AfterDeserialize(DataSerializer s)
             {
+                SerializableDataExtension.LastReadDataVersion = s.version;
                 Debug.Log(Mod.LogMsgPrefix + "AutobudgetElectricity data loaded.");
             }
         }

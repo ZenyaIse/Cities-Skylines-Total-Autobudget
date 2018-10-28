@@ -54,6 +54,9 @@ namespace AutoBudget
         private UISlider UI_Road_MinBudget;
         private UISlider UI_Road_MaxBudget;
 
+        private UICheckBox UI_Post_Enabled;
+        private UISlider UI_Post_MaxBudget;
+
         private UICheckBox UI_Taxi_Enabled;
         private UISlider UI_Taxi_MaxBudget;
         private UISlider UI_Taxi_DepotVehiclesExcessNum;
@@ -134,6 +137,9 @@ namespace AutoBudget
             UI_Road_MinBudget.value = c.AutobudgetRoad.BudgetMinValue;
             UI_Road_MaxBudget.value = c.AutobudgetRoad.BudgetMaxValue;
 
+            UI_Post_Enabled.isChecked = c.AutobudgetPost.Enabled;
+            UI_Post_MaxBudget.value = c.AutobudgetPost.BudgetMaxValue;
+
             UI_Taxi_Enabled.isChecked = c.AutobudgetTaxi.Enabled;
             UI_Taxi_MaxBudget.value = c.AutobudgetTaxi.BudgetMaxValue;
             UI_Taxi_DepotVehiclesExcessNum.value = c.AutobudgetTaxi.TargetNumberOfVehiclesWaitingAtDepot;
@@ -141,28 +147,6 @@ namespace AutoBudget
 
             freezeUI = false;
         }
-
-        //public static void ScrollTo(string groupName)
-        //{
-        //    foreach (PluginManager.PluginInfo current in Singleton<PluginManager>.instance.GetPluginsInfo())
-        //    {
-        //        if (current.isEnabled)
-        //        {
-        //            IUserMod[] instances = current.GetInstances<IUserMod>();
-        //            MethodInfo method = instances[0].GetType().GetMethod("TotalAutobudgetOptionsScrollTo", BindingFlags.Instance | BindingFlags.Public);
-        //            if (method != null)
-        //            {
-        //                method.Invoke(instances[0], new object[] { groupName });
-        //            }
-        //        }
-        //    }
-        //}
-
-        //public void TotalAutobudgetOptionsScrollTo(string groupName)
-        //{
-        //    if (UI_Electricity_Enabled == null) return;
-        //    Debug.Log("UI_Electricity_Enabled.parent.parent.parent.parent.parent: " + UI_Electricity_Enabled.parent.parent.parent.parent.parent.ToString());
-        //}
 
         private void addLabelToSlider(object obj)
         {
@@ -457,6 +441,28 @@ namespace AutoBudget
                 if (!freezeUI) am.container.AutobudgetRoad.BudgetMaxValue = (int)val;
             }), "%");
             UI_Road_MaxBudget.tooltip = "Budget will not be raised higher then this value";
+
+            helper.AddSpace(20);
+
+            #endregion
+
+
+            #region Post
+
+            UIHelperBase postGroup = helper.AddGroup("Post offices");
+
+            UI_Post_Enabled = (UICheckBox)postGroup.AddCheckbox("Enable", am.container.AutobudgetPost.Enabled, delegate (bool isChecked)
+            {
+                if (freezeUI) return;
+                am.container.AutobudgetPost.Enabled = isChecked;
+                BudgetControlsManager.UpdateControls();
+            });
+
+            addLabelToSlider(UI_Post_MaxBudget = (UISlider)postGroup.AddSlider("Maximum budget", 50, 150, 1, am.container.AutobudgetPost.BudgetMaxValue, delegate (float val)
+            {
+                if (!freezeUI) am.container.AutobudgetPost.BudgetMaxValue = (int)val;
+            }), "%");
+            UI_Post_MaxBudget.tooltip = "Budget will not be raised higher then this value";
 
             helper.AddSpace(20);
 

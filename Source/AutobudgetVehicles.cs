@@ -44,6 +44,10 @@ namespace AutoBudget
             {
                 return countVehiclesInUse(ref bld, TransferManager.TransferReason.Collapsed);
             }
+            if (bld.Info.m_buildingAI is PostOfficeAI)
+            {
+                return countVehiclesInUse(ref bld, TransferManager.TransferReason.Mail);
+            }
 
             return 0;
         }
@@ -109,6 +113,10 @@ namespace AutoBudget
             if (bld.Info.m_buildingAI is DisasterResponseBuildingAI)
             {
                 return (bld.Info.m_buildingAI as DisasterResponseBuildingAI).m_vehicleCount;
+            }
+            if (bld.Info.m_buildingAI is PostOfficeAI)
+            {
+                return (bld.Info.m_buildingAI as PostOfficeAI).m_postVanCount;
             }
 
             throw new Exception("getNormalVehicleCapacity from " + bld.Info.name + " is not implemented.");
