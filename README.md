@@ -135,6 +135,15 @@ Set the maximum value of road maintenance and snow dump budget.
 Setting the minimum budget too low may cause lack of citizens inflow into the city.
 
 
+### Post offices
+
+**Maximum budget**\
+Set the maximum value of post offices budget.
+
+*Note*\
+Mod is trying to set the budget value so that there is at least one post van waiting in each of the post offices.
+
+
 ### Taxi
 
 **Maximum budget**\
