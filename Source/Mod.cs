@@ -11,7 +11,7 @@ namespace AutoBudget
     {
         public static string ModNameEng = "Total Autobudget";
         public static string LogMsgPrefix = ">>> " + ModNameEng + ": ";
-        public static string Version = "2018/10/29";
+        public static string Version = "2018/11/18";
 
         private bool freezeUI = false;
 
@@ -498,9 +498,17 @@ namespace AutoBudget
             }), " taxis");
             UI_Taxi_StandVehiclesExcessNum.tooltip = "Target number of taxis waiting at taxi stands";
 
-            helper.AddSpace(40);
-            
+            helper.AddSpace(20);
+
             #endregion
+
+
+            helper.AddCheckbox("Create controls on the budget panel", am.container.IsCreateControlsOnBudgetPanel, delegate (bool isChecked)
+            {
+                if (freezeUI) return;
+                am.container.IsCreateControlsOnBudgetPanel = isChecked;
+            });
+            helper.AddSpace(20);
 
 
             // Save buttons

@@ -19,6 +19,7 @@ namespace AutoBudget
         public AutobudgetRoad AutobudgetRoad;
         public AutobudgetPost AutobudgetPost;
         public AutobudgetTaxi AutobudgetTaxi;
+        public bool IsCreateControlsOnBudgetPanel = true;
 
         [XmlIgnore]
         public List<AutobudgetBase> AllAutobudgetObjects = new List<AutobudgetBase>();

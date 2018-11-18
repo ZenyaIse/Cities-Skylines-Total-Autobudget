@@ -129,7 +129,6 @@ namespace AutoBudget
 
         private static bool freezeUI = false;
         private static bool isInitialized = false;
-        private static bool isCreateControlsOnBudgetPanel = true;
 
 
         #region Build controls
@@ -184,14 +183,14 @@ namespace AutoBudget
         {
             if (isAutobudgetItemControlsCreated())
             {
-                if (!isCreateControlsOnBudgetPanel)
+                if (!Singleton<AutobudgetManager>.instance.container.IsCreateControlsOnBudgetPanel)
                 {
                     removeControls();
                 }
             }
             else
             {
-                if (isCreateControlsOnBudgetPanel)
+                if (Singleton<AutobudgetManager>.instance.container.IsCreateControlsOnBudgetPanel)
                 {
                     createControls();
                 }
@@ -246,11 +245,20 @@ namespace AutoBudget
 
                     foreach (AutobudgetBase obj in c.AllAutobudgetObjects)
                     {
-                        string controlName = AutobudgetItemPanel.GetControlNameFromItemName(obj.GetBudgetItemName());
-                        UIPanel autobudgetItemControl = budgetPanel.Find<UIPanel>(controlName);
-                        if (autobudgetItemControl != null)
+                        UIPanel container = budgetPanel.Find<UIPanel>(obj.GetEconomyPanelContainerName());
+                        if (container != null)
                         {
-                            budgetPanel.RemoveUIComponent(autobudgetItemControl);
+                            UIPanel budgetItem = container.Find<UIPanel>(obj.GetBudgetItemName());
+                            if (budgetItem != null)
+                            {
+                                string controlName = AutobudgetItemPanel.GetControlNameFromItemName(obj.GetBudgetItemName());
+                                AutobudgetItemPanel autobudgetItemControl = budgetItem.Find<AutobudgetItemPanel>(controlName);
+                                if (autobudgetItemControl != null)
+                                {
+                                    budgetItem.RemoveUIComponent(autobudgetItemControl);
+                                    Component.Destroy(autobudgetItemControl);
+                                }
+                            }
                         }
                     }
                 }
