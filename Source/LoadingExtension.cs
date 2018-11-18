@@ -17,6 +17,7 @@ namespace AutoBudget
         {
             Singleton<AutobudgetManager>.instance.ReadValuesFromFile();
             Mod.UpdateUI();
+            BudgetControlsManager.ResetUI();
         }
     }
 }

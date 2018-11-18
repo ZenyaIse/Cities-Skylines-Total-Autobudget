@@ -27,9 +27,109 @@ namespace AutoBudget
         //Taxi(ColossalFramework.UI.UIPanel)
         //Tours(ColossalFramework.UI.UIPanel)
 
+        private class AutobudgetItemPanel : UIPanel
+        {
+            private UICheckBox checkBox;
+            private UIButton btn;
+            private string budgetItemName;
+
+            public override void Awake()
+            {
+                base.Awake();
+
+                this.position = new Vector3(45, -4);
+                this.size = new Vector2(30f, 40f);
+
+                // Enable/disable checkbox
+                checkBox = this.AddUIComponent<UICheckBox>();
+                checkBox.position = new Vector3(6, 0);
+                checkBox.size = new Vector2(30, 20);
+
+                UISprite sprite = checkBox.AddUIComponent<UISprite>();
+                sprite.spriteName = "ToggleBase";
+                sprite.size = new Vector2(16f, 16f);
+                sprite.relativePosition = new Vector3(2f, 2f);
+
+                checkBox.checkedBoxObject = sprite.AddUIComponent<UISprite>();
+                ((UISprite)checkBox.checkedBoxObject).spriteName = "ToggleBaseFocused";
+                checkBox.checkedBoxObject.size = new Vector2(16f, 16f);
+                checkBox.checkedBoxObject.relativePosition = Vector3.zero;
+
+                // Options button
+                btn = this.AddUIComponent<UIButton>();
+                btn.position = new Vector3(0, -20);
+                btn.size = new Vector2(30, 16);
+                btn.text = "...";
+                btn.textColor = Color.white;
+                btn.normalBgSprite = "ButtonMenu";
+                btn.hoveredBgSprite = "ButtonMenuHovered";
+                btn.eventClick += delegate (UIComponent component, UIMouseEventParameter eventParam)
+                {
+                    if (!string.IsNullOrEmpty(budgetItemName))
+                    {
+                        BudgetControlsManager.showOptionsPanel(budgetItemName);
+                    }
+                };
+            }
+
+            public void SetName(string itemName)
+            {
+                budgetItemName = itemName;
+
+                this.name = GetControlNameFromItemName(itemName);
+
+                if (checkBox != null)
+                {
+                    checkBox.name = "autobudgetItemCheckBox" + itemName;
+                }
+
+                if (btn != null)
+                {
+                    btn.name = "autobudgetItemBtn" + itemName;
+                }
+            }
+
+            public void SetCheckCallback(OnCheckChanged eventCallback)
+            {
+                if (checkBox != null)
+                {
+                    checkBox.eventCheckChanged += delegate (UIComponent component, bool value)
+                    {
+                        eventCallback(checkBox.isChecked);
+                    };
+                }
+            }
+
+            public bool isChecked
+            {
+                get
+                {
+                    if (checkBox != null)
+                    {
+                        return checkBox.isChecked;
+                    }
+
+                    return true;
+                }
+
+                set
+                {
+                    if (checkBox != null)
+                    {
+                        checkBox.isChecked = value;
+                    }
+                }
+            }
+
+            public static string GetControlNameFromItemName(string itemName)
+            {
+                return "autobudgetItemPanel" + itemName;
+            }
+        }
+
         private static bool freezeUI = false;
         private static bool isInitialized = false;
-        private static bool isBudgetControlsCreated = false;
+        private static bool isCreateControlsOnBudgetPanel = true;
 
 
         #region Build controls
@@ -45,71 +145,136 @@ namespace AutoBudget
 
                 if (budgetPanel != null)
                 {
-                    budgetPanel.eventVisibilityChanged += delegate (UIComponent component, bool value)
-                    {
-                        if (value)
-                        {
-                            createBudgetControlsIfNotCreated();
-                            UpdateControls();
-                            UpdateSliders();
-                        }
-                    };
-
+                    budgetPanel.eventVisibilityChanged += BudgetPanel_eventVisibilityChanged;
                     isInitialized = true;
                 }
             }
         }
 
-        private static void createBudgetControlsIfNotCreated()
+        public static void ResetUI()
         {
-            if (isBudgetControlsCreated) return;
+            if (!isInitialized) return;
 
-            if (ToolsModifierControl.economyPanel != null)
+            UITabContainer economyContainer = ToolsModifierControl.economyPanel.component.Find<UITabContainer>("EconomyContainer");
+            if (economyContainer != null)
             {
-                UITabContainer economyContainer = ToolsModifierControl.economyPanel.component.Find<UITabContainer>("EconomyContainer");
-                if (economyContainer != null)
+                UIPanel budgetPanel = economyContainer.Find<UIPanel>("Budget");
+
+                if (budgetPanel != null)
                 {
-                    UIPanel budgetPanel = economyContainer.Find<UIPanel>("Budget");
-                    if (budgetPanel != null)
+                    budgetPanel.eventVisibilityChanged -= BudgetPanel_eventVisibilityChanged;
+                    isInitialized = false;
+                }
+            }
+
+            removeControls();
+        }
+
+        private static void BudgetPanel_eventVisibilityChanged(UIComponent component, bool value)
+        {
+            if (value)
+            {
+                CheckControls();
+                UpdateControls();
+                UpdateSliders();
+            }
+        }
+
+        private static void CheckControls()
+        {
+            if (isAutobudgetItemControlsCreated())
+            {
+                if (!isCreateControlsOnBudgetPanel)
+                {
+                    removeControls();
+                }
+            }
+            else
+            {
+                if (isCreateControlsOnBudgetPanel)
+                {
+                    createControls();
+                }
+            }
+        }
+
+        private static void createControls()
+        {
+            UITabContainer economyContainer = ToolsModifierControl.economyPanel.component.Find<UITabContainer>("EconomyContainer");
+            if (economyContainer != null)
+            {
+                UIPanel budgetPanel = economyContainer.Find<UIPanel>("Budget");
+                if (budgetPanel != null)
+                {
+                    AutobudgetObjectsContainer c = Singleton<AutobudgetManager>.instance.container;
+
+                    foreach (AutobudgetBase obj in c.AllAutobudgetObjects)
                     {
-                        AutobudgetObjectsContainer c = Singleton<AutobudgetManager>.instance.container;
-
-                        foreach (AutobudgetBase obj in c.AllAutobudgetObjects)
+                        UIPanel container = budgetPanel.Find<UIPanel>(obj.GetEconomyPanelContainerName());
+                        if (container != null)
                         {
-                            addControlItem(budgetPanel, obj.GetEconomyPanelContainerName(), obj.GetBudgetItemName(), obj.Enabled, delegate (bool isChecked)
+                            UIPanel budgetItem = container.Find<UIPanel>(obj.GetBudgetItemName());
+                            if (budgetItem != null)
                             {
-                                if (!freezeUI)
+                                AutobudgetItemPanel autobudgetPanel = budgetItem.AddUIComponent<AutobudgetItemPanel>();
+                                autobudgetPanel.SetName(obj.GetBudgetItemName());
+                                autobudgetPanel.isChecked = obj.Enabled;
+                                autobudgetPanel.SetCheckCallback(delegate(bool isChecked)
                                 {
-                                    obj.Enabled = isChecked;
-                                    Mod.UpdateUI();
-                                }
-                            });
+                                    if (!freezeUI)
+                                    {
+                                        obj.Enabled = isChecked;
+                                        Mod.UpdateUI();
+                                    }
+                                });
+                            }
                         }
-
-                        isBudgetControlsCreated = true;
                     }
                 }
             }
         }
 
-        private static void addControlItem(UIPanel panel, string containerName, string budgetItemName, bool isChecked, OnCheckChanged eventCallback)
+        private static void removeControls()
         {
-            UIPanel container = panel.Find<UIPanel>(containerName);
-            if (container != null)
+            UITabContainer economyContainer = ToolsModifierControl.economyPanel.component.Find<UITabContainer>("EconomyContainer");
+            if (economyContainer != null)
             {
-                UIPanel budgetItem = container.Find<UIPanel>(budgetItemName);
-                if (budgetItem != null)
+                UIPanel budgetPanel = economyContainer.Find<UIPanel>("Budget");
+                if (budgetPanel != null)
                 {
-                    float x = 50;
-                    float y = -4;
+                    AutobudgetObjectsContainer c = Singleton<AutobudgetManager>.instance.container;
 
-                    addCheckBox(budgetItem, budgetItemName, x, y, isChecked, eventCallback);
-                    addButton(budgetItem, budgetItemName, x - 10, y - 20, delegate ()
+                    foreach (AutobudgetBase obj in c.AllAutobudgetObjects)
                     {
-                        showOptionsPanel(budgetItemName);
-                    });
+                        string controlName = AutobudgetItemPanel.GetControlNameFromItemName(obj.GetBudgetItemName());
+                        UIPanel autobudgetItemControl = budgetPanel.Find<UIPanel>(controlName);
+                        if (autobudgetItemControl != null)
+                        {
+                            budgetPanel.RemoveUIComponent(autobudgetItemControl);
+                        }
+                    }
                 }
             }
+        }
+
+        private static bool isAutobudgetItemControlsCreated()
+        {
+            UITabContainer economyContainer = ToolsModifierControl.economyPanel.component.Find<UITabContainer>("EconomyContainer");
+            if (economyContainer != null)
+            {
+                UIPanel budgetPanel = economyContainer.Find<UIPanel>("Budget");
+                if (budgetPanel != null)
+                {
+                    AutobudgetBase obj = Singleton<AutobudgetManager>.instance.container.AllAutobudgetObjects[0];
+                    string controlName = AutobudgetItemPanel.GetControlNameFromItemName(obj.GetBudgetItemName());
+                    if (budgetPanel.Find<UIPanel>(controlName) != null)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         private static void showOptionsPanel(string budgetName)
@@ -118,45 +283,6 @@ namespace AutoBudget
             OptionsMainPanel optionsMainPanel = UIView.library.Get<OptionsMainPanel>("OptionsPanel");
             optionsMainPanel.SelectMod(Mod.ModNameEng);
             //Mod.ScrollTo(budgetName);
-        }
-
-        private static void addCheckBox(UIPanel panel, string controlName, float x, float y, bool isChecked, OnCheckChanged eventCallback)
-        {
-            UICheckBox checkBox = panel.AddUIComponent<UICheckBox>();
-            checkBox.name = "checkBox" + controlName;
-            checkBox.position = new Vector3(x, y);
-            checkBox.size = new Vector2(30, 20);
-
-            UISprite sprite = checkBox.AddUIComponent<UISprite>();
-            sprite.spriteName = "ToggleBase";
-            sprite.size = new Vector2(16f, 16f);
-            sprite.relativePosition = new Vector3(2f, 2f);
-
-            checkBox.checkedBoxObject = sprite.AddUIComponent<UISprite>();
-            ((UISprite)checkBox.checkedBoxObject).spriteName = "ToggleBaseFocused";
-            checkBox.checkedBoxObject.size = new Vector2(16f, 16f);
-            checkBox.checkedBoxObject.relativePosition = Vector3.zero;
-
-            checkBox.eventCheckChanged += delegate (UIComponent component, bool value)
-            {
-                eventCallback(checkBox.isChecked);
-            };
-        }
-
-        private static void addButton(UIPanel panel, string controlName, float x, float y, OnButtonClicked eventCallback)
-        {
-            UIButton btn = panel.AddUIComponent<UIButton>();
-            btn.name = "btn" + controlName;
-            btn.position = new Vector3(x, y);
-            btn.size = new Vector2(30, 16);
-            btn.text = "...";
-            btn.textColor = Color.white;
-            btn.normalBgSprite = "ButtonMenu";
-            btn.hoveredBgSprite = "ButtonMenuHovered";
-            btn.eventClick += delegate (UIComponent component, UIMouseEventParameter eventParam)
-            {
-                eventCallback();
-            };
         }
 
         #endregion
@@ -182,10 +308,10 @@ namespace AutoBudget
 
         private static void updateCheckBox(UIPanel budgetPanel, string controlName, bool isChecked)
         {
-            UICheckBox checkBox = budgetPanel.Find<UICheckBox>("checkBox" + controlName);
-            if (checkBox != null)
+            AutobudgetItemPanel autobudgetItem = budgetPanel.Find<AutobudgetItemPanel>(AutobudgetItemPanel.GetControlNameFromItemName(controlName));
+            if (autobudgetItem != null)
             {
-                checkBox.isChecked = isChecked;
+                autobudgetItem.isChecked = isChecked;
             }
         }
 
