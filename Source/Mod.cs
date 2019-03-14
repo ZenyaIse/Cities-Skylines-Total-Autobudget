@@ -189,7 +189,7 @@ namespace AutoBudget
                 BudgetControlsManager.UpdateControls();
             });
 
-            addLabelToSlider(UI_Electricity_Buffer = (UISlider)electricityGroup.AddSlider("Buffer", 0, 5, 1, am.container.AutobudgetElectricity.AutobudgetBuffer, delegate (float val)
+            addLabelToSlider(UI_Electricity_Buffer = (UISlider)electricityGroup.AddSlider("Buffer", 0, 15, 1, am.container.AutobudgetElectricity.AutobudgetBuffer, delegate (float val)
             {
                 if (!freezeUI) am.container.AutobudgetElectricity.AutobudgetBuffer = (int)val;
             }), "%");
@@ -223,7 +223,7 @@ namespace AutoBudget
                 BudgetControlsManager.UpdateControls();
             });
 
-            addLabelToSlider(UI_Water_Buffer = (UISlider)waterGroup.AddSlider("Buffer", 0, 5, 1, am.container.AutobudgetWater.AutobudgetBuffer, delegate (float val)
+            addLabelToSlider(UI_Water_Buffer = (UISlider)waterGroup.AddSlider("Buffer", 0, 15, 1, am.container.AutobudgetWater.AutobudgetBuffer, delegate (float val)
             {
                 if (!freezeUI) am.container.AutobudgetWater.AutobudgetBuffer = (int)val;
             }), "%");
