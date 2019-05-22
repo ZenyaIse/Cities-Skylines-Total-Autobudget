@@ -11,7 +11,7 @@ namespace AutoBudget
     {
         public static string ModNameEng = "Total Autobudget";
         public static string LogMsgPrefix = ">>> " + ModNameEng + ": ";
-        public static string Version = "2018/11/18";
+        public static string Version = "2019/4/15";
 
         private bool freezeUI = false;
 
@@ -25,8 +25,6 @@ namespace AutoBudget
         private UISlider UI_Water_MaxBudget;
         private UICheckBox UI_Water_AutoPause;
         private UISlider UI_Water_StorageAmount;
-        private UICheckBox UI_Water_UseHeating;
-        private UISlider UI_Water_MaxHeatingBudget;
 
         private UICheckBox UI_Garbage_Enabled;
         private UISlider UI_Garbage_MaxBudget;
@@ -108,8 +106,6 @@ namespace AutoBudget
             UI_Water_MaxBudget.value = c.AutobudgetWater.BudgetMaxValue;
             UI_Water_AutoPause.isChecked = c.AutobudgetWater.PauseWhenBudgetTooHigh;
             UI_Water_StorageAmount.value = c.AutobudgetWater.TargetWaterStorageRatio;
-            UI_Water_UseHeating.isChecked = c.AutobudgetWater.UseHeatingAutobudget;
-            UI_Water_MaxHeatingBudget.value = c.AutobudgetWater.HeatingBudgetMaxValue;
 
             UI_Garbage_Enabled.isChecked = c.AutobudgetGarbage.Enabled;
             UI_Garbage_MaxBudget.value = c.AutobudgetGarbage.BudgetMaxValue;
@@ -245,19 +241,7 @@ namespace AutoBudget
             {
                 if (!freezeUI) am.container.AutobudgetWater.TargetWaterStorageRatio = (int)val;
             }), "%");
-            UI_Water_StorageAmount.tooltip = "When water storage tanks are filled more than this value, water consumption will not influence the budget";
-
-            UI_Water_UseHeating = (UICheckBox)waterGroup.AddCheckbox("Increase budget if not enough heating", am.container.AutobudgetWater.UseHeatingAutobudget, delegate (bool isChecked)
-            {
-                if (!freezeUI) am.container.AutobudgetWater.UseHeatingAutobudget = isChecked;
-            });
-            UI_Water_UseHeating.tooltip = "The budget increases when some of your buildings have heating problems";
-
-            addLabelToSlider(UI_Water_MaxHeatingBudget = (UISlider)waterGroup.AddSlider("Max heating budget", 50, 150, 1, am.container.AutobudgetWater.HeatingBudgetMaxValue, delegate (float val)
-            {
-                if (!freezeUI) am.container.AutobudgetWater.HeatingBudgetMaxValue = (int)val;
-            }), "%");
-            UI_Water_MaxHeatingBudget.tooltip = "Budget rising due to heating problems will never exceed this value";
+            UI_Water_StorageAmount.tooltip = "When water storage tanks are filled more than this value, the water buffer decreases by 1 per 10% of the water storage excess";
 
             helper.AddSpace(20);
 
