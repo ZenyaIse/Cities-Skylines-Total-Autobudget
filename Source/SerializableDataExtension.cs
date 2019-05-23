@@ -4,7 +4,7 @@ using ColossalFramework.IO;
 using ICities;
 using UnityEngine;
 
-namespace AutoBudget
+namespace Autobudget
 {
     public class SerializableDataExtension : ISerializableDataExtension
     {

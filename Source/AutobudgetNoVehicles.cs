@@ -1,7 +1,7 @@
 ﻿using System;
 using ColossalFramework;
 
-namespace AutoBudget
+namespace Autobudget
 {
     public abstract class AutobudgetNoVehicles : AutobudgetBase
     {

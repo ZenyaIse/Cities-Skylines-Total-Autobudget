@@ -1,6 +1,6 @@
 ﻿using ColossalFramework;
 
-namespace AutoBudget
+namespace Autobudget
 {
     public class AutobudgetManager : Singleton<AutobudgetManager>
     {

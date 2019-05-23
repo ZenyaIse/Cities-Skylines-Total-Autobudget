@@ -2,7 +2,7 @@
 using ColossalFramework;
 using ColossalFramework.UI;
 
-namespace AutoBudget
+namespace Autobudget
 {
     public abstract class AutobudgetBase
     {

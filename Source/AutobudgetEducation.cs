@@ -3,7 +3,7 @@ using ColossalFramework;
 using ColossalFramework.IO;
 using UnityEngine;
 
-namespace AutoBudget
+namespace Autobudget
 {
     public class AutobudgetEducation : AutobudgetNoVehicles
     {

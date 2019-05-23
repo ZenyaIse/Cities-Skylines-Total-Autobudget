@@ -5,7 +5,7 @@ using ColossalFramework.Plugins;
 using UnityEngine;
 using System.Reflection;
 
-namespace AutoBudget
+namespace Autobudget
 {
     public class Mod : IUserMod
     {

@@ -2,7 +2,7 @@
 using ColossalFramework;
 using UnityEngine;
 
-namespace AutoBudget
+namespace Autobudget
 {
     public abstract class AutobudgetVehicles : AutobudgetBase
     {

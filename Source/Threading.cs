@@ -1,7 +1,7 @@
 using ICities;
 using ColossalFramework;
 
-namespace AutoBudget
+namespace Autobudget
 {
     public class Threading: ThreadingExtensionBase
     {

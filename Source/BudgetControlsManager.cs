@@ -3,7 +3,7 @@ using ColossalFramework.UI;
 using UnityEngine;
 using ICities;
 
-namespace AutoBudget
+namespace Autobudget
 {
     public static class BudgetControlsManager
     {

@@ -3,7 +3,7 @@ using System.IO;
 using System.Xml.Serialization;
 using System.Collections.Generic;
 
-namespace AutoBudget   
+namespace Autobudget   
 {
     public class AutobudgetObjectsContainer
     {
