@@ -1,12 +1,12 @@
 # Total Autobudget (mod for Cities Skylines)
 
-This mod enables budget autotuning for most of your city’s services.
+This mod enables budget autotuning for the most of your city’s services.
 
 The goal of this mod is to optimize the city budget, prevent blackouts or water outages due to production fluctuations, set target values for some services (such as education), and reduce the player’s burden of budget micromanagement. Also it is very helpful if you are playing at hard difficulty settings, such as vanilla hard mod or zenya’s difficulty tuning mod.
 
 Autobudget target services:
 - Electricity
-- Water, Sewage, and Heating
+- Water, Sewage
 - Garbage
 - Healthcare and Deathcare
 - Education
@@ -14,8 +14,9 @@ Autobudget target services:
 - Fire service and Disaster response
 - Road maintenance and Snow dumps
 - Taxi
+- Mail
 
-How to enable or disable autobudget?
+How to enable or disable autobudget for a particular service?
 - In the mod options.
 - In the budget tab of the economy panel. There are checkboxes near every autotunable items.
 - In case you manually move a budget item slider, the autobudget for this item will be automatically disabled.
@@ -45,19 +46,13 @@ Electricity autobudget will not work properly if you have two or more separate a
 Set how much production should exceed consumption (in percentage). 3% or more is usually enough to avoid outages. 1%-2% is good to decrease expenses but may cause short-time outages in some parts of your city.
 
 **Target water storage**\
-When water storage tanks are filled more than this value, water consumption will not be taken into account in calculation of the budget.
+When water storage tanks are filled more than this value, the water budget buffer decreases by 1 per 10% of the water storage excess.
 
 **Maximum budget**\
 Set the maximum value of water and sewage budget. 130-140% is good only for very small towns, 120-125% is recommended if you have two or more pump stations.
 
 **Autopause when budget is too high**\
 When the water / sewage budget raises up to the maximum value, the game will automatically pause and switch to the water and sewage info view mode. You can unpause game and continue playing ignoring lack of water or sewage capacity - the game will not autopause any more until the budget drops and raises again.
-
-**Increase budget if not enough heating**\
-If some of your buildings have heating problems, the budget increases until the heating problems disappear or the budget reaches the maximum value (see the next option).
-
-**Max heating budget**\
-Budget rising due to heating problems will never exceed this value.
 
 *Note*\
 Water / sewage / heating autobudget will not work properly if you have two or more separate areas in your city. Connect the separated areas with pipes or disable water and sewage autobudget in this case.
