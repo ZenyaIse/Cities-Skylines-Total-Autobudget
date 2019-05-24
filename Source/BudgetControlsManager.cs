@@ -37,7 +37,7 @@ namespace Autobudget
             {
                 base.Awake();
 
-                this.position = new Vector3(45, -4);
+                UpdatePosition();
                 this.size = new Vector2(30f, 40f);
 
                 // Enable/disable checkbox
@@ -70,6 +70,11 @@ namespace Autobudget
                         BudgetControlsManager.showOptionsPanel(budgetItemName);
                     }
                 };
+            }
+
+            public void UpdatePosition()
+            {
+                this.position = new Vector3(45, -4);
             }
 
             public void SetName(string itemName)
@@ -183,7 +188,11 @@ namespace Autobudget
         {
             if (isAutobudgetItemControlsCreated())
             {
-                if (!Singleton<AutobudgetManager>.instance.container.IsCreateControlsOnBudgetPanel)
+                if (Singleton<AutobudgetManager>.instance.container.IsCreateControlsOnBudgetPanel)
+                {
+                    updateControlsPositions();
+                }
+                else
                 {
                     removeControls();
                 }
@@ -228,6 +237,24 @@ namespace Autobudget
                                 });
                             }
                         }
+                    }
+                }
+            }
+        }
+
+        private static void updateControlsPositions()
+        {
+            UIPanel budgetPanel = getBudgetPanel();
+            if (budgetPanel != null)
+            {
+                AutobudgetObjectsContainer c = Singleton<AutobudgetManager>.instance.container;
+
+                foreach (AutobudgetBase obj in c.AllAutobudgetObjects)
+                {
+                    AutobudgetItemPanel autobudgetItem = budgetPanel.Find<AutobudgetItemPanel>(AutobudgetItemPanel.GetControlNameFromItemName(obj.GetBudgetItemName()));
+                    if (autobudgetItem != null)
+                    {
+                        autobudgetItem.UpdatePosition();
                     }
                 }
             }
