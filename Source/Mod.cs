@@ -11,7 +11,7 @@ namespace Autobudget
     {
         public static string ModNameEng = "Total Autobudget";
         public static string LogMsgPrefix = ">>> " + ModNameEng + ": ";
-        public static string Version = "2019/5/23";
+        public static string Version = "2019/5/25";
 
         private bool freezeUI = false;
 
@@ -185,7 +185,7 @@ namespace Autobudget
                 BudgetControlsManager.UpdateControls();
             });
 
-            addLabelToSlider(UI_Electricity_Buffer = (UISlider)electricityGroup.AddSlider("Buffer", 0, 5, 1, am.container.AutobudgetElectricity.AutobudgetBuffer, delegate (float val)
+            addLabelToSlider(UI_Electricity_Buffer = (UISlider)electricityGroup.AddSlider("Buffer", 0, 10, 1, am.container.AutobudgetElectricity.AutobudgetBuffer, delegate (float val)
             {
                 if (!freezeUI) am.container.AutobudgetElectricity.AutobudgetBuffer = (int)val;
             }), "%");
@@ -219,7 +219,7 @@ namespace Autobudget
                 BudgetControlsManager.UpdateControls();
             });
 
-            addLabelToSlider(UI_Water_Buffer = (UISlider)waterGroup.AddSlider("Buffer", 0, 5, 1, am.container.AutobudgetWater.AutobudgetBuffer, delegate (float val)
+            addLabelToSlider(UI_Water_Buffer = (UISlider)waterGroup.AddSlider("Buffer", 0, 10, 1, am.container.AutobudgetWater.AutobudgetBuffer, delegate (float val)
             {
                 if (!freezeUI) am.container.AutobudgetWater.AutobudgetBuffer = (int)val;
             }), "%");
