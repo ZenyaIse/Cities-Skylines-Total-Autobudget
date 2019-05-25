@@ -210,7 +210,7 @@ namespace Autobudget
 
             #region Water, sewage, and heating
 
-            UIHelperBase waterGroup = helper.AddGroup("Water, sewage, and heating");
+            UIHelperBase waterGroup = helper.AddGroup("Water and sewage");
 
             UI_Water_Enabled = (UICheckBox)waterGroup.AddCheckbox("Enable", am.container.AutobudgetWater.Enabled, delegate (bool isChecked)
             {
