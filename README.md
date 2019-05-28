@@ -67,7 +67,7 @@ Set the maximum value of garbage budget. 115-120% is recommended.
 If you have productive garbage facilities (recycling center or incineration plant) and at least one of them is piled with garbage more than this value, the garbage budget will be raised to the maximum to speed up the garbage processing rate. 70-90% is recommended.
 
 *Note*\
-The mod will try to set the budget so that at least one garbage track is waiting in each of the garbage facilities.
+The mod will try to set the budget so that at least one garbage truck is waiting in each of the garbage facilities.
 
 
 ### Healthcare and Deathcare
@@ -114,8 +114,8 @@ Set the minimum value of fire service budget.
 **Maximum budget**\
 Set the maximum value of fire service budget.
 
-**Minimum tracks waiting**\
-Set the minimum number of tracks waiting in each of the fire stations or disaster response buildings.
+**Minimum trucks waiting**\
+Set the minimum number of trucks waiting in each of the fire stations or disaster response buildings.
 
 
 ### Road maintenance and snow dumps
@@ -146,7 +146,7 @@ Set the maximum value of taxi budget.
 
 **Taxis waiting in depots**\
 **Taxis waiting at stands**\
-Set the target number of taxis waiting in depots and at taxi stands. These are averaged target numbers. The actual numbers is very dependant on the depots and taxi stands placement.
+Set the target number of taxis waiting in depots and at taxi stands. These are averaged target numbers. The actual numbers is very dependent on the depots and taxi stands placement.
 
 Steam workshop page:\
 https://steamcommunity.com/sharedfiles/filedetails/?id=1541897355
