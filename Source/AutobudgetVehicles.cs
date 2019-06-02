@@ -157,7 +157,7 @@ namespace Autobudget
             return budget;
         }
 
-        protected int getBudgetForVehicles(Type AIType, int vehiclesExcessNum, int minBudget, int maxBudget)
+        protected int getBudgetForVehicles(Type AIType, int vehiclesExcessNum, int minBudget, int maxBudget, ItemClass.Service bldService = ItemClass.Service.None)
         {
             if (!Singleton<BuildingManager>.exists) return 100;
 
@@ -167,11 +167,18 @@ namespace Autobudget
             int newBudget = minBudget;
             int targetBldCount = 0;
 
+            if (bldService == ItemClass.Service.None)
+            {
+                bldService = GetService();
+            }
+
             BuildingManager bm = Singleton<BuildingManager>.instance;
-            foreach (ushort n in ServiceBuildingNs(GetService()))
+            foreach (ushort n in ServiceBuildingNs(bldService))
             {
                 Building bld = bm.m_buildings.m_buffer[(int)n];
                 if ((bld.m_flags & Building.Flags.Active) == 0) continue;
+
+                //Debug.Log(bld.Info.m_buildingAI.GetType().ToString());
 
                 if (bld.Info.m_buildingAI.GetType() == AIType)
                 {

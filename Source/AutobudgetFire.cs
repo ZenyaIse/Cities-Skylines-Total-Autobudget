@@ -64,7 +64,8 @@ namespace Autobudget
         protected override void setAutobudget()
         {
             int fireBudget = getBudgetForVehicles(typeof(FireStationAI), FireTrucksExcessNum, BudgetMinValue, BudgetMaxValue);
-            int disasterBudget = getBudgetForVehicles(typeof(DisasterResponseBuildingAI), 1, BudgetMinValue, BudgetMaxValue);
+            int disasterBudget = getBudgetForVehicles(typeof(DisasterResponseBuildingAI), 1, BudgetMinValue, BudgetMaxValue, ItemClass.Service.Disaster);
+            //Debug.Log("fireBudget: " + fireBudget + ", disasterBudget: " + disasterBudget);
 
             setBudget(Mathf.Max(fireBudget, disasterBudget));
         }
