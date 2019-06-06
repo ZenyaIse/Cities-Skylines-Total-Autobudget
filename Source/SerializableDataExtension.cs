@@ -9,7 +9,7 @@ namespace Autobudget
     public class SerializableDataExtension : ISerializableDataExtension
     {
         public const string DataID = "ComprehensiveAutoBudgetMod";
-        public const uint DataVersion = 4;
+        public const uint DataVersion = 5;
         public static uint LastReadDataVersion = 0;
         private ISerializableData serializedData;
 
@@ -43,6 +43,7 @@ namespace Autobudget
                     DataSerializer.Deserialize<AutobudgetHealthcare.Data>(stream, DataSerializer.Mode.Memory);
                     DataSerializer.Deserialize<AutobudgetEducation.Data>(stream, DataSerializer.Mode.Memory);
                     DataSerializer.Deserialize<AutobudgetPolice.Data>(stream, DataSerializer.Mode.Memory);
+                    if (LastReadDataVersion >= 5) DataSerializer.Deserialize<AutobudgetIndustry.Data>(stream, DataSerializer.Mode.Memory);
                     DataSerializer.Deserialize<AutobudgetFire.Data>(stream, DataSerializer.Mode.Memory);
                     DataSerializer.Deserialize<AutobudgetRoad.Data>(stream, DataSerializer.Mode.Memory);
                     if (LastReadDataVersion >= 4) DataSerializer.Deserialize<AutobudgetPost.Data>(stream, DataSerializer.Mode.Memory);
@@ -72,6 +73,7 @@ namespace Autobudget
                     DataSerializer.Serialize(stream, DataSerializer.Mode.Memory, DataVersion, new AutobudgetHealthcare.Data());
                     DataSerializer.Serialize(stream, DataSerializer.Mode.Memory, DataVersion, new AutobudgetEducation.Data());
                     DataSerializer.Serialize(stream, DataSerializer.Mode.Memory, DataVersion, new AutobudgetPolice.Data());
+                    DataSerializer.Serialize(stream, DataSerializer.Mode.Memory, DataVersion, new AutobudgetIndustry.Data());
                     DataSerializer.Serialize(stream, DataSerializer.Mode.Memory, DataVersion, new AutobudgetFire.Data());
                     DataSerializer.Serialize(stream, DataSerializer.Mode.Memory, DataVersion, new AutobudgetRoad.Data());
                     DataSerializer.Serialize(stream, DataSerializer.Mode.Memory, DataVersion, new AutobudgetPost.Data());

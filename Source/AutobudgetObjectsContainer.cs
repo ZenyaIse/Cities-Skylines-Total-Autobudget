@@ -16,6 +16,7 @@ namespace Autobudget
         public AutobudgetEducation AutobudgetEducation;
         public AutobudgetPolice AutobudgetPolice;
         public AutobudgetFire AutobudgetFire;
+        public AutobudgetIndustry AutobudgetIndustry;
         public AutobudgetRoad AutobudgetRoad;
         public AutobudgetPost AutobudgetPost;
         public AutobudgetTaxi AutobudgetTaxi;
@@ -41,6 +42,7 @@ namespace Autobudget
             if (AutobudgetEducation == null) AutobudgetEducation = new AutobudgetEducation();
             if (AutobudgetPolice == null) AutobudgetPolice = new AutobudgetPolice();
             if (AutobudgetFire == null) AutobudgetFire = new AutobudgetFire();
+            if (AutobudgetIndustry == null) AutobudgetIndustry = new AutobudgetIndustry();
             if (AutobudgetRoad == null) AutobudgetRoad = new AutobudgetRoad();
             if (AutobudgetPost == null) AutobudgetPost = new AutobudgetPost();
             if (AutobudgetTaxi == null) AutobudgetTaxi = new AutobudgetTaxi();
@@ -53,6 +55,7 @@ namespace Autobudget
             AllAutobudgetObjects.Add(AutobudgetEducation);
             AllAutobudgetObjects.Add(AutobudgetPolice);
             AllAutobudgetObjects.Add(AutobudgetFire);
+            AllAutobudgetObjects.Add(AutobudgetIndustry);
             AllAutobudgetObjects.Add(AutobudgetRoad);
             AllAutobudgetObjects.Add(AutobudgetPost);
             AllAutobudgetObjects.Add(AutobudgetTaxi);

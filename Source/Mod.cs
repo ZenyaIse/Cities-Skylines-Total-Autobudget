@@ -11,7 +11,7 @@ namespace Autobudget
     {
         public static string ModNameEng = "Total Autobudget";
         public static string LogMsgPrefix = ">>> " + ModNameEng + ": ";
-        public static string Version = "2019/5/25";
+        public static string Version = "2019/6/6";
 
         private bool freezeUI = false;
 
@@ -47,6 +47,10 @@ namespace Autobudget
         private UISlider UI_Fire_MinBudget;
         private UISlider UI_Fire_MaxBudget;
         private UISlider UI_Fire_TrucksExcessNum;
+
+        private UICheckBox UI_Industry_Enabled;
+        private UISlider UI_Industry_MinBudget;
+        private UISlider UI_Industry_MaxBudget;
 
         private UICheckBox UI_Road_Enabled;
         private UISlider UI_Road_MinBudget;
@@ -128,6 +132,10 @@ namespace Autobudget
             UI_Fire_MinBudget.value = c.AutobudgetFire.BudgetMinValue;
             UI_Fire_MaxBudget.value = c.AutobudgetFire.BudgetMaxValue;
             UI_Fire_TrucksExcessNum.value = c.AutobudgetFire.FireTrucksExcessNum;
+
+            UI_Industry_Enabled.isChecked = c.AutobudgetIndustry.Enabled;
+            UI_Industry_MinBudget.value = c.AutobudgetIndustry.BudgetMinValue;
+            UI_Industry_MaxBudget.value = c.AutobudgetIndustry.BudgetMaxValue;
 
             UI_Road_Enabled.isChecked = c.AutobudgetRoad.Enabled;
             UI_Road_MinBudget.value = c.AutobudgetRoad.BudgetMinValue;
@@ -397,6 +405,34 @@ namespace Autobudget
                 if (!freezeUI) am.container.AutobudgetFire.FireTrucksExcessNum = (int)val;
             }), " trucks");
             UI_Fire_TrucksExcessNum.tooltip = "Minimum number of trucks waiting in each of the fire stations";
+
+            helper.AddSpace(20);
+
+            #endregion
+
+
+            #region Industry
+
+            UIHelperBase industryGroup = helper.AddGroup("Industry");
+
+            UI_Industry_Enabled = (UICheckBox)industryGroup.AddCheckbox("Enable", am.container.AutobudgetIndustry.Enabled, delegate (bool isChecked)
+            {
+                if (freezeUI) return;
+                am.container.AutobudgetIndustry.Enabled = isChecked;
+                BudgetControlsManager.UpdateControls();
+            });
+
+            addLabelToSlider(UI_Industry_MinBudget = (UISlider)industryGroup.AddSlider("Minimum budget", 50, 150, 1, am.container.AutobudgetIndustry.BudgetMinValue, delegate (float val)
+            {
+                if (!freezeUI) am.container.AutobudgetIndustry.BudgetMinValue = (int)val;
+            }), "%");
+            UI_Industry_MinBudget.tooltip = "Budget will not be lowered below this value";
+
+            addLabelToSlider(UI_Industry_MaxBudget = (UISlider)industryGroup.AddSlider("Maximum budget", 50, 150, 1, am.container.AutobudgetIndustry.BudgetMaxValue, delegate (float val)
+            {
+                if (!freezeUI) am.container.AutobudgetIndustry.BudgetMaxValue = (int)val;
+            }), "%");
+            UI_Industry_MaxBudget.tooltip = "Budget will not be raised higher then this value";
 
             helper.AddSpace(20);
 

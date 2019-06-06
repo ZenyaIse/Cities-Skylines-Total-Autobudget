@@ -7,7 +7,7 @@
     <ProjectGuid>{EE2C3384-E656-496C-9B64-41E15EB2E46C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AutoBudget</RootNamespace>
+    <RootNamespace>Autobudget</RootNamespace>
     <AssemblyName>AutoBudget</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -58,6 +58,7 @@
     <Compile Include="AutobudgetFire.cs" />
     <Compile Include="AutobudgetGarbage.cs" />
     <Compile Include="AutobudgetHealthcare.cs" />
+    <Compile Include="AutobudgetIndustry.cs" />
     <Compile Include="AutobudgetNoVehicles.cs" />
     <Compile Include="AutobudgetPolice.cs" />
     <Compile Include="AutobudgetPost.cs" />

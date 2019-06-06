@@ -48,6 +48,13 @@ namespace Autobudget
             {
                 return countVehiclesInUse(ref bld, TransferManager.TransferReason.Mail);
             }
+            if (bld.Info.m_buildingAI is WarehouseAI)
+            {
+                //int t = countVehiclesInUse(ref bld, (bld.Info.m_buildingAI as WarehouseAI).m_storageType);
+                int t = countVehiclesInUse(ref bld, TransferManager.TransferReason.None);
+                //Debug.Log("m_storageType: " + (bld.Info.m_buildingAI as WarehouseAI).m_storageType.ToString() + ", countVehiclesInUse: " + t.ToString());
+                return t;
+            }
 
             return 0;
         }
@@ -61,7 +68,11 @@ namespace Autobudget
             int counter = 0;
             while (n != 0)
             {
-                if ((TransferManager.TransferReason)instance.m_vehicles.m_buffer[(int)n].m_transferType == reason)
+                //if (reason == TransferManager.TransferReason.None)
+                //    Debug.Log("m_transferType: " + ((TransferManager.TransferReason)instance.m_vehicles.m_buffer[(int)n].m_transferType).ToString());
+
+                // If reason is None, count all vehicles
+                if (reason == TransferManager.TransferReason.None || (TransferManager.TransferReason)instance.m_vehicles.m_buffer[(int)n].m_transferType == reason)
                 {
                     vehiclesCount++;
                 }
@@ -117,6 +128,10 @@ namespace Autobudget
             if (bld.Info.m_buildingAI is PostOfficeAI)
             {
                 return (bld.Info.m_buildingAI as PostOfficeAI).m_postVanCount;
+            }
+            if (bld.Info.m_buildingAI is WarehouseAI)
+            {
+                return (bld.Info.m_buildingAI as WarehouseAI).m_truckCount;
             }
 
             throw new Exception("getNormalVehicleCapacity from " + bld.Info.name + " is not implemented.");
