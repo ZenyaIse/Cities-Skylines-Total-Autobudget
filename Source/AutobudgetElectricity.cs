@@ -97,7 +97,7 @@ namespace Autobudget
 
             if (newBudget == BudgetMaxValue && PauseWhenBudgetTooHigh && !isPausedRecently)
             {
-                SetPause();
+                Helper.SetPause();
                 isPausedRecently = true;
                 Singleton<InfoManager>.instance.SetCurrentMode(InfoManager.InfoMode.Electricity, InfoManager.SubInfoMode.Default);
             }

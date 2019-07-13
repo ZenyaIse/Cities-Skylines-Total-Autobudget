@@ -197,7 +197,7 @@ namespace Autobudget
             // Pause if the water budget is too high
             if (newBudget >= BudgetMaxValue && PauseWhenBudgetTooHigh && !isPausedRecently)
             {
-                SetPause();
+                Helper.SetPause();
                 isPausedRecently = true;
                 Singleton<InfoManager>.instance.SetCurrentMode(InfoManager.InfoMode.Water, InfoManager.SubInfoMode.Default);
             }

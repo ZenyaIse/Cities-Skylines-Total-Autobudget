@@ -1,19 +1,10 @@
 ﻿using System;
-using ColossalFramework;
 
 namespace Autobudget
 {
     public abstract class AutobudgetNoVehicles : AutobudgetBase
     {
         protected bool isPausedRecently = false;
-
-        protected void SetPause()
-        {
-            if (Singleton<SimulationManager>.exists)
-            {
-                Singleton<SimulationManager>.instance.SimulationPaused = true;
-            }
-        }
 
         protected float getBufferCoefficient(int bufferPercent)
         {
