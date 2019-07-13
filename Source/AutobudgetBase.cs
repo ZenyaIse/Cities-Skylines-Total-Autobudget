@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ColossalFramework;
 using ColossalFramework.UI;
 
@@ -12,6 +13,8 @@ namespace Autobudget
 
         private int prevBudgetDay = 0;
         private int prevBudgetNight = 0;
+
+        protected bool isPausedRecently = false;
 
         public bool Enabled = true;
 
@@ -106,6 +109,106 @@ namespace Autobudget
                     }
                 }
             }
+        }
+
+        protected int getBudgetForVehicles(Type AIType, int vehiclesExcessNum, int minBudget, int maxBudget, ItemClass.Service bldService = ItemClass.Service.None)
+        {
+            if (!Singleton<BuildingManager>.exists) return 100;
+
+            int budget = Singleton<EconomyManager>.instance.GetBudget(GetService(), GetSubService(), Singleton<SimulationManager>.instance.m_isNightTime);
+            int productionRate = PlayerBuildingAI.GetProductionRate(100, budget);
+
+            int newBudget = minBudget;
+            int targetBldCount = 0;
+
+            if (bldService == ItemClass.Service.None)
+            {
+                bldService = GetService();
+            }
+
+            BuildingManager bm = Singleton<BuildingManager>.instance;
+            foreach (ushort n in ServiceBuildingNs(bldService))
+            {
+                Building bld = bm.m_buildings.m_buffer[(int)n];
+                if ((bld.m_flags & Building.Flags.Active) == 0) continue;
+
+                //Debug.Log(bld.Info.m_buildingAI.GetType().ToString());
+
+                if (bld.Info.m_buildingAI.GetType() == AIType)
+                {
+                    int normalVehicleCapacity = Helper.GetNormalVehicleCapacity(ref bld);
+                    int currentVehicleCapacity = (productionRate * normalVehicleCapacity + 99) / 100;
+                    int vehiclesInUse = Helper.CountVehiclesInUse(ref bld);
+
+                    if (vehiclesInUse + vehiclesExcessNum == currentVehicleCapacity)
+                    {
+                        // Perfect number of vehicles
+                        newBudget = Math.Max(newBudget, budget);
+                    }
+                    else
+                    {
+                        int targetVehiclesCount = vehiclesInUse + vehiclesExcessNum;
+                        int bldTargetBudget = Helper.GetMinimumBudgetToGetVehicles(normalVehicleCapacity, targetVehiclesCount, maxBudget);
+                        newBudget = Math.Max(newBudget, bldTargetBudget);
+                    }
+
+                    targetBldCount++;
+                }
+            }
+            //Debug.Log(string.Format("New budget: {0}", newBudget));
+
+            if (targetBldCount > 0)
+            {
+                return newBudget;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+
+        protected float getBufferCoefficient(int bufferPercent)
+        {
+            return 1 + 0.01f * bufferPercent;
+        }
+
+        protected int calculateNewBudget(int capacity, int consumption, int budget, float bufferCoefficient)
+        {
+            if (capacity <= 0) return 50;
+
+            float normalCapacity = capacity / getProductionRate(budget);
+            return getBudgetFromProductionRate(bufferCoefficient * consumption / normalCapacity);
+        }
+
+        protected float getProductionRate(int budget)
+        {
+            float b = budget / 100.0f;
+
+            if (b < 1f) return b * b;
+            if (b >= 1.5f) return 1.25f;
+            if (b > 1f) return 3 * b - b * b - 1;
+
+            return b;
+        }
+
+        protected int getBudgetFromProductionRate(float rate)
+        {
+            if (rate <= 0.25f) return 50;
+            if (rate >= 1.25f) return 150;
+
+            float b = 1.0f;
+
+            if (rate < 1)
+            {
+                b = (float)Math.Sqrt(rate);
+            }
+
+            if (rate > 1)
+            {
+                b = (3 - (float)Math.Sqrt(5 - 4 * rate)) / 2;
+            }
+
+            return (int)(b * 100 + 0.49999f);
         }
     }
 }

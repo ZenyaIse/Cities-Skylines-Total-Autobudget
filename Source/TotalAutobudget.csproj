@@ -59,11 +59,9 @@
     <Compile Include="AutobudgetGarbage.cs" />
     <Compile Include="AutobudgetHealthcare.cs" />
     <Compile Include="AutobudgetIndustry.cs" />
-    <Compile Include="AutobudgetNoVehicles.cs" />
     <Compile Include="AutobudgetPolice.cs" />
     <Compile Include="AutobudgetPost.cs" />
     <Compile Include="AutobudgetRoad.cs" />
-    <Compile Include="AutobudgetVehicles.cs" />
     <Compile Include="AutobudgetWater.cs" />
     <Compile Include="AutobudgetManager.cs" />
     <Compile Include="AutobudgetObjectsContainer.cs" />

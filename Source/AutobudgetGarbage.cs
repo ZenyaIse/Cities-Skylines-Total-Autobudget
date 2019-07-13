@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Autobudget
 {
-    public class AutobudgetGarbage : AutobudgetVehicles
+    public class AutobudgetGarbage : AutobudgetBase
     {
         public class Data : IDataContainer
         {
