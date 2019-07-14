@@ -66,7 +66,7 @@ namespace Autobudget
             int taxiDepotCount = 0;
             int taxiStandCount = 0;
 
-            foreach (ushort n in ServiceBuildingNs(ItemClass.Service.PublicTransport))
+            foreach (ushort n in Helper.ServiceBuildingNs(ItemClass.Service.PublicTransport))
             {
                 Building bld = Singleton<BuildingManager>.instance.m_buildings.m_buffer[(int)n];
                 if ((bld.m_flags & Building.Flags.Active) == 0) continue;

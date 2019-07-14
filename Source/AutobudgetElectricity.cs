@@ -116,7 +116,7 @@ namespace Autobudget
 
             BuildingManager bm = Singleton<BuildingManager>.instance;
 
-            foreach (ushort n in ServiceBuildingNs(ItemClass.Service.Garbage))
+            foreach (ushort n in Helper.ServiceBuildingNs(ItemClass.Service.Garbage))
             {
                 Building bld = bm.m_buildings.m_buffer[(int)n];
                 if ((bld.m_flags & Building.Flags.Active) == 0) continue;

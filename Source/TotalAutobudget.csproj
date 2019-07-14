@@ -73,6 +73,7 @@
     <Compile Include="AutobudgetTaxi.cs" />
     <Compile Include="SerializableDataExtension.cs" />
     <Compile Include="Threading.cs" />
+    <Compile Include="VehiclesHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

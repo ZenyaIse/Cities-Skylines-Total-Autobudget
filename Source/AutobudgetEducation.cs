@@ -92,7 +92,7 @@ namespace Autobudget
             SimulationManager sm = Singleton<SimulationManager>.instance;
 
             int currentBudget = em.GetBudget(ItemClass.Service.Education, ItemClass.SubService.None, sm.m_isNightTime);
-            float currentProductionRate = getProductionRate(currentBudget);
+            float currentProductionRate = Helper.GetProductionRateFromBudget(currentBudget);
 
             // Convert to the normal capacity
             capacity1 = (int)(capacity1 / currentProductionRate + 0.5f);
@@ -114,7 +114,7 @@ namespace Autobudget
 
             float targetProductionRate = Math.Max(targetProductionRate1, targetProductionRate2);
 
-            int newBudget = getBudgetFromProductionRate(targetProductionRate);
+            int newBudget = Helper.GetBudgetFromProductionRate(targetProductionRate);
 
             //Debug.Log(string.Format("targetProductionRate: {0}, newBudget: {1}", targetProductionRate, newBudget));
 
