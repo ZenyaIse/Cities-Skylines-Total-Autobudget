@@ -191,8 +191,13 @@ namespace Autobudget
         protected override void setAutobudget()
         {
             int newBudget = getWaterBudget();
+            int vehicleBudget = getBudgetForVehicles(typeof(WaterFacilityAI), 2, 50, BudgetMaxValue);
+            int curBudget = Singleton<EconomyManager>.instance.GetBudget(ItemClass.Service.Water, ItemClass.SubService.None, Singleton<SimulationManager>.instance.m_isNightTime);
 
-            if (newBudget == -1) return;
+            if (newBudget == -1 && vehicleBudget <= curBudget)
+            {
+                return;
+            }
 
             // Pause if the water budget is too high
             if (newBudget >= BudgetMaxValue && PauseWhenBudgetTooHigh && !isPausedRecently)
@@ -206,6 +211,11 @@ namespace Autobudget
             if (newBudget < BudgetMaxValue)
             {
                 isPausedRecently = false;
+            }
+
+            if (vehicleBudget > newBudget)
+            {
+                newBudget = vehicleBudget;
             }
 
             setBudget(newBudget);
