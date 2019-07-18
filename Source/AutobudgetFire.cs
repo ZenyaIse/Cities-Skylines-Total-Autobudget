@@ -1,4 +1,5 @@
-﻿using ColossalFramework;
+﻿using System;
+using ColossalFramework;
 using ColossalFramework.IO;
 using UnityEngine;
 
@@ -64,10 +65,11 @@ namespace Autobudget
         protected override void setAutobudget()
         {
             int fireBudget = getBudgetForVehicles(typeof(FireStationAI), FireTrucksExcessNum, BudgetMinValue, BudgetMaxValue);
-            int disasterBudget = getBudgetForVehicles(typeof(DisasterResponseBuildingAI), 1, BudgetMinValue, BudgetMaxValue, ItemClass.Service.Disaster);
-            //Debug.Log("fireBudget: " + fireBudget + ", disasterBudget: " + disasterBudget);
+            int disasterBudget1 = getBudgetForVehicles(typeof(DisasterResponseBuildingAI), 1, BudgetMinValue, BudgetMaxValue, false, ItemClass.Service.Disaster);
+            int disasterBudget2 = getBudgetForVehicles(typeof(DisasterResponseBuildingAI), 1, BudgetMinValue, BudgetMaxValue, true, ItemClass.Service.Disaster);
+            int helicopterBudget = getBudgetForVehicles(typeof(HelicopterDepotAI), 1, BudgetMinValue, BudgetMaxValue);
 
-            setBudget(Mathf.Max(fireBudget, disasterBudget));
+            setBudget(Math.Max(Math.Max(fireBudget, disasterBudget1), Math.Max(disasterBudget2, helicopterBudget)));
         }
     }
 }

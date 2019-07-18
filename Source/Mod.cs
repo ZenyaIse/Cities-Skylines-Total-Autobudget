@@ -11,7 +11,7 @@ namespace Autobudget
     {
         public static string ModNameEng = "Total Autobudget";
         public static string LogMsgPrefix = ">>> " + ModNameEng + ": ";
-        public static string Version = "2019/6/6";
+        public static string Version = "2019/7/19";
 
         private bool freezeUI = false;
 

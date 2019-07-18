@@ -1,4 +1,5 @@
-﻿using ColossalFramework;
+﻿using System;
+using ColossalFramework;
 using ColossalFramework.IO;
 using UnityEngine;
 
@@ -62,8 +63,9 @@ namespace Autobudget
         {
             int healthcareBudget = getBudgetForVehicles(typeof(HospitalAI), 1, BudgetMinValue, BudgetMaxValue);
             int deathcareBudget = getBudgetForVehicles(typeof(CemeteryAI), 1, BudgetMinValue, BudgetMaxValue);
+            int helicopterBudget = getBudgetForVehicles(typeof(HelicopterDepotAI), 1, BudgetMinValue, BudgetMaxValue);
 
-            setBudget(Mathf.Max(healthcareBudget, deathcareBudget));
+            setBudget(Math.Max(Math.Max(healthcareBudget, deathcareBudget), helicopterBudget));
         }
     }
 }

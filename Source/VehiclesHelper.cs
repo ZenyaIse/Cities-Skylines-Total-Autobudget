@@ -50,9 +50,7 @@ namespace Autobudget
             }
             if (bld.Info.m_buildingAI is WarehouseAI)
             {
-                //int t = countVehiclesInUse(ref bld, (bld.Info.m_buildingAI as WarehouseAI).m_storageType);
                 return isSecondary ? 0 : CountVehiclesInUse(ref bld, TransferManager.TransferReason.None);
-                //Debug.Log("m_storageType: " + (bld.Info.m_buildingAI as WarehouseAI).m_storageType.ToString() + ", countVehiclesInUse: " + t.ToString());
             }
             if (bld.Info.m_buildingAI is WaterFacilityAI)
             {

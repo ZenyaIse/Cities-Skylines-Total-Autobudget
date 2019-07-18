@@ -90,7 +90,8 @@ namespace Autobudget
             Singleton<EconomyManager>.instance.SetBudget(GetService(), GetSubService(), newBudget, sm.m_isNightTime);
         }
 
-        protected int getBudgetForVehicles(Type AIType, int vehiclesExcessNum, int minBudget, int maxBudget, ItemClass.Service bldService = ItemClass.Service.None)
+        protected int getBudgetForVehicles(Type AIType, int vehiclesExcessNum, int minBudget, int maxBudget,
+            bool isSecondary = false, ItemClass.Service bldService = ItemClass.Service.None)
         {
             if (!Singleton<BuildingManager>.exists) return 100;
 
@@ -111,13 +112,11 @@ namespace Autobudget
                 Building bld = bm.m_buildings.m_buffer[(int)n];
                 if ((bld.m_flags & Building.Flags.Active) == 0) continue;
 
-                //Debug.Log(bld.Info.m_buildingAI.GetType().ToString());
-
                 if (bld.Info.m_buildingAI.GetType() == AIType)
                 {
-                    int normalVehicleCapacity = VehiclesHelper.GetNormalVehicleCapacity(ref bld);
+                    int normalVehicleCapacity = VehiclesHelper.GetNormalVehicleCapacity(ref bld, isSecondary);
                     int currentVehicleCapacity = (productionRate * normalVehicleCapacity + 99) / 100;
-                    int vehiclesInUse = VehiclesHelper.CountVehiclesInUse(ref bld);
+                    int vehiclesInUse = VehiclesHelper.CountVehiclesInUse(ref bld, isSecondary);
 
                     if (vehiclesInUse + vehiclesExcessNum == currentVehicleCapacity)
                     {
@@ -134,7 +133,6 @@ namespace Autobudget
                     targetBldCount++;
                 }
             }
-            //Debug.Log(string.Format("New budget: {0}", newBudget));
 
             if (targetBldCount > 0)
             {
