@@ -6,12 +6,13 @@ The goal of this mod is to optimize the city budget, prevent blackouts or water 
 
 Autobudget target services:
 - Electricity
-- Water, Sewage
+- Water, Sewage, Pumping facility
 - Garbage
 - Healthcare and Deathcare
 - Education
 - Police
 - Fire service and Disaster response
+- Industry and Warehouses
 - Road maintenance and Snow dumps
 - Taxi
 - Mail
@@ -122,6 +123,18 @@ Set the minimum number of trucks waiting in each of the fire stations.
 
 *Note*\
 Mod is trying to set the budget value so that there is at least one truck and one helicopter waiting in each of disaster response buildings, and at least one fire helicopter waiting in each of the heli depot.
+
+
+### Industry
+
+**Minimum budget**\
+Set the minimum value of industry budget.
+
+**Maximum budget**\
+Set the maximum value of industry budget.
+
+*Note*\
+Mod is trying to set the budget value so that there is at least one truck waiting in each of the industry facilities or warehouses.
 
 
 ### Road maintenance and snow dumps
