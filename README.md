@@ -40,7 +40,7 @@ When the electricity autobudget raises up to the maximum value, the game will au
 Electricity autobudget will not work properly if you have two or more separate areas in your city. Connect the separated areas with power lines or disable electricity autobudget in this case.
 
 
-### Water, Sewage, and Heating
+### Water and Sewage
 
 **Buffer**\
 Set how much production should exceed consumption (in percentage). 3% or more is usually enough to avoid outages. 1%-2% is good to decrease expenses but may cause short-time outages in some parts of your city.
@@ -54,8 +54,11 @@ Set the maximum value of water and sewage budget. 130-140% is good only for very
 **Autopause when budget is too high**\
 When the water / sewage budget raises up to the maximum value, the game will automatically pause and switch to the water and sewage info view mode. You can unpause game and continue playing ignoring lack of water or sewage capacity - the game will not autopause any more until the budget drops and raises again.
 
-*Note*\
-Water / sewage / heating autobudget will not work properly if you have two or more separate areas in your city. Connect the separated areas with pipes or disable water and sewage autobudget in this case.
+*Note 1*\
+Water / sewage autobudget will not work properly if you have two or more separate areas in your city. Connect the separated areas with pipes or disable water and sewage autobudget in this case.
+
+*Note 2*\
+Mod is also trying to set the budget value so that there are at least two tank trucks waiting in each of the pumping service building.
 
 
 ### Garbage
@@ -82,7 +85,7 @@ Set the maximum value of healthcare and deathcare budget.
 Setting the minimum budget too low may cause the low land value issue.
 
 *Note 2*\
-Mod is trying to set the budget value so that there is at least one ambulance waiting in each of the hospitals and at least one hearse waiting in each of the deathcare facilities.
+Mod is trying to set the budget value so that there is at least one ambulance waiting in each of the hospitals, at least one medical helicopter waiting in each of the heli depots, and at least one hearse waiting in each of the deathcare facilities.
 
 
 ### Education
@@ -103,7 +106,7 @@ Set the minimum value of police budget.
 Set the maximum value of police budget.
 
 *Note*\
-Mod is trying to set the budget value so that there is at least one patrol car waiting in each of the police stations.
+Mod is trying to set the budget value so that there is at least one patrol car waiting in each of the police stations, and at least one police helicopter waiting in each of the heli depots.
 
 
 ### Fire service and Disaster response
@@ -115,7 +118,10 @@ Set the minimum value of fire service budget.
 Set the maximum value of fire service budget.
 
 **Minimum trucks waiting**\
-Set the minimum number of trucks waiting in each of the fire stations or disaster response buildings.
+Set the minimum number of trucks waiting in each of the fire stations.
+
+*Note*\
+Mod is trying to set the budget value so that there is at least one truck and one helicopter waiting in each of disaster response buildings, and at least one fire helicopter waiting in each of the heli depot.
 
 
 ### Road maintenance and snow dumps
@@ -136,7 +142,7 @@ Setting the minimum budget too low may cause lack of citizens inflow into the ci
 Set the maximum value of post offices budget.
 
 *Note*\
-Mod is trying to set the budget value so that there is at least one post van waiting in each of the post offices.
+Mod is trying to set the budget value so that there is at least one post van and one post truck waiting in each of the post offices.
 
 
 ### Taxi
