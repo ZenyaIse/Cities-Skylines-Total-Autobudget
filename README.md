@@ -7,6 +7,7 @@ The goal of this mod is to optimize the city budget, prevent blackouts or water 
 Autobudget target services:
 - Electricity
 - Water, Sewage, Pumping facility
+- Heating
 - Garbage
 - Healthcare and Deathcare
 - Education
@@ -41,7 +42,7 @@ When the electricity autobudget raises up to the maximum value, the game will au
 Electricity autobudget will not work properly if you have two or more separate areas in your city. Connect the separated areas with power lines or disable electricity autobudget in this case.
 
 
-### Water and Sewage
+### Water, Sewage, Pumping facility
 
 **Buffer**\
 Set how much production should exceed consumption (in percentage). 3% or more is usually enough to avoid outages. 1%-2% is good to decrease expenses but may cause short-time outages in some parts of your city.
@@ -60,6 +61,15 @@ Water / sewage autobudget will not work properly if you have two or more separat
 
 *Note 2*\
 Mod is also trying to set the budget value so that there are at least two tank trucks waiting in each of the pumping service building.
+
+
+### Heating
+
+**Heating plants auto turn on/off**\
+If checked, appropriate number of heating plants are automatically turned on/off depending on the total heating production and consumption.
+
+*Note*\
+Heating autobudget is working different way from other services. Firstly, heating service is connected to water service and cannot be set independently. Secondly, water service is vital, but heating is not. In addition, heating consumption may vary significantly depending on weather. So instead of changing the water budget, this mod turns heating plants on/off.
 
 
 ### Garbage
