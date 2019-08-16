@@ -11,7 +11,7 @@ namespace Autobudget
     {
         public static string ModNameEng = "Total Autobudget";
         public static string LogMsgPrefix = ">>> " + ModNameEng + ": ";
-        public static string Version = "2019/7/19";
+        public static string Version = "2019/8/16";
 
         private bool freezeUI = false;
 
@@ -25,6 +25,7 @@ namespace Autobudget
         private UISlider UI_Water_MaxBudget;
         private UICheckBox UI_Water_AutoPause;
         private UISlider UI_Water_StorageAmount;
+        private UICheckBox UI_Heating_TurnOnOff;
 
         private UICheckBox UI_Garbage_Enabled;
         private UISlider UI_Garbage_MaxBudget;
@@ -110,6 +111,7 @@ namespace Autobudget
             UI_Water_MaxBudget.value = c.AutobudgetWater.BudgetMaxValue;
             UI_Water_AutoPause.isChecked = c.AutobudgetWater.PauseWhenBudgetTooHigh;
             UI_Water_StorageAmount.value = c.AutobudgetWater.TargetWaterStorageRatio;
+            UI_Heating_TurnOnOff.isChecked = c.AutobudgetHeating.Enabled;
 
             UI_Garbage_Enabled.isChecked = c.AutobudgetGarbage.Enabled;
             UI_Garbage_MaxBudget.value = c.AutobudgetGarbage.BudgetMaxValue;
@@ -250,6 +252,17 @@ namespace Autobudget
                 if (!freezeUI) am.container.AutobudgetWater.TargetWaterStorageRatio = (int)val;
             }), "%");
             UI_Water_StorageAmount.tooltip = "When water storage tanks are filled more than this value, the water buffer decreases by 1 per 10% of the water storage excess";
+
+            helper.AddSpace(20);
+
+
+            UIHelperBase heatingGroup = helper.AddGroup("Heating");
+
+            UI_Heating_TurnOnOff = (UICheckBox)heatingGroup.AddCheckbox("Heating plants auto turn on/off", am.container.AutobudgetHeating.Enabled, delegate (bool isChecked)
+            {
+                if (!freezeUI) am.container.AutobudgetHeating.Enabled = isChecked;
+            });
+            UI_Heating_TurnOnOff.tooltip = "Automatically turns heating plants on/off depending on the total heating production and consumption";
 
             helper.AddSpace(20);
 

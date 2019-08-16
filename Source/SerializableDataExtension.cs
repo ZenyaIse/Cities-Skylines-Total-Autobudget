@@ -9,7 +9,7 @@ namespace Autobudget
     public class SerializableDataExtension : ISerializableDataExtension
     {
         public const string DataID = "ComprehensiveAutoBudgetMod";
-        public const uint DataVersion = 5;
+        public const uint DataVersion = 6;
         public static uint LastReadDataVersion = 0;
         private ISerializableData serializedData;
 
@@ -39,6 +39,7 @@ namespace Autobudget
                 {
                     DataSerializer.Deserialize<AutobudgetElectricity.Data>(stream, DataSerializer.Mode.Memory);
                     DataSerializer.Deserialize<AutobudgetWater.Data>(stream, DataSerializer.Mode.Memory);
+                    if (LastReadDataVersion >= 6) DataSerializer.Deserialize<AutobudgetHeating.Data>(stream, DataSerializer.Mode.Memory);
                     DataSerializer.Deserialize<AutobudgetGarbage.Data>(stream, DataSerializer.Mode.Memory);
                     DataSerializer.Deserialize<AutobudgetHealthcare.Data>(stream, DataSerializer.Mode.Memory);
                     DataSerializer.Deserialize<AutobudgetEducation.Data>(stream, DataSerializer.Mode.Memory);
@@ -69,6 +70,7 @@ namespace Autobudget
                 {
                     DataSerializer.Serialize(stream, DataSerializer.Mode.Memory, DataVersion, new AutobudgetElectricity.Data());
                     DataSerializer.Serialize(stream, DataSerializer.Mode.Memory, DataVersion, new AutobudgetWater.Data());
+                    DataSerializer.Serialize(stream, DataSerializer.Mode.Memory, DataVersion, new AutobudgetHeating.Data());
                     DataSerializer.Serialize(stream, DataSerializer.Mode.Memory, DataVersion, new AutobudgetGarbage.Data());
                     DataSerializer.Serialize(stream, DataSerializer.Mode.Memory, DataVersion, new AutobudgetHealthcare.Data());
                     DataSerializer.Serialize(stream, DataSerializer.Mode.Memory, DataVersion, new AutobudgetEducation.Data());

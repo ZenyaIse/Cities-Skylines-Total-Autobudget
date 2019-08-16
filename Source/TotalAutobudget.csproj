@@ -58,6 +58,7 @@
     <Compile Include="AutobudgetFire.cs" />
     <Compile Include="AutobudgetGarbage.cs" />
     <Compile Include="AutobudgetHealthcare.cs" />
+    <Compile Include="AutobudgetHeating.cs" />
     <Compile Include="AutobudgetIndustry.cs" />
     <Compile Include="AutobudgetPolice.cs" />
     <Compile Include="AutobudgetPost.cs" />

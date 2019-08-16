@@ -11,6 +11,7 @@ namespace Autobudget
 
         public AutobudgetElectricity AutobudgetElectricity;
         public AutobudgetWater AutobudgetWater;
+        public AutobudgetHeating AutobudgetHeating;
         public AutobudgetGarbage AutobudgetGarbage;
         public AutobudgetHealthcare AutobudgetHealthcare;
         public AutobudgetEducation AutobudgetEducation;
@@ -37,6 +38,7 @@ namespace Autobudget
         {
             if (AutobudgetElectricity == null) AutobudgetElectricity = new AutobudgetElectricity();
             if (AutobudgetWater == null) AutobudgetWater = new AutobudgetWater();
+            if (AutobudgetHeating == null) AutobudgetHeating = new AutobudgetHeating();
             if (AutobudgetGarbage == null) AutobudgetGarbage = new AutobudgetGarbage();
             if (AutobudgetHealthcare == null) AutobudgetHealthcare = new AutobudgetHealthcare();
             if (AutobudgetEducation == null) AutobudgetEducation = new AutobudgetEducation();
@@ -50,6 +52,7 @@ namespace Autobudget
             AllAutobudgetObjects.Clear();
             AllAutobudgetObjects.Add(AutobudgetElectricity);
             AllAutobudgetObjects.Add(AutobudgetWater);
+            AllAutobudgetObjects.Add(AutobudgetHeating);
             AllAutobudgetObjects.Add(AutobudgetGarbage);
             AllAutobudgetObjects.Add(AutobudgetHealthcare);
             AllAutobudgetObjects.Add(AutobudgetEducation);

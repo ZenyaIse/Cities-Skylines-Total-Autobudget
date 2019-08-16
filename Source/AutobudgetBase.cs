@@ -66,7 +66,7 @@ namespace Autobudget
         public abstract ItemClass.SubService GetSubService();
 
         protected abstract void setAutobudget();
-
+        
         protected void setBudget(int newBudget)
         {
             if (newBudget == -1) return;
